@@ -88,14 +88,11 @@ function magazin_header_hooks() {
 
 add_action('wp_head', 'magazin_header_hooks');
 
-
 function magazin_footer_hooks() { $options = get_option("sticky_sidebar"); $autoplay = get_option("carousel_autoplay"); ?>
 
-  <script type="text/javascript">
-
+<script type="text/javascript">
   jQuery(document).ready(function(){
 		'use strict';
-
 
     <?php if(!empty($options)){ if($options=="1"){?>
 		jQuery('.sidebar, .panel-grid-cell').theiaStickySidebar({
@@ -170,7 +167,6 @@ function magazin_footer_hooks() { $options = get_option("sticky_sidebar"); $auto
 }
 
 add_action('wp_footer', 'magazin_footer_hooks');
-
 
 function magazin_custom_excerpts($limit) {
     return wp_trim_words(get_the_content(), $limit);
@@ -293,6 +289,9 @@ function magazin_get_shares( $post_id ) {
 	$count = get_transient( $cache_key ); // try to get value from Wordpress cache
 
 	$facebook_token = get_option("facebook_token");
+	$share_time = get_option("share_time");
+
+	if(!empty( $share_time )){ $share_times = $share_time; } else { $share_times = 36000;  }
 
 	if(!empty( $facebook_token )){
 		// if no value in the cache
@@ -308,7 +307,7 @@ function magazin_get_shares( $post_id ) {
 
 			update_post_meta($post_id, 'magazin_share_count_real', $count);
 
-			set_transient( $cache_key, $count, 36000 ); // store value in cache for a 10 hour
+			set_transient( $cache_key, $count, $share_times ); // store value in cache for a 10 hour
 		}
 	}
 	return $count;
