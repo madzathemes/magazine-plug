@@ -72,17 +72,19 @@ add_action( 'after_setup_theme', 'magazin_theme_setup' );
 function magazin_header_hooks() {
 
 	if ( is_singular() ) { wp_enqueue_script( "comment-reply" ); }
-	global $post;
+
+	?>
+
+	<?php if(!is_user_logged_in()){ ?><script type="text/javascript"> if ( top !== self ) top.location.replace( self.location.href ); </script><?php } ?>
+	<?php include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); if ( !is_plugin_active( 'wordpress-seo/wp-seo.php' ) ) { ?>
+	<?php global $post;
 
 	$excerpt = apply_filters('get_the_excerpt', get_post_field('post_excerpt', $post->ID));
 
 	if ( $excerpt == '' ) {
 	    $excerpt = wp_trim_words( $post->post_content, 55 );
-	}
-	?>
+	} ?>
 
-	<?php if(!is_user_logged_in()){ ?><script type="text/javascript"> if ( top !== self ) top.location.replace( self.location.href ); </script><?php } ?>
-	<?php include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); if ( !is_plugin_active( 'wordpress-seo/wp-seo.php' ) ) { ?>
 	  <meta property="og:url"           content="<?php the_permalink();?>" />
 		<meta property="og:type"          content="<?php wp_title();?>" />
 		<meta property="og:title"         content="<?php the_title();?>" />
