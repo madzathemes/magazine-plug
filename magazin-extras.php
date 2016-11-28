@@ -82,7 +82,7 @@ function magazin_header_hooks() {
 	$excerpt = apply_filters('get_the_excerpt', get_post_field('post_excerpt', $post->ID));
 
 	if ( $excerpt == '' ) {
-	    $excerpt = wp_trim_words( $post->post_content, 55 );
+	    $excerpt = wp_trim_words( $post->post_content, 5 );
 	} ?>
 
 	  <meta property="og:url"           content="<?php the_permalink();?>" />
