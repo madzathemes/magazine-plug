@@ -10,6 +10,24 @@ function magazin_customize_general($wp_customize){
     'description'    => '',
   ));
 
+  $wp_customize->add_section('facebook_excerpt', array(
+    'title'    	=> esc_html__('Other', 'magazin'),
+    'panel'  => 'magazin_general'
+  ));
+
+  Kirki::add_field( 'magazin_facebook_description', array(
+  	'type'        => 'number',
+  	'settings'    => 'magazin_facebook_description',
+  	'label'       => esc_attr__( 'Post Share Description Length', 'boomnews' ),
+  	'section'     => 'facebook_excerpt',
+  	'default'     => 55,
+  	'choices'     => array(
+  		'min'  => 1,
+  		'max'  => 150,
+  		'step' => 1,
+  	),
+  ) );
+
   Kirki::add_field( 'radius', array(
   'type'        => 'radio-buttonset',
   'settings'    => 'radius',
