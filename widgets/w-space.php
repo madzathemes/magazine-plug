@@ -4,7 +4,7 @@ class Space_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'space_widget',
-			__( 'tophot Space', 'tophot' ),
+			__( 'mt Space', 'tophot' ),
 			array( 'description' => esc_html__( 'A Space Widget', 'tophot' ), )
 		);
 	}

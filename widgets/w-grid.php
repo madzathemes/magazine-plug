@@ -4,7 +4,7 @@ class Grid_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'grid_widget',
-			__( 'tophot Grid', 'tophot' ),
+			__( 'mt Grid', 'tophot' ),
 			array( 'description' => esc_html__( 'A Post Widget', 'tophot' ), )
 		);
 	}

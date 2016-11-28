@@ -4,7 +4,7 @@ class Posts_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'posts_widget',
-			__( 'tophot Posts', 'tophot' ),
+			__( 'mt Posts', 'tophot' ),
 			array( 'description' => esc_html__( 'A Post Widget', 'tophot' ), )
 		);
 	}

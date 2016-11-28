@@ -9,6 +9,7 @@ Author URI: https://themeforest.net/user/magazine-themes
 */
 include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
 include_once ('plugins/megadropdownmenu-master/megadropdown.php');
+include_once ('vc-shortcodes/vc-posts-tabs.php');
 include_once ('shortcodes/s-ads.php');
 include_once ('shortcodes/s-posts.php');
 include_once ('shortcodes/s-posts-tabs.php');
@@ -75,13 +76,13 @@ function magazin_header_hooks() {
 	?>
 
 	<?php if(!is_user_logged_in()){ ?><script type="text/javascript"> if ( top !== self ) top.location.replace( self.location.href ); </script><?php } ?>
-
-  <meta property="og:url"           content="<?php the_permalink();?>" />
-	<meta property="og:type"          content="<?php wp_title();?>" />
-	<meta property="og:title"         content="<?php the_title();?>" />
-	<meta property="og:description"   content="<?php the_excerpt();?>" />
-	<meta property="og:image"         content="<?php  if ( has_post_thumbnail() ) { echo get_the_post_thumbnail_url(get_the_ID(),"full"); } ?>" />
-
+	<?php include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); if ( !is_plugin_active( 'wordpress-seo/wp-seo.php' ) ) { ?>
+	  <meta property="og:url"           content="<?php the_permalink();?>" />
+		<meta property="og:type"          content="<?php wp_title();?>" />
+		<meta property="og:title"         content="<?php the_title();?>" />
+		<meta property="og:description"   content="<?php the_excerpt();?>" />
+		<meta property="og:image"         content="<?php  if ( has_post_thumbnail() ) { echo get_the_post_thumbnail_url(get_the_ID(),"full"); } ?>" />
+	<?php } ?>
 	<style type="text/css"><?php echo balanceTags(get_option("custom_css")); ?></style>
 	<?php
 }
@@ -406,15 +407,25 @@ function myprefix_adjust_offset_pagination($found_posts, $query) {
 function more_post_ajax(){
 
     $ppp = (isset($_POST["ppp"])) ? $_POST["ppp"] : 3;
-    $page = (isset($_POST['pageNumber'])) ? $_POST['pageNumber'] : 0;
 		$format = (isset($_POST['format'])) ? $_POST['format'] : "all";
+		$category = (isset($_POST['category'])) ? $_POST['category'] : "";
+		$offset = (isset($_POST['offset'])) ? $_POST['offset'] : "";
+		$orderby = (isset($_POST['orderby'])) ? $_POST['orderby'] : "";
+
+		$meta_key = "";
+
+		if($orderby=="popular") { $meta_key = "magazin_post_views_count"; $orderby = "meta_value_num"; }
+		if($orderby=="shares") { $meta_key = "meta_value_num"; $orderby = "magazin_share_count_real"; }
 
 		$args = array(
         'suppress_filters' => true,
         'post_type' => 'post',
 				'post_status' => 'publish',
         'posts_per_page' => $ppp,
-        'paged'    => $page,
+				'category_name'=>$category,
+				'orderby'=> $orderby,
+				'meta_key' => $meta_key,
+				'offset' => $offset,
     );
 		if($format=="gallery") {
 			$args = array(
@@ -422,7 +433,10 @@ function more_post_ajax(){
 	        'post_type' => 'post',
 					'post_status' => 'publish',
 	        'posts_per_page' => $ppp,
-	        'paged'    => $page,
+					'category_name'=>$category,
+					'offset' => $offset,
+					'orderby'=> $orderby,
+					'meta_key' => $meta_key,
 					'tax_query' => array(
 							array(
 								'taxonomy' => 'post_format',
@@ -439,7 +453,10 @@ function more_post_ajax(){
 	        'post_type' => 'post',
 					'post_status' => 'publish',
 	        'posts_per_page' => $ppp,
-	        'paged'    => $page,
+					'category_name'=>$category,
+					'offset' => $offset,
+					'orderby'=> $orderby,
+					'meta_key' => $meta_key,
 					'tax_query' => array(
 						array(
 							'taxonomy' => 'post_format',
@@ -457,7 +474,10 @@ function more_post_ajax(){
 	        'post_type' => 'post',
 					'post_status' => 'publish',
 	        'posts_per_page' => $ppp,
-	        'paged'    => $page,
+					'category_name'=>$category,
+					'offset' => $offset,
+					'orderby'=> $orderby,
+					'meta_key' => $meta_key,
 					'tax_query' => array(
 							array(
 								'taxonomy' => 'post_format',
