@@ -21,6 +21,7 @@ function magazin_customize_general($wp_customize){
   	'label'       => esc_attr__( 'Post Share Description Length', 'boomnews' ),
   	'section'     => 'facebook_excerpt',
   	'default'     => 55,
+    'option_type' => 'option',
   	'choices'     => array(
   		'min'  => 1,
   		'max'  => 150,
@@ -35,7 +36,7 @@ function magazin_customize_general($wp_customize){
   'section'     => 'general_style_settings',
   'default'     => '5px',
   'priority'    => 1,
-  'option_type'           => 'option',
+  'option_type' => 'option',
   'choices'     => array(
     '0px'   => esc_attr__( '0px', 'boomnews' ),
     '5px' => esc_attr__( '5px', 'boomnews' ),
