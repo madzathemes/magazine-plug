@@ -80,7 +80,7 @@ function magazin_header_hooks() {
 	  <meta property="og:url"           content="<?php the_permalink();?>" />
 		<meta property="og:type"          content="<?php wp_title();?>" />
 		<meta property="og:title"         content="<?php the_title();?>" />
-		<meta property="og:description"   content="<?php the_excerpt();?>" />
+		<meta property="og:description"   content="<?php echo get_the_excerpt();?>" />
 		<meta property="og:image"         content="<?php  if ( has_post_thumbnail() ) { echo get_the_post_thumbnail_url(get_the_ID(),"full"); } ?>" />
 	<?php } ?>
 	<style type="text/css"><?php echo balanceTags(get_option("custom_css")); ?></style>
