@@ -4,12 +4,19 @@ Plugin Name: Magazine Plug
 Plugin URI: https://themeforest.net
 Description: Magazin Plugin
 Author: Madars Bitenieks
-Version: 2.0
+Version: 2.1
 Author URI: https://themeforest.net/user/magazine-themes
 */
 include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
 include_once ('plugins/megadropdownmenu-master/megadropdown.php');
-include_once ('vc-shortcodes/vc-posts-tabs.php');
+if (class_exists('WPBakeryShortCode')) {
+	include_once ('vc-shortcodes/vc-posts-tabs.php');
+	include_once ('vc-shortcodes/vc-ads.php');
+	include_once ('vc-shortcodes/vc-subscribe.php');
+	include_once ('vc-shortcodes/vc-social.php');
+	include_once ('vc-shortcodes/vc-grid.php');
+	include_once ('vc-shortcodes/vc-posts.php');
+}
 include_once ('shortcodes/s-ads.php');
 include_once ('shortcodes/s-posts.php');
 include_once ('shortcodes/s-posts-tabs.php');
@@ -424,6 +431,7 @@ function more_post_ajax(){
     $ppp = (isset($_POST["ppp"])) ? $_POST["ppp"] : 3;
 		$format = (isset($_POST['format'])) ? $_POST['format'] : "all";
 		$category = (isset($_POST['category'])) ? $_POST['category'] : "";
+		$tag = (isset($_POST['tag'])) ? $_POST['tag'] : "";
 		$offset = (isset($_POST['offset'])) ? $_POST['offset'] : "";
 		$orderby = (isset($_POST['orderby'])) ? $_POST['orderby'] : "";
 
@@ -438,6 +446,7 @@ function more_post_ajax(){
 				'post_status' => 'publish',
         'posts_per_page' => $ppp,
 				'category_name'=>$category,
+				'tag'=>$tag,
 				'orderby'=> $orderby,
 				'meta_key' => $meta_key,
 				'offset' => $offset,
@@ -449,6 +458,7 @@ function more_post_ajax(){
 					'post_status' => 'publish',
 	        'posts_per_page' => $ppp,
 					'category_name'=>$category,
+					'tag'=>$tag,
 					'offset' => $offset,
 					'orderby'=> $orderby,
 					'meta_key' => $meta_key,
@@ -471,6 +481,7 @@ function more_post_ajax(){
 					'category_name'=>$category,
 					'offset' => $offset,
 					'orderby'=> $orderby,
+					'tag'=>$tag,
 					'meta_key' => $meta_key,
 					'tax_query' => array(
 						array(
@@ -492,6 +503,7 @@ function more_post_ajax(){
 					'category_name'=>$category,
 					'offset' => $offset,
 					'orderby'=> $orderby,
+					'tag'=>$tag,
 					'meta_key' => $meta_key,
 					'tax_query' => array(
 							array(

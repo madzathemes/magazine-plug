@@ -24,7 +24,7 @@ function magazin_customize_general($wp_customize){
     'option_type' => 'option',
   	'choices'     => array(
   		'min'  => 1,
-  		'max'  => 150,
+  		'max'  => 55,
   		'step' => 1,
   	),
   ) );

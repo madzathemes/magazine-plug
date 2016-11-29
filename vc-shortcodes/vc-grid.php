@@ -1,57 +1,47 @@
 <?php
 
-add_shortcode( 'mt_posts', 'mt_posts_func' );
-	function mt_posts_func( $atts ) {
+add_shortcode( 'mt_grid', 'mt_grid_func' );
+	function mt_grid_func( $atts ) {
 
         extract(shortcode_atts(array(
-            'title_type' => '',
+            'position' => '',
             'title' => '',
             'category' => '',
             'orderby' => '',
             'type' => '',
 						'tag' => '',
-						'item_nr' => '',
             'offset' => '',
-						'pagination' => '',
         ), $atts));
 
-        $content_ = "[posts type='$type' tag='$tag' item_nr='$item_nr' offset='$offset' orderby='$orderby' category='$category' title='$title' pagination='$pagination' title_type='$title_type']";
+        $content_ = "[grid type='$type' tag='$tag' title='$title' position='$position' offset='$offset' orderby='$orderby' category='$category']";
 
         return  do_shortcode($content_);
 
     }
 
-add_action( 'vc_before_init', 'mt_posts_fields' );
-function mt_posts_fields() {
+add_action( 'vc_before_init', 'mt_grid_fields' );
+function mt_grid_fields() {
   vc_map( array(
-      "base"        => "mt_posts",
-      "name"        => esc_html__("mt Posts", "magazin"),
-      "class"        => "mt-posts",
+      "base"        => "mt_grid",
+      "name"        => esc_html__("mt Post Grid", "magazin"),
+      "class"        => "mt-grid",
       "icon"      => "",
       "category" => "mt Moduls",
       "params"    => array(
 
-
+      	 array(
+              "type" => "textfield",
+              "heading" => esc_html__("Offset", "magazin"),
+              "param_name" => "offset",
+              "value" => "",
+          ),
 					array(
               "type" => "dropdown",
               "heading" => esc_html__("Type", "magazin"),
               "param_name" => "type",
 							"std" => "",
-              "value" => array('Small' => 'small', 'Small Two Columns' => 'small-two', 'Normal' => 'normal', 'Normal Two Columns' => 'normal-two', 'Normal Right Text' => 'normal-right', 'Normal Right Text Small' => 'normal-right-small', 'Carousel' => 'carousel-post-slider'),
+              "value" => array('Style 1' => '1', 'Style 2' => '2', 'Style 3' => '3'),
           ),
-
-					array(
-							 "type" => "textfield",
-							 "heading" => esc_html__("Intem Nr", "magazin"),
-							 "param_name" => "item_nr",
-							 "value" => "",
-					 ),
-					array(
-               "type" => "textfield",
-               "heading" => esc_html__("Offset", "magazin"),
-               "param_name" => "offset",
-               "value" => "",
-           ),
           array(
                "type" => "textfield",
                "heading" => esc_html__("Category slug", "magazin"),
@@ -80,16 +70,9 @@ function mt_posts_fields() {
 					array(
               "type" => "dropdown",
               "heading" => esc_html__("Title Position", "magazin"),
-              "param_name" => "title_type",
+              "param_name" => "position",
 							"std" => "",
               "value" => array('left' => 'left', 'center' => 'center', 'right' => 'right'),
-          ),
-					array(
-              "type" => "dropdown",
-              "heading" => esc_html__("Pagination", "magazin"),
-              "param_name" => "pagination",
-							"std" => "",
-              "value" => array('off' => 'off', 'on' => 'on'),
           ),
 
       )

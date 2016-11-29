@@ -26,7 +26,7 @@ function posts_tabs( $atts, $content = null ) {
 
       if (is_single()) { $exclude = get_the_ID(); }
 
-			$loadmore ='<div data-type="all" data-category="'.$category.'" data-ppp="'.$item_nr.'" data-orderby="'.$orderby.'" data-orderbyp="'.$tab_popular.'" data-orderbyh="'.$tab_hot.'" data-orderbyt="'.$tab_trending.'" class="mt-load-more mt-radius"><span class="on">'. esc_html__("Load More Posts", "magazine-plug") .'</span><span class="off">'. esc_html__("Congratulations, you've reached all posts.", "magazine-plug") .'</span></div>';
+			$loadmore ='<div data-type="all" data-tag="'.$tag.'"  data-category="'.$category.'" data-ppp="'.$item_nr.'" data-orderby="'.$orderby.'" data-orderbyp="'.$tab_popular.'" data-orderbyh="'.$tab_hot.'" data-orderbyt="'.$tab_trending.'" class="mt-load-more mt-radius"><span class="on">'. esc_html__("Load More Posts", "magazine-plug") .'</span><span class="off">'. esc_html__("Congratulations, you've reached all posts.", "magazine-plug") .'</span></div>';
 
 			$meta_key = "";
 

@@ -14,9 +14,10 @@ add_shortcode( 'mt_posts_tabs', 'mt_posts_tabs_func' );
             'tab_posts' => '',
             'tab_videos' => '',
             'tab_galleries' => '',
+						'tag' => '',
         ), $atts));
 
-        $content_ = "[posts_tabs item_nr='$item_nr' orderby='$orderby' category='$category' title='$title' tab_popular='$tab_popular' tab_hot='$tab_hot' tab_trending='$tab_trending' tab_posts='$tab_posts' tab_videos='$tab_videos' tab_galleries='$tab_galleries']";
+        $content_ = "[posts_tabs item_nr='$item_nr' tag='$tag'  orderby='$orderby' category='$category' title='$title' tab_popular='$tab_popular' tab_hot='$tab_hot' tab_trending='$tab_trending' tab_posts='$tab_posts' tab_videos='$tab_videos' tab_galleries='$tab_galleries']";
 
         return  do_shortcode($content_);
 
@@ -49,52 +50,59 @@ function mt_posts_tabs_fields() {
                "param_name" => "category",
                "value" => "",
            ),
+					 array(
+								"type" => "textfield",
+								"heading" => esc_html__("Tag slug", "magazin"),
+								"param_name" => "tag",
+								"value" => "",
+						),
           array(
               "type" => "dropdown",
               "heading" => esc_html__("OrderBy", "magazin"),
               "param_name" => "orderby",
+							"std" => "",
               "value" => array('Date' => 'date', 'Most Viewed' => 'popular', 'Most Shares' => 'shares', 'Most Comments' => 'comment_count'),
           ),
           array(
               "type" => "dropdown",
               "heading" => esc_html__("Tab: Popular", "magazin"),
               "param_name" => "tab_popular",
-              "std" => "disabled",
-              "value" => array('Date' => 'date', 'Most Viewed' => 'popular', 'Most Shares' => 'shares', 'Most Comments' => 'comment_count', 'Disabled' => 'off'),
+							"std" => "",
+              "value" => array('Disabled' => 'off', 'Date' => 'date', 'Most Viewed' => 'popular', 'Most Shares' => 'shares', 'Most Comments' => 'comment_count'),
           ),
           array(
               "type" => "dropdown",
               "heading" => esc_html__("Tab: Hot", "magazin"),
               "param_name" => "tab_hot",
-              "std" => "disabled",
-              "value" => array('Date' => 'date', 'Most Viewed' => 'popular', 'Most Shares' => 'shares', 'Most Comments' => 'comment_count', 'Disabled' => 'off'),
+							"std" => "",
+              "value" => array('Disabled' => 'off', 'Date' => 'date', 'Most Viewed' => 'popular', 'Most Shares' => 'shares', 'Most Comments' => 'comment_count'),
           ),
           array(
               "type" => "dropdown",
               "heading" => esc_html__("Tab: Trending", "magazin"),
               "param_name" => "tab_trending",
-              "std" => "disabled",
-              "value" => array('Date' => 'date', 'Most Viewed' => 'popular', 'Most Shares' => 'shares', 'Most Comments' => 'comment_count', 'Disabled' => 'off'),
+							"std" => "",
+              "value" => array('Disabled' => 'off', 'Date' => 'date', 'Most Viewed' => 'popular', 'Most Shares' => 'shares', 'Most Comments' => 'comment_count'),
           ),
           array(
               "type" => "dropdown",
               "heading" => esc_html__("Tab: Posts", "magazin"),
               "param_name" => "tab_posts",
-              "std" => "enabled",
+							"std" => "",
               "value" => array('Enabled' => 'on', 'Disabled' => 'off'),
           ),
           array(
               "type" => "dropdown",
               "heading" => esc_html__("Tab: Videos", "magazin"),
               "param_name" => "tab_videos",
-              "std" => "enabled",
+							"std" => "",
               "value" => array('Enabled' => 'on', 'Disabled' => 'off'),
           ),
           array(
               "type" => "dropdown",
               "heading" => esc_html__("Tab: Galleries", "magazin"),
               "param_name" => "tab_galleries",
-              "std" => "enabled",
+							"std" => "",
               "value" => array('Enabled' => 'on', 'Disabled' => 'off'),
           ),
 

@@ -12,8 +12,9 @@ class Post_Tabs_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 		echo $args['before_widget'];
 
-		$item_nr = "";
+		$item_nr = "10";
 		$category = "";
+		$tag = "";
 		$title = "";
 		$orderby = "";
 		$widget_id = "";
@@ -35,7 +36,7 @@ class Post_Tabs_Widget extends WP_Widget {
 		if ( ! empty( $instance['tab_videos'] ) ) { $tab_videos = $instance['tab_videos'];	}
 		if ( ! empty( $instance['tab_galleries'] ) ) { $tab_galleries = $instance['tab_galleries'];	}
 
-		echo do_shortcode("[posts_tabs item_nr='$item_nr' orderby='$orderby' category='$category' title='$title' tab_popular='$tab_popular' tab_hot='$tab_hot' tab_trending='$tab_trending' tab_posts='$tab_posts' tab_videos='$tab_videos' tab_galleries='$tab_galleries']");
+		echo do_shortcode("[posts_tabs item_nr='$item_nr' orderby='$orderby' tag='$tag' category='$category' title='$title' tab_popular='$tab_popular' tab_hot='$tab_hot' tab_trending='$tab_trending' tab_posts='$tab_posts' tab_videos='$tab_videos' tab_galleries='$tab_galleries']");
 
 		echo $args['after_widget'];
 	}
@@ -43,6 +44,7 @@ class Post_Tabs_Widget extends WP_Widget {
 	public function form( $instance ) {
 		$item_nr = ! empty( $instance['item_nr'] ) ? $instance['item_nr'] : esc_html__( '', 'tophot' );
 		$category = ! empty( $instance['category'] ) ? $instance['category'] : esc_html__( '', 'tophot' );
+		$tag = ! empty( $instance['tag'] ) ? $instance['tag'] : esc_html__( '', 'tophot' );
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( '', 'tophot' );
 		$orderby = ! empty( $instance['orderby'] ) ? $instance['orderby'] : esc_html__( '', 'tophot' );
 		$tab_popular = ! empty( $instance['tab_popular'] ) ? $instance['tab_popular'] : esc_html__( '', 'tophot' );
@@ -64,6 +66,10 @@ class Post_Tabs_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'category' ) ); ?>"><?php _e( esc_attr( 'Category slug:' ) ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'category' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'category' ) ); ?>" type="text" value="<?php echo esc_attr( $category ); ?>">
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'tag' ) ); ?>"><?php _e( esc_attr( 'Tag slug:' ) ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tag' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'tag' ) ); ?>" type="text" value="<?php echo esc_attr( $tag ); ?>">
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'orderby' ) ); ?>"><?php _e( esc_attr( 'OrderBy:' ) ); ?></label>
@@ -111,24 +117,24 @@ class Post_Tabs_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'tab_posts' ) ); ?>"><?php _e( esc_attr( 'Tab: Posts:' ) ); ?></label>
 			<select class='widefat' id="<?php echo $this->get_field_id('tab_posts'); ?>" name="<?php echo $this->get_field_name('tab_posts'); ?>" type="text">
-				<option value='off'<?php echo ($tab_posts=='off')?'selected':''; ?>>Disable</option>
 				<option value='on'<?php echo ($tab_posts=='on')?'selected':''; ?>>Enabled</option>
+				<option value='off'<?php echo ($tab_posts=='off')?'selected':''; ?>>Disable</option>
 			</select>
 		</p>
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'tab_videos' ) ); ?>"><?php _e( esc_attr( 'Tab: Videos:' ) ); ?></label>
 			<select class='widefat' id="<?php echo $this->get_field_id('tab_videos'); ?>" name="<?php echo $this->get_field_name('tab_videos'); ?>" type="text">
-				<option value='off'<?php echo ($tab_videos=='off')?'selected':''; ?>>Disable</option>
 				<option value='on'<?php echo ($tab_videos=='on')?'selected':''; ?>>Enabled</option>
+				<option value='off'<?php echo ($tab_videos=='off')?'selected':''; ?>>Disable</option>
 			</select>
 		</p>
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'tab_galleries' ) ); ?>"><?php _e( esc_attr( 'Tab: Galleries:' ) ); ?></label>
 			<select class='widefat' id="<?php echo $this->get_field_id('tab_galleries'); ?>" name="<?php echo $this->get_field_name('tab_galleries'); ?>" type="text">
-				<option value='off'<?php echo ($tab_galleries=='off')?'selected':''; ?>>Disable</option>
 				<option value='on'<?php echo ($tab_galleries=='on')?'selected':''; ?>>Enabled</option>
+				<option value='off'<?php echo ($tab_galleries=='off')?'selected':''; ?>>Disable</option>
 			</select>
 		</p>
 
@@ -141,6 +147,7 @@ class Post_Tabs_Widget extends WP_Widget {
 		$instance = array();
 		$instance['item_nr'] = ( ! empty( $new_instance['item_nr'] ) ) ? strip_tags( $new_instance['item_nr'] ) : '';
 		$instance['category'] = ( ! empty( $new_instance['category'] ) ) ? strip_tags( $new_instance['category'] ) : '';
+		$instance['tag'] = ( ! empty( $new_instance['tag'] ) ) ? strip_tags( $new_instance['tag'] ) : '';
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['orderby'] = ( ! empty( $new_instance['orderby'] ) ) ? strip_tags( $new_instance['orderby'] ) : '';
 		$instance['tab_popular'] = ( ! empty( $new_instance['tab_popular'] ) ) ? strip_tags( $new_instance['tab_popular'] ) : '';
