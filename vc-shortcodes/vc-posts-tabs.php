@@ -15,9 +15,10 @@ add_shortcode( 'mt_posts_tabs', 'mt_posts_tabs_func' );
             'tab_videos' => '',
             'tab_galleries' => '',
 						'tag' => '',
+						'author' => '',
         ), $atts));
 
-        $content_ = "[posts_tabs item_nr='$item_nr' tag='$tag'  orderby='$orderby' category='$category' title='$title' tab_popular='$tab_popular' tab_hot='$tab_hot' tab_trending='$tab_trending' tab_posts='$tab_posts' tab_videos='$tab_videos' tab_galleries='$tab_galleries']";
+        $content_ = "[posts_tabs  author='$author' item_nr='$item_nr' tag='$tag'  orderby='$orderby' category='$category' title='$title' tab_popular='$tab_popular' tab_hot='$tab_hot' tab_trending='$tab_trending' tab_posts='$tab_posts' tab_videos='$tab_videos' tab_galleries='$tab_galleries']";
 
         return  do_shortcode($content_);
 
@@ -56,6 +57,12 @@ function mt_posts_tabs_fields() {
 								"param_name" => "tag",
 								"value" => "",
 						),
+						array(
+                 "type" => "textfield",
+                 "heading" => esc_html__("Author slug", "magazin"),
+                 "param_name" => "author",
+                 "value" => "",
+            	),
           array(
               "type" => "dropdown",
               "heading" => esc_html__("OrderBy", "magazin"),

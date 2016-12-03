@@ -13,6 +13,7 @@ function grid( $atts, $content = null ) {
 			'offset'=> '',
 			'position'=> 'off',
 			'title'=> 'Title',
+			'author'=> '',
 			), $atts));
 
 			global $exclude_single_id, $post;
@@ -33,6 +34,7 @@ function grid( $atts, $content = null ) {
 				'exclude'=>$exclude,
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
+				'author_name'=>$author,
 				'category_name'=>$category,
 				'paged' => $paged,
 				'tag'=>$tag
@@ -46,6 +48,7 @@ function grid( $atts, $content = null ) {
 				'exclude'=>$exclude,
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
+				'author_name'=>$author,
 				'meta_key' => 'magazin_post_views_count',
 				'category_name'=>$category,
 				'paged' => $paged,
@@ -54,6 +57,7 @@ function grid( $atts, $content = null ) {
 			$args_shares = array(
 				'post_type'=>$posttype,
 				'order'=>$order,
+				'author_name'=>$author,
 				'orderby'=>"meta_value_num",
 				'include'=>$include,
 				'exclude'=>$exclude,

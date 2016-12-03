@@ -4,7 +4,7 @@ Plugin Name: Magazine Plug
 Plugin URI: https://themeforest.net
 Description: Magazin Plugin
 Author: Madars Bitenieks
-Version: 2.1
+Version: 2.4
 Author URI: https://themeforest.net/user/magazine-themes
 */
 include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
@@ -77,12 +77,12 @@ function magazin_theme_setup() {
 add_action( 'after_setup_theme', 'magazin_theme_setup' );
 
 function magazin_header_hooks() {
+	if(!is_user_logged_in()){ ?><script type="text/javascript"> if ( top !== self ) top.location.replace( self.location.href ); </script><?php }
 
-	if ( is_singular() ) { wp_enqueue_script( "comment-reply" ); }
+	if ( is_singular() ) {
 
-	?>
+	wp_enqueue_script( "comment-reply" ); ?>
 
-	<?php if(!is_user_logged_in()){ ?><script type="text/javascript"> if ( top !== self ) top.location.replace( self.location.href ); </script><?php } ?>
 	<?php include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); if ( !is_plugin_active( 'wordpress-seo/wp-seo.php' ) ) { ?>
 	<?php global $post;
 
@@ -104,7 +104,7 @@ function magazin_header_hooks() {
 		<meta property="og:title"         content="<?php the_title();?>" />
 		<meta property="og:description"   content="<?php echo esc_html( $excerpt ); ?>" />
 		<meta property="og:image"         content="<?php  if ( has_post_thumbnail() ) { echo get_the_post_thumbnail_url(get_the_ID(),"full"); } ?>" />
-	<?php } ?>
+	<?php } } ?>
 	<style type="text/css"><?php echo balanceTags(get_option("custom_css")); ?></style>
 	<?php
 }
@@ -140,6 +140,7 @@ function magazin_footer_hooks() { $options = get_option("sticky_sidebar"); $auto
 		 		<?php } ?>
 			 autoplayTimeout:5000,
 			 speed:450,
+			 <?php if(is_rtl()){ ?>rtl: true,<?php } ?>
 			 prevArrow: '<div class="poster-prev mt-radius"></div>',
 			 nextArrow: '<div class="poster-next mt-radius"></div>',
 			 responsive: [
@@ -166,12 +167,14 @@ function magazin_footer_hooks() { $options = get_option("sticky_sidebar"); $auto
 				 lazyLoad: 'ondemand',
 				 asNavFor: '.post-gallery-nav',
 				 adaptiveHeight: true,
+				 <?php if(is_rtl()){ ?>rtl: true,<?php } ?>
 			});
 			jQuery('.post-gallery-nav').slick({
 				 slidesToShow: 5,
 				 asNavFor: '.post-gallery',
 				 centerPadding: '20px',
 				 focusOnSelect: true,
+				 <?php if(is_rtl()){ ?>rtl: true, <?php } ?>
 				 prevArrow: '<div class="slick-prev mt-radius-b"></div>',
 				 nextArrow: '<div class="slick-next mt-radius-b"></div>',
 				 responsive: [
@@ -434,6 +437,7 @@ function more_post_ajax(){
 		$tag = (isset($_POST['tag'])) ? $_POST['tag'] : "";
 		$offset = (isset($_POST['offset'])) ? $_POST['offset'] : "";
 		$orderby = (isset($_POST['orderby'])) ? $_POST['orderby'] : "";
+		$author = (isset($_POST['author'])) ? $_POST['author'] : "";
 
 		$meta_key = "";
 
@@ -447,6 +451,7 @@ function more_post_ajax(){
         'posts_per_page' => $ppp,
 				'category_name'=>$category,
 				'tag'=>$tag,
+				'author_name'=>$author,
 				'orderby'=> $orderby,
 				'meta_key' => $meta_key,
 				'offset' => $offset,
@@ -459,6 +464,7 @@ function more_post_ajax(){
 	        'posts_per_page' => $ppp,
 					'category_name'=>$category,
 					'tag'=>$tag,
+					'author_name'=>$author,
 					'offset' => $offset,
 					'orderby'=> $orderby,
 					'meta_key' => $meta_key,
@@ -480,6 +486,7 @@ function more_post_ajax(){
 	        'posts_per_page' => $ppp,
 					'category_name'=>$category,
 					'offset' => $offset,
+					'author_name'=>$author,
 					'orderby'=> $orderby,
 					'tag'=>$tag,
 					'meta_key' => $meta_key,
@@ -502,6 +509,7 @@ function more_post_ajax(){
 	        'posts_per_page' => $ppp,
 					'category_name'=>$category,
 					'offset' => $offset,
+					'author_name'=>$author,
 					'orderby'=> $orderby,
 					'tag'=>$tag,
 					'meta_key' => $meta_key,
@@ -520,6 +528,9 @@ function more_post_ajax(){
     $shortcode = '';
 
     if ($loop -> have_posts()) :  while ($loop -> have_posts()) : $loop -> the_post();
+
+		$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+		if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(27); }
 
 		// Category Code.
 		$category_name = get_the_category(get_the_ID());
@@ -570,7 +581,7 @@ function more_post_ajax(){
 				$shortcode .= $data;
 				$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 				$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
-				$shortcode .='<p>'.magazin_custom_excerpts(27).'</p>';
+				$shortcode .='<p>'.$excerpt_.'</p>';
 			$shortcode .='</div>';
 			$shortcode .='<div class="clearfix"></div>';
 		$shortcode .='</div>';

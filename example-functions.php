@@ -189,6 +189,19 @@ function post_metabox() {
 		// 'display_cb' => 'yourprefix_display_text_small_column', // Output the display of the column values through a callback.
 	) );
 
+	$cmb_demo->add_field( array(
+		'name' => esc_html__( 'Post Excerpt', 'magazin' ),
+		'desc' => esc_html__( 'Add post excerpt for post lists', 'magazin' ),
+		'id'   => $prefix . 'excerpt',
+		'type' => 'textarea',
+		// 'repeatable' => true,
+		// 'column' => array(
+		// 	'name'     => esc_html__( 'Column Title', 'magazin' ), // Set the admin column title
+		// 	'position' => 2, // Set as the second column.
+		// );
+		// 'display_cb' => 'yourprefix_display_text_small_column', // Output the display of the column values through a callback.
+	) );
+
 
 
     $cmb_demo->add_field( array(

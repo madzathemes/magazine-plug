@@ -24,6 +24,7 @@ class Post_Tabs_Widget extends WP_Widget {
 		$tab_posts = "";
 		$tab_videos = "";
 		$tab_galleries = "";
+		$author = "";
 
 		if ( ! empty( $instance['item_nr'] ) ) { $item_nr = $instance['item_nr'];	}
 		if ( ! empty( $instance['category'] ) ) { $category = $instance['category'];	}
@@ -35,8 +36,9 @@ class Post_Tabs_Widget extends WP_Widget {
 		if ( ! empty( $instance['tab_posts'] ) ) { $tab_posts = $instance['tab_posts'];	}
 		if ( ! empty( $instance['tab_videos'] ) ) { $tab_videos = $instance['tab_videos'];	}
 		if ( ! empty( $instance['tab_galleries'] ) ) { $tab_galleries = $instance['tab_galleries'];	}
+		if ( ! empty( $instance['author'] ) ) { $author = $instance['author'];	}
 
-		echo do_shortcode("[posts_tabs item_nr='$item_nr' orderby='$orderby' tag='$tag' category='$category' title='$title' tab_popular='$tab_popular' tab_hot='$tab_hot' tab_trending='$tab_trending' tab_posts='$tab_posts' tab_videos='$tab_videos' tab_galleries='$tab_galleries']");
+		echo do_shortcode("[posts_tabs item_nr='$item_nr' author='$author' orderby='$orderby' tag='$tag' category='$category' title='$title' tab_popular='$tab_popular' tab_hot='$tab_hot' tab_trending='$tab_trending' tab_posts='$tab_posts' tab_videos='$tab_videos' tab_galleries='$tab_galleries']");
 
 		echo $args['after_widget'];
 	}
@@ -53,6 +55,7 @@ class Post_Tabs_Widget extends WP_Widget {
 		$tab_posts = ! empty( $instance['tab_posts'] ) ? $instance['tab_posts'] : esc_html__( '', 'tophot' );
 		$tab_videos = ! empty( $instance['tab_videos'] ) ? $instance['tab_videos'] : esc_html__( '', 'tophot' );
 		$tab_galleries = ! empty( $instance['tab_galleries'] ) ? $instance['tab_galleries'] : esc_html__( '', 'tophot' );
+		$author = ! empty( $instance['author'] ) ? $instance['author'] : esc_html__( '', 'tophot' );
 		?>
 
 		<p>
@@ -70,6 +73,10 @@ class Post_Tabs_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'tag' ) ); ?>"><?php _e( esc_attr( 'Tag slug:' ) ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'tag' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'tag' ) ); ?>" type="text" value="<?php echo esc_attr( $tag ); ?>">
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'author' ) ); ?>"><?php _e( esc_attr( 'Author slug:' ) ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'author' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'author' ) ); ?>" type="text" value="<?php echo esc_attr( $author ); ?>">
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'orderby' ) ); ?>"><?php _e( esc_attr( 'OrderBy:' ) ); ?></label>
@@ -156,6 +163,7 @@ class Post_Tabs_Widget extends WP_Widget {
 		$instance['tab_posts'] = ( ! empty( $new_instance['tab_posts'] ) ) ? strip_tags( $new_instance['tab_posts'] ) : '';
 		$instance['tab_videos'] = ( ! empty( $new_instance['tab_videos'] ) ) ? strip_tags( $new_instance['tab_videos'] ) : '';
 		$instance['tab_galleries'] = ( ! empty( $new_instance['tab_galleries'] ) ) ? strip_tags( $new_instance['tab_galleries'] ) : '';
+		$instance['author'] = ( ! empty( $new_instance['author'] ) ) ? strip_tags( $new_instance['author'] ) : '';
 		return $instance;
 	}
 

@@ -20,13 +20,14 @@ function posts_tabs( $atts, $content = null ) {
 			'tab_posts' => 'on',
 			'tab_videos' => 'on',
 			'tab_galleries' => 'on',
+			'author' => '',
 			), $atts));
 
 			global $post;
 
       if (is_single()) { $exclude = get_the_ID(); }
 
-			$loadmore ='<div data-type="all" data-tag="'.$tag.'"  data-category="'.$category.'" data-ppp="'.$item_nr.'" data-orderby="'.$orderby.'" data-orderbyp="'.$tab_popular.'" data-orderbyh="'.$tab_hot.'" data-orderbyt="'.$tab_trending.'" class="mt-load-more mt-radius"><span class="on">'. esc_html__("Load More Posts", "magazine-plug") .'</span><span class="off">'. esc_html__("Congratulations, you've reached all posts.", "magazine-plug") .'</span></div>';
+			$loadmore ='<div data-type="all" data-tag="'.$tag.'" data-author="'.$author.'" data-category="'.$category.'" data-ppp="'.$item_nr.'" data-orderby="'.$orderby.'" data-orderbyp="'.$tab_popular.'" data-orderbyh="'.$tab_hot.'" data-orderbyt="'.$tab_trending.'" class="mt-load-more mt-radius"><span class="on">'. esc_html__("Load More Posts", "magazine-plug") .'</span><span class="off">'. esc_html__("Congratulations, you've reached all posts.", "magazine-plug") .'</span></div>';
 
 			$meta_key = "";
 
@@ -42,6 +43,7 @@ function posts_tabs( $atts, $content = null ) {
 				'post__not_in'=>array( $exclude ),
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
+				'author_name'=>$author,
 				'category_name'=>$category,
 				'tag'=>$tag
 			);
@@ -54,6 +56,7 @@ function posts_tabs( $atts, $content = null ) {
 				'post__not_in'=>array( $exclude ),
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
+				'author_name'=>$author,
 				'category_name'=>$category,
 				'tag'=>$tag,
 				'tax_query' => array(
@@ -74,6 +77,7 @@ function posts_tabs( $atts, $content = null ) {
 				'post__not_in'=>array( $exclude ),
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
+				'author_name'=>$author,
 				'category_name'=>$category,
 				'tag'=>$tag,
 				'tax_query' => array(
@@ -93,6 +97,7 @@ function posts_tabs( $atts, $content = null ) {
 				'post__not_in'=>array( $exclude ),
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
+				'author_name'=>$author,
 				'category_name'=>$category,
 				'tag'=>$tag,
 				'tax_query' => array(
@@ -115,6 +120,7 @@ function posts_tabs( $atts, $content = null ) {
 				'meta_key' => $meta_key_popular,
 				'orderby'=>$tab_popular,
 				'include'=>$include,
+				'author_name'=>$author,
 				'post__not_in'=>array( $exclude ),
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
@@ -136,6 +142,7 @@ function posts_tabs( $atts, $content = null ) {
 				'post__not_in'=>array( $exclude ),
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
+				'author_name'=>$author,
 				'category_name'=>$category,
 				'tag'=>$tag
 			);
@@ -154,6 +161,7 @@ function posts_tabs( $atts, $content = null ) {
 				'post__not_in'=>array( $exclude ),
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
+				'author_name'=>$author,
 				'category_name'=>$category,
 				'tag'=>$tag
 			);
@@ -200,6 +208,9 @@ function posts_tabs( $atts, $content = null ) {
 						$shortcode .='<div id="ajax-posts_1">';
 						$i=1;
 							while ( $the_query_tab_1->have_posts() ) : $the_query_tab_1->the_post();
+
+							$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+							if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(27); }
 
 							// Category Code.
 							$category_name = get_the_category(get_the_ID());
@@ -250,7 +261,7 @@ function posts_tabs( $atts, $content = null ) {
 									$shortcode .= $data;
 									$shortcode .='<a href="'. get_permalink().'"><div><h2>'. get_the_title() .'</h2></div></a>';
 									$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
-									$shortcode .='<p>'.magazin_custom_excerpts(27).'</p>';
+									$shortcode .='<p>'.$excerpt_.'</p>';
 								$shortcode .='</div>';
 								$shortcode .='<div class="clearfix"></div>';
 							$shortcode .='</div>';
@@ -267,6 +278,9 @@ function posts_tabs( $atts, $content = null ) {
 							$shortcode .='<div id="ajax-posts_2">';
 							$i=1;
 								while ( $the_query_tab_2->have_posts() ) : $the_query_tab_2->the_post();
+
+									$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+									if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(27); }
 
 									// Category Code.
 									$category_name = get_the_category(get_the_ID());
@@ -316,7 +330,7 @@ function posts_tabs( $atts, $content = null ) {
 											$shortcode .= $data;
 											$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 											$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
-											$shortcode .='<p>'.magazin_custom_excerpts(27).'</p>';
+											$shortcode .='<p>'.$excerpt_.'</p>';
 										$shortcode .='</div>';
 										$shortcode .='<div class="clearfix"></div>';
 									$shortcode .='</div>';
@@ -334,6 +348,9 @@ function posts_tabs( $atts, $content = null ) {
 						$shortcode .='<div id="ajax-posts_3">';
 						$i=1;
 							while ( $the_query_tab_3->have_posts() ) : $the_query_tab_3->the_post();
+
+								$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+								if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(27); }
 
 								// Category Code.
 								$category_name = get_the_category(get_the_ID());
@@ -383,7 +400,7 @@ function posts_tabs( $atts, $content = null ) {
 										$shortcode .= $data;
 										$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 										$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
-										$shortcode .='<p>'.magazin_custom_excerpts(27).'</p>';
+										$shortcode .='<p>'.$excerpt_.'</p>';
 									$shortcode .='</div>';
 									$shortcode .='<div class="clearfix"></div>';
 								$shortcode .='</div>';
@@ -401,6 +418,9 @@ function posts_tabs( $atts, $content = null ) {
 					$shortcode .='<div id="ajax-posts_4">';
 					$i=1;
 						while ( $the_query_tab_4->have_posts() ) : $the_query_tab_4->the_post();
+
+						$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+						if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(27); }
 
 							// Category Code.
 							$category_name = get_the_category(get_the_ID());
@@ -450,7 +470,7 @@ function posts_tabs( $atts, $content = null ) {
 									$shortcode .= $data;
 									$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 									$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
-									$shortcode .='<p>'.magazin_custom_excerpts(27).'</p>';
+									$shortcode .='<p>'.$excerpt_.'</p>';
 								$shortcode .='</div>';
 								$shortcode .='<div class="clearfix"></div>';
 							$shortcode .='</div>';
@@ -468,6 +488,9 @@ function posts_tabs( $atts, $content = null ) {
 				$shortcode .='<div id="ajax-posts_popular">';
 				$i=1;
 					while ( $the_query_tab_popular->have_posts() ) : $the_query_tab_popular->the_post();
+
+					$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+					if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(27); }
 
 						// Category Code.
 						$category_name = get_the_category(get_the_ID());
@@ -517,7 +540,7 @@ function posts_tabs( $atts, $content = null ) {
 								$shortcode .= $data;
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 								$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
-								$shortcode .='<p>'.magazin_custom_excerpts(27).'</p>';
+								$shortcode .='<p>'.$excerpt_.'</p>';
 							$shortcode .='</div>';
 							$shortcode .='<div class="clearfix"></div>';
 						$shortcode .='</div>';
@@ -535,6 +558,9 @@ function posts_tabs( $atts, $content = null ) {
 			$shortcode .='<div id="ajax-posts_hot">';
 			$i=1;
 				while ( $the_query_tab_hot->have_posts() ) : $the_query_tab_hot->the_post();
+
+				$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+				if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(27); }
 
 					// Category Code.
 					$category_name = get_the_category(get_the_ID());
@@ -584,7 +610,7 @@ function posts_tabs( $atts, $content = null ) {
 							$shortcode .= $data;
 							$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 							$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
-							$shortcode .='<p>'.magazin_custom_excerpts(27).'</p>';
+							$shortcode .='<p>'.$excerpt_.'</p>';
 						$shortcode .='</div>';
 						$shortcode .='<div class="clearfix"></div>';
 					$shortcode .='</div>';
@@ -602,6 +628,9 @@ if($tab_trending!="off"){
 		$shortcode .='<div id="ajax-posts_trending">';
 		$i=1;
 			while ( $the_query_tab_trending->have_posts() ) : $the_query_tab_trending->the_post();
+
+			$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+			if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(27); }
 
 				// Category Code.
 				$category_name = get_the_category(get_the_ID());
@@ -651,7 +680,7 @@ if($tab_trending!="off"){
 						$shortcode .= $data;
 						$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 						$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
-						$shortcode .='<p>'.magazin_custom_excerpts(27).'</p>';
+						$shortcode .='<p>'.$excerpt_.'</p>';
 					$shortcode .='</div>';
 					$shortcode .='<div class="clearfix"></div>';
 				$shortcode .='</div>';
