@@ -48,9 +48,9 @@ function posts( $atts, $content = null ) {
 				'post__not_in'=>array( $exclude ),
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
-				'author_name'=>$author,
 				'category_name'=>$category,
 				'paged' => $paged,
+				'author_name'=>$author,
 				'tax_query' => $tax_query,
 				'tag'=>$tag
 			);
