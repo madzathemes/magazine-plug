@@ -595,19 +595,9 @@ function more_post_ajax(){
 add_action('wp_ajax_nopriv_more_post_ajax', 'more_post_ajax');
 add_action('wp_ajax_more_post_ajax', 'more_post_ajax');
 
-function wpse14305_img_caption( $empty_string, $attributes, $content ){
-  extract(shortcode_atts(array(
-    'id' => '',
-    'align' => 'alignnone',
-    'width' => '',
-    'caption' => ''
-  ), $attributes));
-  if ( empty($caption) )
-    return $content;
-  if ( $id ) $id = 'id="' . esc_attr($id) . '" ';
-  return '<div ' . $id . 'class="wp-caption ' . esc_attr($align) . '">' . do_shortcode( $content ) . '<p class="wp-caption-text">' . $caption . '</p></div>';
+
+function remove_caption_extra_width($width) {
+   return $width - 10;
 }
-
-add_filter( 'img_caption_shortcode', 'wpse14305_img_caption', 10, 3 );
-
+add_filter('img_caption_shortcode_width', 'remove_caption_extra_width');
 ?>
