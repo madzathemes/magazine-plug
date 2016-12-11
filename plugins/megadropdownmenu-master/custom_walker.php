@@ -12,7 +12,7 @@ class md_walker extends Walker_Nav_Menu {
 		$indent        	= str_repeat( "\t", $depth );
 		$class_names	= 'dropdown-menu';
 		// build html
-		$output .= "\n" . $indent . '<ul class="intars2' . $class_names . '">' . "\n";
+		$output .= "\n" . $indent . '<ul class="' . $class_names . '">' . "\n";
 		// $output .= '<div><a href="#">Prev</a> | <a href="#">Next</a></div>';
 	}
 

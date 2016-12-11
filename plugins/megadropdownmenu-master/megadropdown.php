@@ -211,7 +211,8 @@ class megadropdown {
 				$new_item->url = '';
 
 				// open tag for megamenu
-				$new_item->title = '<div class="df-block-megamenu df-block-megamenu-'.esc_attr( $megadropdown_menu_cat ).'-'.esc_attr( $no_item ).'">';
+				$new_item->title = '</a>';
+				$new_item->title .= '<div class="df-block-megamenu df-block-megamenu-'.esc_attr( $megadropdown_menu_cat ).'-'.esc_attr( $no_item ).'">';
 				$new_item->title .= '<div class="row">'; // open tag for row
 
 				$posts_per_page = (sizeof($sub_cat) == 0) ? 5 : 4;
@@ -364,6 +365,7 @@ class megadropdown {
 
 				$new_item->title .= '</div>'; // close tag for row
 				$new_item->title .= '</div>'; // close tag for megamenu
+				$new_item->title .= '<a>';
 
 				$buffer_items[] = $new_item;
 			}else{
