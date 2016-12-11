@@ -132,15 +132,14 @@ function magazin_footer_hooks() { $options = get_option("sticky_sidebar"); $auto
 			 slidesToShow: 4,
 			 variableWidth: true,
 			 lazyLoad: 'ondemand',
-			 <?php if(!empty($autoplay)){
-				 if($autoplay=="1"){ ?>
+			 <?php if(!empty($autoplay)){ if($autoplay=="1"){ ?>
 				 autoplay: true,
 				 <?php } } else { ?>
 		 		 autoplay: true,
 		 		<?php } ?>
 			 autoplayTimeout:5000,
 			 speed:450,
-			 <?php if(is_rtl()){ ?>rtl: true,<?php } ?>
+			 rtl: true,
 			 prevArrow: '<div class="poster-prev mt-radius"></div>',
 			 nextArrow: '<div class="poster-next mt-radius"></div>',
 			 responsive: [
@@ -159,40 +158,29 @@ function magazin_footer_hooks() { $options = get_option("sticky_sidebar"); $auto
 
   </script>
 
-	<?php if ( has_post_format( 'gallery' )){ ?>
-		<script type="text/javascript">
-		jQuery(document).ready(function(){
-			jQuery('.post-gallery').slick({
-				 arrows: false,
-				 lazyLoad: 'ondemand',
-				 asNavFor: '.post-gallery-nav',
-				 adaptiveHeight: true,
-				 <?php if(is_rtl()){ ?>rtl: true,<?php } ?>
-			});
-			jQuery('.post-gallery-nav').slick({
-				 slidesToShow: 5,
-				 asNavFor: '.post-gallery',
-				 centerPadding: '20px',
-				 focusOnSelect: true,
-				 <?php if(is_rtl()){ ?>rtl: true, <?php } ?>
-				 prevArrow: '<div class="slick-prev mt-radius-b"></div>',
-				 nextArrow: '<div class="slick-next mt-radius-b"></div>',
-				 responsive: [
-					{
-						breakpoint: 600,
-						settings: {
-						centerPadding: '0px',
-						}
-					}]
-			});
-		});
-
-		</script>
-	<?php } ?>
 	<?php
+
+
+
 }
 
 add_action('wp_footer', 'magazin_footer_hooks');
+
+
+function mt_header_script() {
+		$autoplay = get_option("carousel_autoplay");
+		$options = get_option("sticky_sidebar");
+		wp_enqueue_script('infowazz-effects', get_template_directory_uri() . '/inc/js/effects.js', array('jquery'), '1.0', true);
+		wp_enqueue_script('mt-effects', plugin_dir_url( __FILE__ ) . '/js/mt-gallery-slick.js', array('jquery'), '1.0', true);
+		if(is_rtl()){ wp_add_inline_script( 'mt-effects', 'var $rtl = "true";', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $rtl = "false";', 'before' ); }
+		if(!empty($autoplay)){ if($autoplay=="1"){ wp_add_inline_script( 'mt-effects', 'var $autoplay = "true";', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = "false";', 'before' ); } } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = "false";', 'before' ); }
+		if(!empty($options)){ if($options=="1"){ wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); } } else { wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); }
+
+
+}
+add_action('wp_enqueue_scripts', 'mt_header_script');
+
+
 
 function magazin_custom_excerpts($limit) {
     return wp_trim_words(get_the_content(), $limit);
