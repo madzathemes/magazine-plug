@@ -14,6 +14,8 @@ function grid( $atts, $content = null ) {
 			'position'=> 'off',
 			'title'=> 'Title',
 			'author'=> '',
+			'taxonomy'=> '',
+			'taxonomy_term'=> '',
 			), $atts));
 
 			global $exclude_single_id, $post;
@@ -22,6 +24,13 @@ function grid( $atts, $content = null ) {
 			else {
 				$paged = "";
 			}
+
+			$tax_query = "";
+			if(!empty($taxonomy) and !empty($taxonomy_term)) {
+				$tax_query =  array(array('taxonomy' => $taxonomy,'field' => 'slug','terms' => array( $taxonomy_term )));
+			}
+
+
 	$item_nr = "4";
 	if($type=="2") { $item_nr = "2"; }
 	if($type=="3") { $item_nr = "3"; }
@@ -35,6 +44,7 @@ function grid( $atts, $content = null ) {
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
 				'author_name'=>$author,
+				'tax_query' => $tax_query,
 				'category_name'=>$category,
 				'paged' => $paged,
 				'tag'=>$tag
@@ -49,6 +59,7 @@ function grid( $atts, $content = null ) {
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
 				'author_name'=>$author,
+				'tax_query' => $tax_query,
 				'meta_key' => 'magazin_post_views_count',
 				'category_name'=>$category,
 				'paged' => $paged,
@@ -58,6 +69,7 @@ function grid( $atts, $content = null ) {
 				'post_type'=>$posttype,
 				'order'=>$order,
 				'author_name'=>$author,
+				'tax_query' => $tax_query,
 				'orderby'=>"meta_value_num",
 				'include'=>$include,
 				'exclude'=>$exclude,
@@ -118,16 +130,16 @@ function grid( $atts, $content = null ) {
 							$shortcode .='<a href="'. get_the_permalink().'">';
 								$shortcode .='<div class="wrap">';
 		              if ( has_post_thumbnail() ) {  if($i==1) {
-											$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'large').'" width="550" height="550" /></div>';
+											$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'large').'" width="550" height="550" /></div>';
 		                }
 		                if($i==2) {
-		                  $shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'large').'" width="550" height="550" /></div>';
+		                  $shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'large').'" width="550" height="550" /></div>';
 										}
 		                if($i==3) {
-		                  $shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'medium_large').'" width="550" height="550" /></div>';
+		                  $shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'medium_large').'" width="550" height="550" /></div>';
 										}
 		                if($i==4) {
-		                  $shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'medium_large').'" width="550" height="550" /></div>';
+		                  $shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'medium_large').'" width="550" height="550" /></div>';
 										}
 									}
 								$shortcode .='</div>';
@@ -180,7 +192,7 @@ function grid( $atts, $content = null ) {
 							$shortcode .='<a href="'. get_the_permalink().'">';
 								$shortcode .='<div class="wrap">';
 									if ( has_post_thumbnail() ) {
-										$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'large').'" width="550" height="550" /></div>';
+										$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'large').'" width="550" height="550" /></div>';
 									}
 								$shortcode .='</div>';
 
@@ -238,7 +250,7 @@ function grid( $atts, $content = null ) {
 							$shortcode .='<a href="'. get_the_permalink().'">';
 								$shortcode .='<div class="wrap">';
 									if ( has_post_thumbnail() ) {
-										$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'large').'" width="550" height="550" /></div>';
+										$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'large').'" width="550" height="550" /></div>';
 									}
 								$shortcode .='</div>';
 

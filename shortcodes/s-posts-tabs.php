@@ -252,7 +252,7 @@ function posts_tabs( $atts, $content = null ) {
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 									$shortcode .= $icon;
-									$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
+									$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
 									$shortcode .='<div class="poster-info">'; $shortcode .= $categorys; $shortcode .= $data; $shortcode .='</div>';
 								$shortcode .='</a>';
 							}
@@ -321,7 +321,7 @@ function posts_tabs( $atts, $content = null ) {
 									if ( has_post_thumbnail() ) {
 										$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 											$shortcode .= $icon;
-											$shortcode .='<div class="mt-post-image" ><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
+											$shortcode .='<div class="mt-post-image" ><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
 											$shortcode .='<div class="poster-info">'; $shortcode .= $categorys; $shortcode .= $data; $shortcode .='</div>';
 										$shortcode .='</a>';
 									}
@@ -391,7 +391,7 @@ function posts_tabs( $atts, $content = null ) {
 								if ( has_post_thumbnail() ) {
 									$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 										$shortcode .= $icon;
-										$shortcode .='<div class="mt-post-image" ><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
+										$shortcode .='<div class="mt-post-image" ><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
 										$shortcode .='<div class="poster-info">'; $shortcode .= $categorys; $shortcode .= $data; $shortcode .='</div>';
 									$shortcode .='</a>';
 								}
@@ -461,7 +461,7 @@ function posts_tabs( $atts, $content = null ) {
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 									$shortcode .= $icon;
-									$shortcode .='<div class="mt-post-image" ><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
+									$shortcode .='<div class="mt-post-image" ><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
 									$shortcode .='<div class="poster-info">'; $shortcode .= $categorys; $shortcode .= $data; $shortcode .='</div>';
 								$shortcode .='</a>';
 							}
@@ -531,7 +531,7 @@ function posts_tabs( $atts, $content = null ) {
 						if ( has_post_thumbnail() ) {
 							$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 								$shortcode .= $icon;
-								$shortcode .='<div class="mt-post-image" ><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
+								$shortcode .='<div class="mt-post-image" ><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
 								$shortcode .='<div class="poster-info">'; $shortcode .= $categorys; $shortcode .= $data; $shortcode .='</div>';
 							$shortcode .='</a>';
 						}
@@ -601,7 +601,7 @@ function posts_tabs( $atts, $content = null ) {
 					if ( has_post_thumbnail() ) {
 						$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 							$shortcode .= $icon;
-							$shortcode .='<div class="mt-post-image" ><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
+							$shortcode .='<div class="mt-post-image" ><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
 							$shortcode .='<div class="poster-info">'; $shortcode .= $categorys; $shortcode .= $data; $shortcode .='</div>';
 						$shortcode .='</a>';
 					}
@@ -671,7 +671,7 @@ if($tab_trending!="off"){
 				if ( has_post_thumbnail() ) {
 					$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 						$shortcode .= $icon;
-						$shortcode .='<div class="mt-post-image" ><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
+						$shortcode .='<div class="mt-post-image" ><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
 						$shortcode .='<div class="poster-info">'; $shortcode .= $categorys; $shortcode .= $data; $shortcode .='</div>';
 					$shortcode .='</a>';
 				}
