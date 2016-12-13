@@ -4,7 +4,7 @@ Plugin Name: Magazine Plug
 Plugin URI: https://themeforest.net
 Description: Magazin Plugin
 Author: Madars Bitenieks
-Version: 2.4
+Version: 2.5
 Author URI: https://themeforest.net/user/magazine-themes
 */
 include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
@@ -530,4 +530,10 @@ function remove_caption_extra_width($width) {
    return $width - 10;
 }
 add_filter('img_caption_shortcode_width', 'remove_caption_extra_width');
+
+
+function magazin_javascript_detection() {
+	echo "<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>\n";
+}
+add_action( 'wp_head', 'magazin_javascript_detection', 0 );
 ?>
