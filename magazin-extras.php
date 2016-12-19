@@ -111,13 +111,12 @@ function magazin_header_hooks() {
 
 add_action('wp_head', 'magazin_header_hooks');
 
-
 function mt_header_script() {
 		$autoplay = get_option("carousel_autoplay");
 		$options = get_option("sticky_sidebar");
 		wp_enqueue_script('mt-effects', get_template_directory_uri() . '/inc/js/effects.js', array('jquery'), '1.0', true);
-		if(is_rtl()){ wp_add_inline_script( 'mt-effects', 'var $rtl = "true";', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $rtl = "false";', 'before' ); }
-		if(!empty($autoplay)){ if($autoplay=="1"){ wp_add_inline_script( 'mt-effects', 'var $autoplay = "true";', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = "false";', 'before' ); } } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = "false";', 'before' ); }
+		if(is_rtl()){ wp_add_inline_script( 'mt-effects', 'var $rtl = true;', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $rtl = false;', 'before' ); }
+		if(!empty($autoplay)){ if($autoplay=="1"){ wp_add_inline_script( 'mt-effects', 'var $autoplay = true;', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' ); } } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' ); }
 		if(!empty($options)){ if($options=="1"){ wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); } } else { wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); }
 }
 add_action('wp_enqueue_scripts', 'mt_header_script');
@@ -291,7 +290,6 @@ function wpsites_exclude_latest_post($query) {
 
 add_action('pre_get_posts', 'wpsites_exclude_latest_post');
 
-
 add_action('pre_get_posts', 'myprefix_query_offset', 1 );
 function myprefix_query_offset(&$query) {
 
@@ -355,9 +353,6 @@ function myprefix_adjust_offset_pagination($found_posts, $query) {
     }
     return $found_posts;
 }
-
-
-
 
 function more_post_ajax(){
 
@@ -525,12 +520,10 @@ function more_post_ajax(){
 add_action('wp_ajax_nopriv_more_post_ajax', 'more_post_ajax');
 add_action('wp_ajax_more_post_ajax', 'more_post_ajax');
 
-
 function remove_caption_extra_width($width) {
    return $width - 10;
 }
 add_filter('img_caption_shortcode_width', 'remove_caption_extra_width');
-
 
 function magazin_javascript_detection() {
 	echo "<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>\n";
