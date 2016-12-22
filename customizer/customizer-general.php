@@ -62,7 +62,7 @@ function magazin_customize_general($wp_customize){
   	'settings'    => 'mt_post_meta_cat',
   	'label'       => esc_attr__( 'Category in Post Lists', 'magazin' ),
   	'section'     => 'mt_post_meta',
-  	'default'     => 'mt_cat_nr_1',
+  	'default'     => '1',
   	'priority'    => 10,
   	'multiple'    => 1,
   	'choices'     => array(
