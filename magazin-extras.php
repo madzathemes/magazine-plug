@@ -226,7 +226,26 @@ function magazin_class($classes) {
 		}
 	}
 
-	$body_class .= ' '.$zoom.' '.$radius.'  '.$colors;
+	// Post meta
+	if ( false == get_theme_mod( 'mt_post_meta_author', true ) ) {
+		$body_class .=' remove-pl-author ';
+	}
+	if ( false == get_theme_mod( 'mt_post_meta_date', true ) ) {
+		$body_class .=' remove-pl-date ';
+	}
+	if ( false == get_theme_mod( 'mt_post_meta_author_post', true ) ) {
+		$body_class .=' remove-ps-author ';
+	}
+	if ( false == get_theme_mod( 'mt_post_meta_author_post_img', true ) ) {
+		$body_class .=' remove-ps-author-img ';
+	}
+	if ( false == get_theme_mod( 'mt_post_meta_date_post', true ) ) {
+		$body_class .=' remove-ps-date ';
+	}
+
+	$pl_cat_nr = get_theme_mod( 'mt_post_meta_date_post', 'mt_cat_nr_1' ) );
+
+	$body_class .= ' '.$zoom.' '.$radius.' '.$pl_cat_nr.' '.$colors;
 	$classes[] =  $body_class;
 	return $classes;
 }
