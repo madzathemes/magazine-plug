@@ -86,7 +86,22 @@ function magazin_header_hooks() {
 	<?php include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); if ( !is_plugin_active( 'wordpress-seo/wp-seo.php' ) ) { ?>
 	<?php global $post;
 
+	$option = get_option("magazin_option");
+
 	$excerpt = apply_filters('get_the_excerpt', get_post_field('post_excerpt', $post->ID));
+	$excerpt_ = magazin_custom_excerpts(27);
+	if (!empty($option['post_meta_excerpt'])) {
+		if($option['post_meta_excerpt']==3){
+			$excerpt = get_post_meta($post->ID, "magazin_excerpt", true);
+			if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+		}
+		else if($option['post_meta_excerpt']==4){
+			$excerpt = get_post_meta($post->ID, "magazin_subtitle", true);
+			if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+		}
+
+	}
+
 
 	$excerpt_count = "55";
 	$excerpt_count_option = get_option("magazin_facebook_description");
@@ -95,14 +110,14 @@ function magazin_header_hooks() {
 			$excerpt_count = $excerpt_count_option;
 	}
 
-	if ( $excerpt == '' ) {
-	    $excerpt = wp_trim_words( $post->post_content, $excerpt_count );
+	if ( $excerpt_ == '' ) {
+	    $excerpt_ = wp_trim_words( $post->post_content, $excerpt_count );
 	} ?>
 
 	  <meta property="og:url"           content="<?php the_permalink();?>" />
 		<meta property="og:type"          content="<?php wp_title();?>" />
 		<meta property="og:title"         content="<?php the_title();?>" />
-		<meta property="og:description"   content="<?php echo esc_html( $excerpt ); ?>" />
+		<meta property="og:description"   content="<?php echo esc_html( $excerpt_ ); ?>" />
 		<meta property="og:image"         content="<?php  if ( has_post_thumbnail() ) { the_post_thumbnail_url(); } ?>" />
 	<?php } } ?>
 	<style type="text/css"><?php echo balanceTags(get_option("custom_css")); ?></style>

@@ -12,7 +12,7 @@ function magazin_customize_general($wp_customize){
 
   $wp_customize->add_section('mt_post_meta', array(
     'title'    	=> esc_html__('Post Meta', 'magazin'),
-    'panel'  => 'magazin_general'
+    'panel'  => 'magazin_posts'
   ));
 
   Kirki::add_field( 'magazin_option[post_meta_excerpt]', array(
@@ -139,7 +139,8 @@ function magazin_customize_general($wp_customize){
 
   $wp_customize->add_section('facebook_excerpt', array(
     'title'    	=> esc_html__('Other', 'magazin'),
-    'panel'  => 'magazin_general'
+    'priority'       => 701,
+    'panel'  => 'magazin_posts'
   ));
 
   Kirki::add_field( 'magazin_facebook_description', array(

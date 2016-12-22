@@ -1,11 +1,18 @@
 <?php
 function magazin_customize_posts($wp_customize){
 
+  $wp_customize->add_section('posts_category_settings', array(
+    'title'    	=> esc_html__('Category Layouts', 'boomnews'),
+    'priority'       => 501,
+    'panel'  => 'magazin_posts'
+  ));
+
+
   Kirki::add_field( 'magazin_theme_options[category_grid_style]', array(
     'type'        => 'radio-image',
     'settings'    => 'magazin_theme_options[category_grid_style]',
     'label'       => esc_html__( 'Category Grid Style', 'magazin' ),
-    'section'     => 'posts_default_settings',
+    'section'     => 'posts_category_settings',
     'default'     => '4',
     'option_type' => 'option',
     'priority'    => 20,
@@ -21,7 +28,7 @@ function magazin_customize_posts($wp_customize){
     'type'        => 'radio-image',
     'settings'    => 'magazin_theme_options[category_post_style]',
     'label'       => esc_html__( 'Category Post Style', 'magazin' ),
-    'section'     => 'posts_default_settings',
+    'section'     => 'posts_category_settings',
     'default'     => '4',
     'option_type' => 'option',
     'priority'    => 20,
