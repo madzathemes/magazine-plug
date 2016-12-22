@@ -168,7 +168,7 @@ function posts( $atts, $content = null ) {
 							}
 							$shortcode .='<div class="poster-text">';
 								$shortcode .='<a href="'. get_permalink().'"><h4>'. get_the_title() .'</h4></a>';
-								$shortcode .='<small><span class="color-silver-light"> '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+								$shortcode .='<small class="mt-pl"><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 							$shortcode .='</div>';
 							$shortcode .='<div class="clearfix"></div>';
 						$shortcode .='</div>';
@@ -197,7 +197,7 @@ function posts( $atts, $content = null ) {
 						}
 							$shortcode .='<div class="poster-text">';
 								$shortcode .='<a href="'. get_permalink().'"><h4>'. get_the_title() .'</h4></a>';
-								$shortcode .='<small><span class="color-silver-light"> '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+								$shortcode .='<small class="mt-pl"><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 							$shortcode .='</div>';
 							$shortcode .='<div class="clearfix"></div>';
 						$shortcode .='</div>';
@@ -208,8 +208,25 @@ function posts( $atts, $content = null ) {
 				if($type=="normal"){
 					while ( $the_query->have_posts() ) : $the_query->the_post();
 
-					$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
-					if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(27); }
+					$option = get_option("magazin_option");
+					$excerpt_ = magazin_custom_excerpts(27);
+					if (!empty($option['post_meta_excerpt'])) {
+						if($option['post_meta_excerpt']==2){
+							$excerpt_ = get_the_excerpt();
+						}
+						else if($option['post_meta_excerpt']==3){
+							$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+							if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+						}
+						else if($option['post_meta_excerpt']==4){
+							$excerpt = get_post_meta(get_the_ID(), "magazin_subtitle", true);
+							if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+						}
+
+					} else {
+						$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+						if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+					}
 
 						$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
 						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
@@ -276,7 +293,7 @@ function posts( $atts, $content = null ) {
 										$shortcode .='</div>';
 
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
-								$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 							$shortcode .='</div>';
 						$shortcode .='</div>';
 					endwhile;
@@ -353,7 +370,7 @@ function posts( $atts, $content = null ) {
 									$shortcode .='</div>';
 
 							$shortcode .='<div class="poster-content-wrap"><a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
-							$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+							$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 						$shortcode .='</div></div>';
 						$shortcode .='</div>';
 					endwhile;
@@ -363,8 +380,25 @@ function posts( $atts, $content = null ) {
 				if($type=="normal-right"){
 					while ( $the_query->have_posts() ) : $the_query->the_post();
 
+					$option = get_option("magazin_option");
+					$excerpt_ = magazin_custom_excerpts(27);
+					if (!empty($option['post_meta_excerpt'])) {
+						if($option['post_meta_excerpt']==2){
+							$excerpt_ = get_the_excerpt();
+						}
+						else if($option['post_meta_excerpt']==3){
+							$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+							if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+						}
+						else if($option['post_meta_excerpt']==4){
+							$excerpt = get_post_meta(get_the_ID(), "magazin_subtitle", true);
+							if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+						}
+
+					} else {
 						$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
-						if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(27); }
+						if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+					}
 
 						$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
 						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
@@ -436,7 +470,7 @@ function posts( $atts, $content = null ) {
 									if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
 								$shortcode .='</div>';
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
-								$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 								$shortcode .='<p>'.$excerpt_.'</p>';
 							$shortcode .='</div>';
 							$shortcode .='<div class="clearfix"></div>';
@@ -446,8 +480,25 @@ function posts( $atts, $content = null ) {
 				if($type=="normal-right-small"){
 					while ( $the_query->have_posts() ) : $the_query->the_post();
 
+					$option = get_option("magazin_option");
+					$excerpt_ = magazin_custom_excerpts(20);
+					if (!empty($option['post_meta_excerpt'])) {
+						if($option['post_meta_excerpt']==2){
+							$excerpt_ = get_the_excerpt();
+						}
+						else if($option['post_meta_excerpt']==3){
+							$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+							if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+						}
+						else if($option['post_meta_excerpt']==4){
+							$excerpt = get_post_meta(get_the_ID(), "magazin_subtitle", true);
+							if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+						}
+
+					} else {
 						$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
-						if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(20); }
+						if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+					}
 
 						$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
 						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
@@ -522,7 +573,7 @@ function posts( $atts, $content = null ) {
 								$shortcode .='</div>';
 
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
-								$shortcode .='<small><strong>'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light"> - '. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 								$shortcode .='<p>'.$excerpt_.'</p>';
 							$shortcode .='</div>';
 							$shortcode .='<div class="clearfix"></div>';
@@ -534,8 +585,25 @@ function posts( $atts, $content = null ) {
 					$shortcode .='<div class="post-carousel">';
 					while ( $the_query->have_posts() ) : $the_query->the_post();
 
-					$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
-					if (!empty($excerpt)) { $excerpt_ = $excerpt; } else { $excerpt_ = magazin_custom_excerpts(19); }
+					$option = get_option("magazin_option");
+					$excerpt_ = magazin_custom_excerpts(19);
+					if (!empty($option['post_meta_excerpt'])) {
+						if($option['post_meta_excerpt']==2){
+							$excerpt_ = get_the_excerpt();
+						}
+						else if($option['post_meta_excerpt']==3){
+							$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+							if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+						}
+						else if($option['post_meta_excerpt']==4){
+							$excerpt = get_post_meta(get_the_ID(), "magazin_subtitle", true);
+							if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+						}
+
+					} else {
+						$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+						if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+					}
 
 						if (has_post_thumbnail()) {
 							$shortcode .='<div class="poster large '; if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';

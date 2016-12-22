@@ -10,6 +10,113 @@ function magazin_customize_general($wp_customize){
     'description'    => '',
   ));
 
+  $wp_customize->add_section('mt_post_meta', array(
+    'title'    	=> esc_html__('Post Meta', 'magazin'),
+    'panel'  => 'magazin_general'
+  ));
+
+  Kirki::add_field( 'magazin_option[post_meta_excerpt]', array(
+  'type'        => 'select',
+  'settings'    => 'magazin_option[post_meta_excerpt]',
+  'label'       => esc_attr__( 'Post Excerpt Source', 'magazin' ),
+  'section'     => 'mt_post_meta',
+  'default'     => '1',
+  'option_type' => 'option',
+  'priority'    => 10,
+  'multiple'    => 1,
+  'choices'     => array(
+    '1' => esc_attr__( 'First Article Text', 'magazin' ),
+    '2' => esc_attr__( 'Default WP Excerpt', 'magazin' ),
+    '3' => esc_attr__( 'mt Excerpt', 'magazin' ),
+    '4' => esc_attr__( 'mt Subtitle', 'magazin' ),
+  ),
+  ));
+
+  Kirki::add_field( 'mt_post_meta_author', array(
+     	'type'        => 'switch',
+     	'settings'    => 'mt_post_meta_author',
+     	'label'       => esc_attr__( 'Author in Post Lists', 'magazin' ),
+     	'section'     => 'mt_post_meta',
+     	'default'     => '1',
+     	'priority'    => 10,
+     	'choices'     => array(
+     		'on'  => esc_attr__( 'ON', 'magazin' ),
+     		'off' => esc_attr__( 'OFF', 'magazin' ),
+     	),
+   ) );
+   Kirki::add_field( 'mt_post_meta_date', array(
+      	'type'        => 'switch',
+      	'settings'    => 'mt_post_meta_date',
+      	'label'       => esc_attr__( 'Date in Post Lists', 'magazin' ),
+      	'section'     => 'mt_post_meta',
+      	'default'     => '1',
+       'option_type' => 'option',
+      	'priority'    => 10,
+      	'choices'     => array(
+          'on'  => esc_attr__( 'ON', 'magazin' ),
+       		'off' => esc_attr__( 'OFF', 'magazin' ),
+      	),
+    ) );
+
+    Kirki::add_field( 'magazin_option[post_meta_cat]', array(
+  	'type'        => 'select',
+  	'settings'    => 'magazin_option[post_meta_cat]',
+  	'label'       => esc_attr__( 'Category in Post Lists', 'magazin' ),
+  	'section'     => 'mt_post_meta',
+  	'default'     => '1',
+    'option_type' => 'option',
+  	'priority'    => 10,
+  	'multiple'    => 1,
+  	'choices'     => array(
+  		'1' => esc_attr__( 'Max One', 'magazin' ),
+  		'2' => esc_attr__( 'Max Two', 'magazin' ),
+  		'3' => esc_attr__( 'Max Three', 'magazin' ),
+      '4' => esc_attr__( 'None', 'magazin' ),
+  	),
+    ));
+
+
+
+    Kirki::add_field( 'mt_post_meta_author_post', array(
+       	'type'        => 'switch',
+       	'settings'    => 'mt_post_meta_author_post',
+       	'label'       => esc_attr__( 'Author Name in Post Single', 'magazin' ),
+       	'section'     => 'mt_post_meta',
+       	'default'     => '1',
+        'option_type' => 'option',
+       	'priority'    => 10,
+       	'choices'     => array(
+          'on'  => esc_attr__( 'ON', 'magazin' ),
+       		'off' => esc_attr__( 'OFF', 'magazin' ),
+       	),
+     ) );
+     Kirki::add_field( 'mt_post_meta_author_post_img', array(
+        	'type'        => 'switch',
+        	'settings'    => 'mt_post_meta_author_post_img',
+        	'label'       => esc_attr__( 'Author Image in Post Single', 'magazin' ),
+        	'section'     => 'mt_post_meta',
+        	'default'     => '1',
+         'option_type' => 'option',
+        	'priority'    => 10,
+        	'choices'     => array(
+            'on'  => esc_attr__( 'ON', 'magazin' ),
+         		'off' => esc_attr__( 'OFF', 'magazin' ),
+        	),
+      ) );
+      Kirki::add_field( 'mt_post_meta_date_post', array(
+         	'type'        => 'switch',
+         	'settings'    => 'mt_post_meta_date_post',
+         	'label'       => esc_attr__( 'Date in Post Single', 'magazin' ),
+         	'section'     => 'mt_post_meta',
+         	'default'     => '1',
+          'option_type' => 'option',
+         	'priority'    => 10,
+         	'choices'     => array(
+            'on'  => esc_attr__( 'ON', 'magazin' ),
+         		'off' => esc_attr__( 'OFF', 'magazin' ),
+         	),
+       ) );
+
   $wp_customize->add_section('facebook_excerpt', array(
     'title'    	=> esc_html__('Other', 'magazin'),
     'panel'  => 'magazin_general'
