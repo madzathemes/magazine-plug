@@ -456,9 +456,10 @@ class megadropdown {
 
 												$buff .='<div class="poster-cat mt-theme-background"><span>';
 													$category_name = get_the_category($post->ID);
-													if(!empty($category_name[0])) { $buff .=''.$category_name[0]->name.''; }
-													if(!empty($category_name[1])) { $buff .=', '.$category_name[1]->name.''; }
-													if(!empty($category_name[2])) { $buff .=', '.$category_name[2]->name.''; }
+													$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+													if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $buff .=''.$category_name[0]->name.''; }
+													if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $buff .=', '.$category_name[1]->name.''; }
+													if(!empty($category_name[2]) and $cat_nr == 3) { $buff .=', '.$category_name[2]->name.''; }
 												$buff .= '</span></div>';
 
 						$buff .= $this->image_post($post);

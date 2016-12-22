@@ -233,6 +233,9 @@ function magazin_class($classes) {
 	if ( false == get_theme_mod( 'mt_post_meta_date', true ) ) {
 		$body_class .=' remove-pl-date ';
 	}
+	if ( 4 == get_theme_mod( 'mt_post_meta_cat', 1 ) ) {
+		$body_class .=' remove-pl-cat ';
+	}
 	if ( false == get_theme_mod( 'mt_post_meta_author_post', true ) ) {
 		$body_class .=' remove-ps-author ';
 	}
@@ -242,10 +245,15 @@ function magazin_class($classes) {
 	if ( false == get_theme_mod( 'mt_post_meta_date_post', true ) ) {
 		$body_class .=' remove-ps-date ';
 	}
+	if ( false == get_theme_mod( 'mt_post_meta_view_post', true ) ) {
+		$body_class .=' remove-ps-view ';
+	}
+	if ( false == get_theme_mod( 'mt_post_meta_share_post', true ) ) {
+		$body_class .=' remove-ps-share ';
+	}
 
-	$pl_cat_nr = get_theme_mod( 'mt_post_meta_date_post', 'mt_cat_nr_1' ) );
 
-	$body_class .= ' '.$zoom.' '.$radius.' '.$pl_cat_nr.' '.$colors;
+	$body_class .= ' '.$zoom.' '.$radius.' '.$colors;
 	$classes[] =  $body_class;
 	return $classes;
 }
@@ -497,9 +505,10 @@ function more_post_ajax(){
 		$category_name = get_the_category(get_the_ID());
 		$categorys = '';
 		$categorys .='<div class="poster-cat"><span class="mt-theme-text">';
-		if(!empty($category_name[0])) { $categorys .=''.$category_name[0]->name.''; }
-		if(!empty($category_name[1])) { $categorys .=', '.$category_name[1]->name.''; }
-		if(!empty($category_name[2])) { $categorys .=', '.$category_name[2]->name.''; }
+		$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+		if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $categorys .=''.$category_name[0]->name.''; }
+		if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $categorys .=', '.$category_name[1]->name.''; }
+		if(!empty($category_name[2]) and $cat_nr == 3) { $categorys .=', '.$category_name[2]->name.''; }
 		$categorys .='</span></div>';
 
 		// Share count meta real and fake.

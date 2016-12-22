@@ -148,9 +148,10 @@ function grid( $atts, $content = null ) {
                 $shortcode .='<div class="layouts">';
 									$shortcode .='<div class="poster-cat"><span class="mt-theme-background">';
 										$category_name = get_the_category(get_the_ID());
-										if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-										if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-										if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
+										$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+										if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 									$shortcode .='</span></div>';
 									$shortcode .='<h2>'. get_the_title() .'</h2>';
 										$shortcode .='<div class="post-info">';
@@ -200,9 +201,9 @@ function grid( $atts, $content = null ) {
 								$shortcode .='<div class="layouts">';
 								$shortcode .='<div class="poster-cat"><span class="mt-theme-background">';
 									$category_name = get_the_category(get_the_ID());
-									if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-									if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-									if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
+									if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+									if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+									if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 								$shortcode .='</span></div>';
 
 									$shortcode .='<h2>'. get_the_title() .'</h2>';
@@ -258,9 +259,9 @@ function grid( $atts, $content = null ) {
 								$shortcode .='<div class="layouts">';
 								$shortcode .='<div class="poster-cat"><span class="mt-theme-background">';
 									$category_name = get_the_category(get_the_ID());
-									if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-									if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-									if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
+									if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+									if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[1]->name.''; }
+									if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=''.$category_name[2]->name.''; }
 								$shortcode .='</span></div>';
 
 									$shortcode .='<h2>'. get_the_title() .'</h2>';

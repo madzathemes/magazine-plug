@@ -57,19 +57,19 @@ function magazin_customize_general($wp_customize){
       	),
     ) );
 
-    Kirki::add_field( 'magazin_option[post_meta_cat]', array(
+    Kirki::add_field( 'mt_post_meta_cat', array(
   	'type'        => 'select',
-  	'settings'    => 'magazin_option[post_meta_cat]',
+  	'settings'    => 'mt_post_meta_cat',
   	'label'       => esc_attr__( 'Category in Post Lists', 'magazin' ),
   	'section'     => 'mt_post_meta',
   	'default'     => 'mt_cat_nr_1',
   	'priority'    => 10,
   	'multiple'    => 1,
   	'choices'     => array(
-  		'mt_cat_nr_1' => esc_attr__( 'Max One', 'magazin' ),
-  		'mt_cat_nr_2' => esc_attr__( 'Max Two', 'magazin' ),
-  		'mt_cat_nr_3' => esc_attr__( 'Max Three', 'magazin' ),
-      'mt_cat_nr_0' => esc_attr__( 'None', 'magazin' ),
+  		'1' => esc_attr__( 'Max One', 'magazin' ),
+  		'2' => esc_attr__( 'Max Two', 'magazin' ),
+  		'3' => esc_attr__( 'Max Three', 'magazin' ),
+      '4' => esc_attr__( 'None', 'magazin' ),
   	),
     ));
 
@@ -111,6 +111,31 @@ function magazin_customize_general($wp_customize){
          		'off' => esc_attr__( 'OFF', 'magazin' ),
          	),
        ) );
+
+       Kirki::add_field( 'mt_post_meta_share_post', array(
+            'type'        => 'switch',
+            'settings'    => 'mt_post_meta_share_post',
+            'label'       => esc_attr__( 'Share Count in Post Single', 'magazin' ),
+            'section'     => 'mt_post_meta',
+            'default'     => '1',
+            'priority'    => 10,
+            'choices'     => array(
+             'on'  => esc_attr__( 'ON', 'magazin' ),
+              'off' => esc_attr__( 'OFF', 'magazin' ),
+            ),
+        ) );
+        Kirki::add_field( 'mt_post_meta_view_post', array(
+             'type'        => 'switch',
+             'settings'    => 'mt_post_meta_view_post',
+             'label'       => esc_attr__( 'View Count in Post Single', 'magazin' ),
+             'section'     => 'mt_post_meta',
+             'default'     => '1',
+             'priority'    => 10,
+             'choices'     => array(
+              'on'  => esc_attr__( 'ON', 'magazin' ),
+               'off' => esc_attr__( 'OFF', 'magazin' ),
+             ),
+         ) );
 
   $wp_customize->add_section('facebook_excerpt', array(
     'title'    	=> esc_html__('Other', 'magazin'),

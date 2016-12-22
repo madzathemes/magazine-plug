@@ -255,11 +255,12 @@ function posts( $atts, $content = null ) {
 										if ( has_post_thumbnail() ) {
 											$shortcode .='<div class="poster-cat "><span class="mt-theme-text">';
 												$category_name = get_the_category(get_the_ID());
-												if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-												if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-												if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
-											$shortcode .='</span></div>';
-										}
+												$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+												if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+												if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+												if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+												}
+												$shortcode .='</span></div>';
 										$shortcode .='<div class="poster-data color-silver-light">';
 											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
 											$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
@@ -271,10 +272,11 @@ function posts( $atts, $content = null ) {
 									$shortcode .='<div class="poster-info mt-theme-background">';
 									$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
 										$category_name = get_the_category(get_the_ID());
-										if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-										if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-										if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
-									$shortcode .='</span></div>';
+										$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+										if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+										$shortcode .='</span></div>';
 									$shortcode .='<div class="poster-data color-silver-light">';
 										$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
 										$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
@@ -334,10 +336,11 @@ function posts( $atts, $content = null ) {
 										if ( has_post_thumbnail() ) {
 											$shortcode .='<div class="poster-cat"><span>';
 												$category_name = get_the_category(get_the_ID());
-												if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-												if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-												if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
-											$shortcode .='</span></div>';
+												$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+												if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+												if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+												if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+												$shortcode .='</span></div>';
 										}
 										$shortcode .='<div class="poster-data color-silver-light">';
 											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
@@ -350,10 +353,11 @@ function posts( $atts, $content = null ) {
 									$shortcode .='<div class="poster-info mt-theme-background">';
 									$shortcode .='<div class="poster-cat"><span>';
 										$category_name = get_the_category(get_the_ID());
-										if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-										if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-										if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
-									$shortcode .='</span></div>';
+										$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+										if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+										$shortcode .='</span></div>';
 									$shortcode .='<div class="poster-data color-silver-light">';
 										$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
 										$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
@@ -428,10 +432,11 @@ function posts( $atts, $content = null ) {
 										if ( has_post_thumbnail() ) {
 											$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
 												$category_name = get_the_category(get_the_ID());
-												if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-												if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-												if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
-											$shortcode .='</span></div>';
+												$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+												if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+												if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+												if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+												$shortcode .='</span></div>';
 										}
 										$shortcode .='<div class="poster-data color-silver-light">';
 											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
@@ -444,10 +449,11 @@ function posts( $atts, $content = null ) {
 									$shortcode .='<div class="poster-info">';
 									$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
 										$category_name = get_the_category(get_the_ID());
-										if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-										if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-										if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
-									$shortcode .='</span></div>';
+										$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+										if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+										$shortcode .='</span></div>';
 									$shortcode .='<div class="poster-data color-silver-light">';
 										$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
 										$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
@@ -460,10 +466,11 @@ function posts( $atts, $content = null ) {
 							$shortcode .='<div class="poster-content">';
 							$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
 								$category_name = get_the_category(get_the_ID());
-								if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-								if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-								if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
-							$shortcode .='</span></div>';
+								$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+								if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+								if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+								if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+								$shortcode .='</span></div>';
 								$shortcode .='<div class="poster-data color-silver-light">';
 									$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
 									$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
@@ -528,10 +535,11 @@ function posts( $atts, $content = null ) {
 										if ( has_post_thumbnail() ) {
 											$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
 												$category_name = get_the_category(get_the_ID());
-												if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-												if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-												if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
-											$shortcode .='</span></div>';
+												$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+												if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+												if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+												if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+												$shortcode .='</span></div>';
 										}
 										$shortcode .='<div class="poster-data color-silver-light">';
 
@@ -546,10 +554,11 @@ function posts( $atts, $content = null ) {
 									$shortcode .='<div class="poster-info">';
 									$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
 										$category_name = get_the_category(get_the_ID());
-										if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-										if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-										if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
-									$shortcode .='</span></div>';
+										$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+										if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+										$shortcode .='</span></div>';
 									$shortcode .='<div class="poster-data color-silver-light">';
 										$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
 										$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
@@ -562,10 +571,11 @@ function posts( $atts, $content = null ) {
 							$shortcode .='<div class="poster-content">';
 							$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
 								$category_name = get_the_category(get_the_ID());
-								if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-								if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-								if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
-							$shortcode .='</span></div>';
+								$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+								if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+								if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+								if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+								$shortcode .='</span></div>';
 								$shortcode .='<div class="poster-data color-silver-light">';
 									$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
 									$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
@@ -613,10 +623,11 @@ function posts( $atts, $content = null ) {
 										$shortcode .='<div class="poster-large-content-in">';
 											$shortcode .='<div class="poster-large-cat"><span class="mt-theme-background">';
 												$category_name = get_the_category(get_the_ID());
-												if(!empty($category_name[0])) { $shortcode .=''.$category_name[0]->name.''; }
-												if(!empty($category_name[1])) { $shortcode .=', '.$category_name[1]->name.''; }
-												if(!empty($category_name[2])) { $shortcode .=', '.$category_name[2]->name.''; }
-											$shortcode .='</span></div>';
+												$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+												if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+												if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+												if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+												$shortcode .='</span></div>';
 											$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 											$shortcode .='<p>'.$excerpt_.'</p>';
 											$shortcode .='<a class="poster-large-link" href="'. get_permalink().'"><div><span>'. esc_html__( 'Read More', 'magazine-plug'  ) .'</span></div></a>';

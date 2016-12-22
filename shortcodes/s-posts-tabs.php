@@ -234,9 +234,10 @@ function posts_tabs( $atts, $content = null ) {
 							$category_name = get_the_category(get_the_ID());
 							$categorys = '';
 							$categorys .='<div class="poster-cat"><span class="mt-theme-text">';
-							if(!empty($category_name[0])) { $categorys .=''.$category_name[0]->name.''; }
-							if(!empty($category_name[1])) { $categorys .=', '.$category_name[1]->name.''; }
-							if(!empty($category_name[2])) { $categorys .=', '.$category_name[2]->name.''; }
+							$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+							if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $categorys .=''.$category_name[0]->name.''; }
+							if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $categorys .=', '.$category_name[1]->name.''; }
+							if(!empty($category_name[2]) and $cat_nr == 3) { $categorys .=', '.$category_name[2]->name.''; }
 							$categorys .='</span></div>';
 
 							// Share count meta real and fake.
@@ -321,9 +322,10 @@ function posts_tabs( $atts, $content = null ) {
 									$category_name = get_the_category(get_the_ID());
 									$categorys = '';
 									$categorys .='<div class="poster-cat"><span class="mt-theme-text">';
-									if(!empty($category_name[0])) { $categorys .=''.$category_name[0]->name.''; }
-									if(!empty($category_name[1])) { $categorys .=', '.$category_name[1]->name.''; }
-									if(!empty($category_name[2])) { $categorys .=', '.$category_name[2]->name.''; }
+									$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+									if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $categorys .=''.$category_name[0]->name.''; }
+									if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $categorys .=', '.$category_name[1]->name.''; }
+									if(!empty($category_name[2]) and $cat_nr == 3) { $categorys .=', '.$category_name[2]->name.''; }
 									$categorys .='</span></div>';
 
 									// Share count meta real and fake.
@@ -408,9 +410,10 @@ function posts_tabs( $atts, $content = null ) {
 								$category_name = get_the_category(get_the_ID());
 								$categorys = '';
 								$categorys .='<div class="poster-cat"><span class="mt-theme-text">';
-								if(!empty($category_name[0])) { $categorys .=''.$category_name[0]->name.''; }
-								if(!empty($category_name[1])) { $categorys .=', '.$category_name[1]->name.''; }
-								if(!empty($category_name[2])) { $categorys .=', '.$category_name[2]->name.''; }
+								$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+								if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $categorys .=''.$category_name[0]->name.''; }
+								if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $categorys .=', '.$category_name[1]->name.''; }
+								if(!empty($category_name[2]) and $cat_nr == 3) { $categorys .=', '.$category_name[2]->name.''; }
 								$categorys .='</span></div>';
 
 								// Share count meta real and fake.
@@ -495,9 +498,10 @@ function posts_tabs( $atts, $content = null ) {
 							$category_name = get_the_category(get_the_ID());
 							$categorys = '';
 							$categorys .='<div class="poster-cat"><span class="mt-theme-text">';
-							if(!empty($category_name[0])) { $categorys .=''.$category_name[0]->name.''; }
-							if(!empty($category_name[1])) { $categorys .=', '.$category_name[1]->name.''; }
-							if(!empty($category_name[2])) { $categorys .=', '.$category_name[2]->name.''; }
+							$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+							if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $categorys .=''.$category_name[0]->name.''; }
+							if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $categorys .=', '.$category_name[1]->name.''; }
+							if(!empty($category_name[2]) and $cat_nr == 3) { $categorys .=', '.$category_name[2]->name.''; }
 							$categorys .='</span></div>';
 
 							// Share count meta real and fake.
@@ -582,9 +586,10 @@ function posts_tabs( $atts, $content = null ) {
 						$category_name = get_the_category(get_the_ID());
 						$categorys = '';
 						$categorys .='<div class="poster-cat"><span class="mt-theme-text">';
-						if(!empty($category_name[0])) { $categorys .=''.$category_name[0]->name.''; }
-						if(!empty($category_name[1])) { $categorys .=', '.$category_name[1]->name.''; }
-						if(!empty($category_name[2])) { $categorys .=', '.$category_name[2]->name.''; }
+						$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+						if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $categorys .=''.$category_name[0]->name.''; }
+						if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $categorys .=', '.$category_name[1]->name.''; }
+						if(!empty($category_name[2]) and $cat_nr == 3) { $categorys .=', '.$category_name[2]->name.''; }
 						$categorys .='</span></div>';
 
 						// Share count meta real and fake.
@@ -670,9 +675,10 @@ function posts_tabs( $atts, $content = null ) {
 					$category_name = get_the_category(get_the_ID());
 					$categorys = '';
 					$categorys .='<div class="poster-cat"><span class="mt-theme-text">';
-					if(!empty($category_name[0])) { $categorys .=''.$category_name[0]->name.''; }
-					if(!empty($category_name[1])) { $categorys .=', '.$category_name[1]->name.''; }
-					if(!empty($category_name[2])) { $categorys .=', '.$category_name[2]->name.''; }
+					$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+					if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $categorys .=''.$category_name[0]->name.''; }
+					if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $categorys .=', '.$category_name[1]->name.''; }
+					if(!empty($category_name[2]) and $cat_nr == 3) { $categorys .=', '.$category_name[2]->name.''; }
 					$categorys .='</span></div>';
 
 					// Share count meta real and fake.
@@ -758,9 +764,10 @@ if($tab_trending!="off"){
 				$category_name = get_the_category(get_the_ID());
 				$categorys = '';
 				$categorys .='<div class="poster-cat"><span class="mt-theme-text">';
-				if(!empty($category_name[0])) { $categorys .=''.$category_name[0]->name.''; }
-				if(!empty($category_name[1])) { $categorys .=', '.$category_name[1]->name.''; }
-				if(!empty($category_name[2])) { $categorys .=', '.$category_name[2]->name.''; }
+				$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+				if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $categorys .=''.$category_name[0]->name.''; }
+				if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $categorys .=', '.$category_name[1]->name.''; }
+				if(!empty($category_name[2]) and $cat_nr == 3) { $categorys .=', '.$category_name[2]->name.''; }
 				$categorys .='</span></div>';
 
 				// Share count meta real and fake.
