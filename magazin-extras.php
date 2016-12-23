@@ -66,6 +66,8 @@ function magazin_random_template() {
 
 function magazin_theme_setup() {
 
+	add_image_size( 'magazin_430', 430, 240, true);
+	add_image_size( 'magazin_585', 585, 285, true);
 	add_image_size( 'magazin_550', 550, 550, false );
 	add_image_size( 'magazin_480', 520, 520, false );
 	add_image_size( 'magazin_625', 625, 625, false );
@@ -214,14 +216,14 @@ function magazin_class($classes) {
 	}
 
 	$radius_option = get_option("radius");
-	$zoom_option = get_option("zoom");
+
 	$colors_option = get_option("colors");
 
-	$zoom = "zoom-on";
+	$zoom_option = get_option("zoom");
+	$zoom = "on";
 	if(!empty($zoom_option)) {
-		if($zoom_option=="off"){
-			$zoom = "zoom-off";
-		}
+		if($zoom_option=="off"){ $zoom = "off"; }
+		else if($zoom_option=="on"){ $zoom = "on"; }
 	}
 
 	$colors = "mt-color-1";
