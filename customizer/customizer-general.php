@@ -73,8 +73,6 @@ function magazin_customize_general($wp_customize){
   	),
     ));
 
-
-
     Kirki::add_field( 'mt_post_meta_author_post', array(
        	'type'        => 'switch',
        	'settings'    => 'mt_post_meta_author_post',
@@ -87,6 +85,7 @@ function magazin_customize_general($wp_customize){
        		'off' => esc_attr__( 'OFF', 'magazin' ),
        	),
      ) );
+
      Kirki::add_field( 'mt_post_meta_author_post_img', array(
         	'type'        => 'switch',
         	'settings'    => 'mt_post_meta_author_post_img',
@@ -99,6 +98,7 @@ function magazin_customize_general($wp_customize){
          		'off' => esc_attr__( 'OFF', 'magazin' ),
         	),
       ) );
+      
       Kirki::add_field( 'mt_post_meta_date_post', array(
          	'type'        => 'switch',
          	'settings'    => 'mt_post_meta_date_post',
