@@ -1,9 +1,24 @@
 <?php
 function magazin_customize_posts($wp_customize){
 
+  $wp_customize->add_panel( 'magazin_posts', array(
+    'priority'       => 300,
+    'capability'     => 'edit_theme_options',
+    'theme_supports' => '',
+    'title'    	=> esc_html__('Post Settings', 'magazin'),
+    'description'    => '',
+  ));
+
+
   $wp_customize->add_section('posts_category_settings', array(
-    'title'    	=> esc_html__('Category Layouts', 'boomnews'),
+    'title'    	=> esc_html__('Category Layouts', 'magazin'),
     'priority'       => 501,
+    'panel'  => 'magazin_posts'
+  ));
+
+  $wp_customize->add_section('posts_default_settings', array(
+    'title'    	=> esc_html__('Post Layouts', 'magazin'),
+    'priority'       => 301,
     'panel'  => 'magazin_posts'
   ));
 
