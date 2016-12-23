@@ -172,7 +172,7 @@ function posts( $atts, $content = null ) {
 										if ($zoom=="on") {
 											$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"  alt="'. get_the_title() .'"  data-src="'. get_the_post_thumbnail_url(get_the_ID(),'thumbnail').'" /></div>';
 										}	else {
-											$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"  alt="'. get_the_title() .'"  data-src="'. get_the_post_thumbnail_url(get_the_ID(),'thumbnail').'" /></div>';
+											$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"  alt="'. get_the_title() .'"  data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_100').'" /></div>';
 										}
 
 									}
