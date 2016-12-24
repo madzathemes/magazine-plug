@@ -5,7 +5,7 @@ function magazin_customize_posts($wp_customize){
     'priority'       => 300,
     'capability'     => 'edit_theme_options',
     'theme_supports' => '',
-    'title'    	=> esc_html__('Post Settings', 'magazin'),
+    'title'    	=> esc_html__('Posts', 'magazin'),
     'description'    => '',
   ));
 
