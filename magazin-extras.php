@@ -220,10 +220,10 @@ function magazin_class($classes) {
 	$colors_option = get_option("colors");
 
 	$zoom_option = get_option("zoom");
-	$zoom = "on";
+	$zoom = "zoom-on";
 	if(!empty($zoom_option)) {
-		if($zoom_option=="off"){ $zoom = "off"; }
-		else if($zoom_option=="on"){ $zoom = "on"; }
+		if($zoom_option=="off"){ $zoom = "zoom-off"; }
+		else if($zoom_option=="on"){ $zoom = "zoom-on"; }
 	}
 
 	$colors = "mt-color-1";
