@@ -590,4 +590,25 @@ function magazin_javascript_detection() {
 	echo "<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>\n";
 }
 add_action( 'wp_head', 'magazin_javascript_detection', 0 );
+
+function html_tag_schema() {
+    $schema = 'http://schema.org/';
+    // Is single post
+    if(is_single()) {
+        $type = "Article";
+    }
+    // Is author page
+    elseif( is_author() ) {
+        $type = 'ProfilePage';
+    }
+
+    // Is search results page
+    elseif( is_search() ) {
+        $type = 'SearchResultsPage';
+    }
+    else {
+        $type = 'WebPage';
+    }
+    echo 'itemscope="itemscope" itemtype="' . $schema . $type . '"';
+}
 ?>
