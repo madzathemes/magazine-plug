@@ -359,8 +359,6 @@ Kirki::add_field( 'zoom', array(
   ));
 
 
-
-
 }
 
 add_action('customize_register', 'magazin_customize_general');
