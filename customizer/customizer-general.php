@@ -15,6 +15,24 @@ function magazin_customize_general($wp_customize){
     'panel'  => 'magazin_posts'
   ));
 
+  $wp_customize->add_section('mt_post_meta', array(
+    'title'    	=> esc_html__('Shema.com', 'magazin'),
+    'panel'  => 'magazin_shema'
+  ));
+
+  $wp_customize->add_setting('mt_shema_publisher', array(
+      'default'        => '',
+      'capability'     => 'edit_theme_options',
+      'type'           => 'option',
+      'sanitize_callback' => 'esc_attr',
+  ));
+  $wp_customize->add_control('mt_shema_publisher', array(
+      'label'    	=> esc_html__('Publisher Name', 'magazin'),
+      'section'    => 'magazin_shema',
+      'settings'   => 'mt_shema_publisher',
+  ));
+
+
   Kirki::add_field( 'magazin_option[post_meta_excerpt]', array(
   'type'        => 'select',
   'settings'    => 'magazin_option[post_meta_excerpt]',
@@ -98,7 +116,7 @@ function magazin_customize_general($wp_customize){
          		'off' => esc_attr__( 'OFF', 'magazin' ),
         	),
       ) );
-      
+
       Kirki::add_field( 'mt_post_meta_date_post', array(
          	'type'        => 'switch',
          	'settings'    => 'mt_post_meta_date_post',
