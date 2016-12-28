@@ -28,7 +28,7 @@ function magazin_customize_general($wp_customize){
   ));
   $wp_customize->add_control('mt_shema_publisher', array(
       'label'    	=> esc_html__('Publisher Name', 'magazin'),
-      'section'    => 'magazin_shema',
+      'section'    => 'mt_shema',
       'settings'   => 'mt_shema_publisher',
   ));
 
