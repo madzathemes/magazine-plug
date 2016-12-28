@@ -15,9 +15,9 @@ function magazin_customize_general($wp_customize){
     'panel'  => 'magazin_posts'
   ));
 
-  $wp_customize->add_section('mt_post_meta', array(
+  $wp_customize->add_section('mt_shema', array(
     'title'    	=> esc_html__('Shema.com', 'magazin'),
-    'panel'  => 'magazin_shema'
+    'panel'  => 'magazin_general'
   ));
 
   $wp_customize->add_setting('mt_shema_publisher', array(
