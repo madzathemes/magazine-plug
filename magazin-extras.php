@@ -243,7 +243,7 @@ function magazin_class($classes) {
 	}
 
 	// Post meta
-
+	if ( false == get_theme_mod( 'mt_post_meta_author', true ) ) {
 		$body_class .=' remove-pl-author ';
 	}
 	if ( false == get_theme_mod( 'mt_post_meta_date', true ) ) {
