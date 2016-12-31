@@ -109,18 +109,20 @@ function grid( $atts, $content = null ) {
 				if($type=="1"){
           $i=1;
 					while ( $the_query->have_posts() ) : $the_query->the_post();
-						$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-						$shares = $share_real;
-						if (!empty($share)){
-							$shares = $share+$share_real;
-						}
-						$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-						$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-						$viewes = $views + "0";
-						if (!empty($view)){
-							$viewes = $view + $views;
-						}
+					// Share count meta real and fake.
+					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
+					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
+					$shares = $share_real;
+					if (!empty($share)){ $shares = $share+$share_real; }
+					$shares = number_format($shares);
+
+					// View count meta real and fake.
+					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
+					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
+					$viewes = $views + "0";
+					if (!empty($view)){ $viewes = $view + $views; }
+					$viewes = number_format($viewes);
+
 						$attachment_id = get_post_thumbnail_id( get_the_ID() );
 						$img_src = wp_get_attachment_image_url( $attachment_id );
 						$img_srcset = wp_get_attachment_image_srcset( $attachment_id );
@@ -172,18 +174,19 @@ function grid( $atts, $content = null ) {
 				if($type=="2"){
 					$i=1;
 					while ( $the_query->have_posts() ) : $the_query->the_post();
-						$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-						$shares = $share_real;
-						if (!empty($share)){
-							$shares = $share+$share_real;
-						}
-						$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-						$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-						$viewes = $views + "0";
-						if (!empty($view)){
-							$viewes = $view + $views;
-						}
+					// Share count meta real and fake.
+					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
+					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
+					$shares = $share_real;
+					if (!empty($share)){ $shares = $share+$share_real; }
+					$shares = number_format($shares);
+
+					// View count meta real and fake.
+					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
+					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
+					$viewes = $views + "0";
+					if (!empty($view)){ $viewes = $view + $views; }
+					$viewes = number_format($viewes);
 						$attachment_id = get_post_thumbnail_id( get_the_ID() );
 						$img_src = wp_get_attachment_image_url( $attachment_id );
 						$img_srcset = wp_get_attachment_image_srcset( $attachment_id);
@@ -231,18 +234,19 @@ function grid( $atts, $content = null ) {
 				if($type=="3"){
 					$i=1;
 					while ( $the_query->have_posts() ) : $the_query->the_post();
-						$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-						$shares = $share_real;
-						if (!empty($share)){
-							$shares = $share+$share_real;
-						}
-						$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-						$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-						$viewes = $views + "0";
-						if (!empty($view)){
-							$viewes = $view + $views;
-						}
+					// Share count meta real and fake.
+					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
+					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
+					$shares = $share_real;
+					if (!empty($share)){ $shares = $share+$share_real; }
+					$shares = number_format($shares);
+
+					// View count meta real and fake.
+					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
+					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
+					$viewes = $views + "0";
+					if (!empty($view)){ $viewes = $view + $views; }
+					$viewes = number_format($viewes);
 						$attachment_id = get_post_thumbnail_id( get_the_ID() );
 						$img_src = wp_get_attachment_image_url( $attachment_id );
 						$img_srcset = wp_get_attachment_image_srcset( $attachment_id );

@@ -244,18 +244,19 @@ function posts( $atts, $content = null ) {
 						if (!empty($excerpt)) { $excerpt_ = $excerpt; }
 					}
 
-						$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-						$shares = $share_real;
-						if (!empty($share)){
-							$shares = $share+$share_real;
-						}
-						$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-						$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-						$viewes = $views + "0";
-						if (!empty($view)){
-							$viewes = $view + $views;
-						}
+					// Share count meta real and fake.
+					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
+					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
+					$shares = $share_real;
+					if (!empty($share)){ $shares = $share+$share_real; }
+					$shares = number_format($shares);
+
+					// View count meta real and fake.
+					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
+					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
+					$viewes = $views + "0";
+					if (!empty($view)){ $viewes = $view + $views; }
+					$viewes = number_format($viewes);
 						$shortcode .='<div class="poster size-normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';
@@ -320,18 +321,19 @@ function posts( $atts, $content = null ) {
 					$shortcode .='<div class="row">';
 					$counter = 0;
 					while ( $the_query->have_posts() ) : $the_query->the_post();
-						$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-						$shares = $share_real;
-						if (!empty($share)){
-							$shares = $share+$share_real;
-						}
-						$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-						$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-						$viewes = $views + "0";
-						if (!empty($view)){
-							$viewes = $view + $views;
-						}
+					// Share count meta real and fake.
+					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
+					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
+					$shares = $share_real;
+					if (!empty($share)){ $shares = $share+$share_real; }
+					$shares = number_format($shares);
+
+					// View count meta real and fake.
+					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
+					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
+					$viewes = $views + "0";
+					if (!empty($view)){ $viewes = $view + $views; }
+					$viewes = number_format($viewes);
 						$column = 'column-first';
 						if(++$counter % 2 === 0) {
 				        $column = 'column-second';
@@ -420,18 +422,19 @@ function posts( $atts, $content = null ) {
 						if (!empty($excerpt)) { $excerpt_ = $excerpt; }
 					}
 
-						$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-						$shares = $share_real;
-						if (!empty($share)){
-							$shares = $share+$share_real;
-						}
-						$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-						$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-						$viewes = $views + "0";
-						if (!empty($view)){
-							$viewes = $view + $views;
-						}
+					// Share count meta real and fake.
+					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
+					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
+					$shares = $share_real;
+					if (!empty($share)){ $shares = $share+$share_real; }
+					$shares = number_format($shares);
+
+					// View count meta real and fake.
+					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
+					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
+					$viewes = $views + "0";
+					if (!empty($view)){ $viewes = $view + $views; }
+					$viewes = number_format($viewes);
 
 						$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 						if ( has_post_thumbnail() ) {
@@ -523,18 +526,19 @@ function posts( $atts, $content = null ) {
 						if (!empty($excerpt)) { $excerpt_ = $excerpt; }
 					}
 
-						$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-						$shares = $share_real;
-						if (!empty($share)){
-							$shares = $share+$share_real;
-						}
-						$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-						$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-						$viewes = $views + "0";
-						if (!empty($view)){
-							$viewes = $view + $views;
-						}
+					// Share count meta real and fake.
+					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
+					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
+					$shares = $share_real;
+					if (!empty($share)){ $shares = $share+$share_real; }
+					$shares = number_format($shares);
+
+					// View count meta real and fake.
+					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
+					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
+					$viewes = $views + "0";
+					if (!empty($view)){ $viewes = $view + $views; }
+					$viewes = number_format($viewes);
 
 						$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {

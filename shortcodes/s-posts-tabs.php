@@ -252,12 +252,14 @@ function posts_tabs( $atts, $content = null ) {
 							$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 							$shares = $share_real;
 							if (!empty($share)){ $shares = $share+$share_real; }
+							$shares = number_format($shares);
 
 							// View count meta real and fake.
 							$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 							$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 							$viewes = $views + "0";
 							if (!empty($view)){ $viewes = $view + $views; }
+							$viewes = number_format($viewes);
 
 							// Post data, share counts.
 							$data ='';
@@ -344,12 +346,14 @@ function posts_tabs( $atts, $content = null ) {
 									$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 									$shares = $share_real;
 									if (!empty($share)){ $shares = $share+$share_real; }
+									$shares = number_format($shares);
 
 									// View count meta real and fake.
 									$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 									$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 									$viewes = $views + "0";
 									if (!empty($view)){ $viewes = $view + $views; }
+									$viewes = number_format($viewes);
 
 									// Post data, share counts.
 									$data ='';
@@ -436,12 +440,14 @@ function posts_tabs( $atts, $content = null ) {
 								$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 								$shares = $share_real;
 								if (!empty($share)){ $shares = $share+$share_real; }
+								$shares = number_format($shares);
 
 								// View count meta real and fake.
 								$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 								$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 								$viewes = $views + "0";
 								if (!empty($view)){ $viewes = $view + $views; }
+								$viewes = number_format($viewes);
 
 								// Post data, share counts.
 								$data ='';
@@ -528,12 +534,14 @@ function posts_tabs( $atts, $content = null ) {
 							$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 							$shares = $share_real;
 							if (!empty($share)){ $shares = $share+$share_real; }
+							$shares = number_format($shares);
 
 							// View count meta real and fake.
 							$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 							$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 							$viewes = $views + "0";
 							if (!empty($view)){ $viewes = $view + $views; }
+							$viewes = number_format($viewes);
 
 							// Post data, share counts.
 							$data ='';
@@ -620,12 +628,14 @@ function posts_tabs( $atts, $content = null ) {
 						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 						$shares = $share_real;
 						if (!empty($share)){ $shares = $share+$share_real; }
+						$shares = number_format($shares);
 
 						// View count meta real and fake.
 						$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 						$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 						$viewes = $views + "0";
 						if (!empty($view)){ $viewes = $view + $views; }
+						$viewes = number_format($viewes);
 
 						// Post data, share counts.
 						$data ='';
@@ -713,12 +723,14 @@ function posts_tabs( $atts, $content = null ) {
 					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 					$shares = $share_real;
 					if (!empty($share)){ $shares = $share+$share_real; }
+					$shares = number_format($shares);
 
 					// View count meta real and fake.
 					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 					$viewes = $views + "0";
 					if (!empty($view)){ $viewes = $view + $views; }
+					$viewes = number_format($viewes);
 
 					// Post data, share counts.
 					$data ='';
@@ -806,12 +818,14 @@ if($tab_trending!="off"){
 				$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 				$shares = $share_real;
 				if (!empty($share)){ $shares = $share+$share_real; }
+				$shares = number_format($shares);
 
 				// View count meta real and fake.
 				$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 				$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 				$viewes = $views + "0";
 				if (!empty($view)){ $viewes = $view + $views; }
+				$viewes = number_format($viewes);
 
 				// Post data, share counts.
 				$data ='';
