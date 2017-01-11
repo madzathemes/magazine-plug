@@ -118,15 +118,14 @@ function posts_trending( $atts, $content = null ) {
 						$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
 						$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 						$shares = $share_real;
-						if (!empty($share)){ $shares = $share+$share_real; }
-						$shares = number_format($shares);
+						if (!empty($share)){ $shares = $share+$share_real; $shares = number_format($shares);}
+
 
 						// View count meta real and fake.
 						$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 						$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 						$viewes = $views + "0";
-						if (!empty($view)){ $viewes = $view + $views; }
-						$viewes = number_format($viewes);
+						if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 						$shortcode .='<div class="poster trending-normal'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 						$shortcode .='<div class="number mt-theme-background">'.$i.'</div>';
 							$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';
@@ -203,15 +202,14 @@ function posts_trending( $atts, $content = null ) {
 							$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
 							$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 							$shares = $share_real;
-							if (!empty($share)){ $shares = $share+$share_real; }
-							$shares = number_format($shares);
+							if (!empty($share)){ $shares = $share+$share_real; $shares = number_format($shares);}
+
 
 							// View count meta real and fake.
 							$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 							$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 							$viewes = $views + "0";
-							if (!empty($view)){ $viewes = $view + $views; }
-							$viewes = number_format($viewes);
+							if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 							$shortcode .='<div class="poster trending-carousel'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 							$shortcode .='<div class="number mt-theme-background">'.$i.'</div>';
 								$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';

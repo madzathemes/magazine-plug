@@ -4,7 +4,7 @@ Plugin Name: Magazine Plug
 Plugin URI: https://themeforest.net
 Description: Magazin Plugin
 Author: Madars Bitenieks
-Version: 2.7
+Version: 2.9
 Author URI: https://themeforest.net
 */
 include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
@@ -313,14 +313,17 @@ function magazin_get_shares( $post_id ) {
 
 function SearchFilter($query) {
 
-	if ($query->is_search) {
+	if (!is_admin()) {
 
-		$query->set('post_type', 'post');
+		if ($query->is_search) {
+
+			$query->set('post_type', 'post');
+
+		}
+
+		return $query;
 
 	}
-
-	return $query;
-
 }
 
 add_filter('pre_get_posts','SearchFilter');
@@ -531,13 +534,14 @@ function more_post_ajax(){
 		$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
 		$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 		$shares = $share_real;
-		if (!empty($share)){ $shares = $share+$share_real; }
+		if (!empty($share)){ $shares = $share+$share_real; $shares = number_format($shares);}
+
 
 		// View count meta real and fake.
 		$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 		$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 		$viewes = $views + "0";
-		if (!empty($view)){ $viewes = $view + $views; }
+		if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 
 		// Post data, share counts.
 		$data ='';
