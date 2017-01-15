@@ -134,6 +134,7 @@ function mt_header_script() {
 		if(is_rtl()){ wp_add_inline_script( 'mt-effects', 'var $rtl = true;', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $rtl = false;', 'before' ); }
 		if(!empty($autoplay)){ if($autoplay=="1"){ wp_add_inline_script( 'mt-effects', 'var $autoplay = true;', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' ); } } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' ); }
 		if(!empty($options)){ if($options=="1"){ wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); } } else { wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); }
+		wp_enqueue_script( 'mt-defer', get_template_directory_uri(). '/inc/js/defer.js', array( 'jquery'),  '1.0', true );
 }
 add_action('wp_enqueue_scripts', 'mt_header_script');
 
