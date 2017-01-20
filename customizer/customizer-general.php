@@ -1,6 +1,37 @@
 <?php
 function magazin_customize_general($wp_customize){
 
+  $wp_customize->add_section( 'magazin_activate', array(
+    'priority'       => 999,
+    'capability'     => 'edit_theme_options',
+    'theme_supports' => '',
+    'title'    	=> esc_html__('Activate License Key', 'magazin'),
+    'description'    => esc_html__('Unlock All Theme Features', 'magazin'),
+  ));
+
+  $wp_customize->add_setting('envato_username', array(
+      'default'        => '',
+      'capability'     => 'edit_theme_options',
+      'type'           => 'option',
+      'sanitize_callback' => 'esc_attr',
+  ));
+  $wp_customize->add_control('envato_username', array(
+      'label'    	=> esc_html__('Username', 'magazin'),
+      'section'    => 'magazin_activate',
+      'settings'   => 'envato_username',
+  ));
+
+  $wp_customize->add_setting('envato_license', array(
+      'default'        => '',
+      'capability'     => 'edit_theme_options',
+      'type'           => 'option',
+      'sanitize_callback' => 'esc_attr',
+  ));
+  $wp_customize->add_control('envato_license', array(
+      'label'    	=> esc_html__('Item Purchase Code', 'magazin'),
+      'section'    => 'magazin_activate',
+      'settings'   => 'envato_license',
+  ));
 
   $wp_customize->add_panel( 'magazin_general', array(
     'priority'       => 300,
