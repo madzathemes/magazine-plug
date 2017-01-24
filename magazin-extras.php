@@ -138,6 +138,12 @@ function mt_header_script() {
 		if(!empty($autoplay)){ if($autoplay=="1"){ wp_add_inline_script( 'mt-effects', 'var $autoplay = true;', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' ); } } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' ); }
 		if(!empty($options)){ if($options=="1"){ wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); } } else { wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); }
 		wp_enqueue_script( 'mt-defer', get_template_directory_uri(). '/inc/js/defer.js', array( 'jquery'),  '1.0', true );
+		if ( true == get_theme_mod( 'mt_header_time', false ) ) {
+			wp_add_inline_script( 'mt-defer', 'var today = new Date(); var h = today.getHours(); var today = new Date(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById("time-live").innerHTML = h + ":" + m + "<span>:" + s + "</span>"; function checkTime(i) { if (i < 10) {i = "0" + i};   return i; }', 'before' ); 
+			wp_add_inline_script( 'mt-defer', 'window.onload=startTime; ', 'after' );
+		}
+
+
 }
 add_action('wp_enqueue_scripts', 'mt_header_script');
 
