@@ -4,7 +4,7 @@ Plugin Name: Magazine Plug
 Plugin URI: https://themeforest.net
 Description: Magazin Plugin
 Author: Madars Bitenieks
-Version: 3.1
+Version: 3.3
 Author URI: https://themeforest.net
 */
 include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
@@ -26,6 +26,7 @@ include_once ('shortcodes/s-social.php');
 include_once ('shortcodes/s-share.php');
 include_once ('shortcodes/s-subscribe.php');
 include_once ('shortcodes/s-grid.php');
+
 include_once ('widgets/w-ads.php');
 include_once ('widgets/w-posts.php');
 include_once ('widgets/w-posts-tabs.php');
@@ -33,6 +34,8 @@ include_once ('widgets/w-space.php');
 include_once ('widgets/w-social.php');
 include_once ('widgets/w-subscribe.php');
 include_once ('widgets/w-grid.php');
+include_once ('widgets/w-trending.php');
+
 include_once ('customizer/customizer-general.php');
 include_once ('customizer/customizer-ads.php');
 include_once ('customizer/customizer-posts.php');
@@ -186,6 +189,7 @@ function magazin_PostViews($post_ID) {
         }
     }
 }
+
 function magazin_custom_oembed_filter($html, $url, $attr, $post_ID) {
 		$return = "";
     $return .='<div class="single-share">';

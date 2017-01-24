@@ -47,7 +47,7 @@ function magazin_customize_general($wp_customize){
   ));
 
   $wp_customize->add_section('mt_shema', array(
-    'title'    	=> esc_html__('Shema.com', 'magazin'),
+    'title'    	=> esc_html__('schema.org for SEO', 'magazin'),
     'panel'  => 'magazin_general'
   ));
 
