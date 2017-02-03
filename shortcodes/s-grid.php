@@ -34,6 +34,7 @@ function grid( $atts, $content = null ) {
 	$item_nr = "4";
 	if($type=="2") { $item_nr = "2"; }
 	if($type=="3") { $item_nr = "3"; }
+	if($type=="4") { $item_nr = "4"; }
 
 			$args = array(
 				'post_type'=>$posttype,
@@ -124,9 +125,6 @@ function grid( $atts, $content = null ) {
 
 
 						$attachment_id = get_post_thumbnail_id( get_the_ID() );
-						$img_src = wp_get_attachment_image_url( $attachment_id );
-						$img_srcset = wp_get_attachment_image_srcset( $attachment_id );
-						$img_srcset_2 = wp_get_attachment_image_srcset( $attachment_id, "full" );
 
 						$shortcode .='<div class="grid-post mt-radius nr-'.$i.' style-1 '; if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 							$shortcode .='<a href="'. get_the_permalink().'">';
@@ -188,9 +186,6 @@ function grid( $atts, $content = null ) {
 					if (!empty($view)){ $viewes = $view + $views; }
 					$viewes = number_format($viewes);
 						$attachment_id = get_post_thumbnail_id( get_the_ID() );
-						$img_src = wp_get_attachment_image_url( $attachment_id );
-						$img_srcset = wp_get_attachment_image_srcset( $attachment_id);
-						$img_srcset_2 = wp_get_attachment_image_srcset( $attachment_id);
 
 						$shortcode .='<div class="grid-post mt-radius nr-'.$i.' style-2 '; if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 							$shortcode .='<a href="'. get_the_permalink().'">';
@@ -248,9 +243,6 @@ function grid( $atts, $content = null ) {
 					if (!empty($view)){ $viewes = $view + $views; }
 					$viewes = number_format($viewes);
 						$attachment_id = get_post_thumbnail_id( get_the_ID() );
-						$img_src = wp_get_attachment_image_url( $attachment_id );
-						$img_srcset = wp_get_attachment_image_srcset( $attachment_id );
-						$img_srcset_2 = wp_get_attachment_image_srcset( $attachment_id, "full" );
 
 						$shortcode .='<div class="grid-post mt-radius nr-'.$i.' style-3 '; if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 							$shortcode .='<a href="'. get_the_permalink().'">';
@@ -289,6 +281,36 @@ function grid( $atts, $content = null ) {
 
 						$i++;
 					endwhile;
+				}
+
+				if($type=="4"){
+          $i=1;
+					$shortcode .='<div class="mt-slide-1 mt-radius">';
+					while ( $the_query->have_posts() ) : $the_query->the_post();
+
+								$shortcode .='<div class="mt-slide-1-img">';
+		              if ( has_post_thumbnail() ) {
+										if($i==1) {
+											$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'large').'" width="1000" height="1000" /></div>';
+		                }
+									}
+								$shortcode .='</div>';
+
+                $shortcode .='<div class="mt-slide-1-title nr-'.$i.'">';
+									$shortcode .='<div class="mt-slide-1-cat">';
+										$category_name = get_the_category(get_the_ID());
+										$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+										if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+									$shortcode .='</div>';
+									$shortcode .='<a href="'. get_the_permalink().'">';
+										$shortcode .='<h2>'. get_the_title() .'</h2>';
+									$shortcode .='</a>';
+								$shortcode .='</div>';
+            $i++;
+					endwhile;
+					$shortcode .='</div>';
 				}
 
 				$shortcode .='</div>';

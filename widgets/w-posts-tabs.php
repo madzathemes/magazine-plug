@@ -3,7 +3,7 @@ class Post_Tabs_Widget extends WP_Widget {
 
 	function __construct() {
 		parent::__construct(
-			'posts_widget',
+			'posts_tabs_widget',
 			__( 'mt Post Tabs', 'tophot' ),
 			array( 'description' => esc_html__( 'A Post Widget', 'tophot' ), )
 		);

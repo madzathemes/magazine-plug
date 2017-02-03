@@ -4,7 +4,7 @@ Plugin Name: Magazine Plug
 Plugin URI: https://themeforest.net
 Description: Magazin Plugin
 Author: Madars Bitenieks
-Version: 3.3
+Version: 3.5
 Author URI: https://themeforest.net
 */
 include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
@@ -139,7 +139,7 @@ function mt_header_script() {
 		if(!empty($options)){ if($options=="1"){ wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); } } else { wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); }
 		wp_enqueue_script( 'mt-defer', get_template_directory_uri(). '/inc/js/defer.js', array( 'jquery'),  '1.0', true );
 		if ( true == get_theme_mod( 'mt_header_time', false ) ) {
-			wp_add_inline_script( 'mt-defer', 'var today = new Date(); var h = today.getHours(); var today = new Date(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById("time-live").innerHTML = h + ":" + m + "<span>:" + s + "</span>"; function checkTime(i) { if (i < 10) {i = "0" + i};   return i; }', 'before' ); 
+			wp_add_inline_script( 'mt-defer', 'var today = new Date(); var h = today.getHours(); var today = new Date(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById("time-live").innerHTML = h + ":" + m + "<span>:" + s + "</span>"; function checkTime(i) { if (i < 10) {i = "0" + i};   return i; }', 'before' );
 			wp_add_inline_script( 'mt-defer', 'window.onload=startTime; ', 'after' );
 		}
 
@@ -279,6 +279,10 @@ function magazin_class($classes) {
 		$body_class .=' remove-ps-share ';
 	}
 
+	if ( true == get_theme_mod( 'mt_menu_full', true ) ) {
+		$body_class .=' mt-menu-full ';
+	}
+
 
 	$body_class .= ' '.$zoom.' '.$radius.' '.$colors;
 	$classes[] =  $body_class;
@@ -293,7 +297,7 @@ function admin_js() {
 add_action('admin_footer', 'admin_js');
 
 function magazin_get_shares( $post_id ) {
-	$cache_key = 'magazin_share_cash' . $post_id;
+	$cache_key = 'magazin_share_cache' . $post_id;
 	$access_token = 'APP_ID|APP_SECRET';
 	$count = get_transient( $cache_key ); // try to get value from Wordpress cache
 
@@ -307,8 +311,9 @@ function magazin_get_shares( $post_id ) {
 		if ( $count === false  ) {
 			$count = "0";
 			$response = wp_remote_get('https://graph.facebook.com/v2.7/?id=' . urlencode( get_permalink( $post_id ) ) . '&access_token=' . $facebook_token);
-			$body = json_decode( $response['body'] );
-			//print_r($body);
+			if (!empty($response)) {
+				$body = json_decode( $response['body'], true );
+			}
 
 			if (!empty($body->share)) {
 	      $count = intval( $body->share->share_count );
