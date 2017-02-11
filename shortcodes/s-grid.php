@@ -114,14 +114,14 @@ function grid( $atts, $content = null ) {
 					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
 					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 					$shares = $share_real;
-					if (!empty($share)){ $shares = $share+$share_real; $shares = number_format($shares);}
+					if (!empty($share)){ $shares = $share+$share_real; $shares = number_format((float)$shares);}
 
 
 					// View count meta real and fake.
 					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 					$viewes = $views + "0";
-					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
+					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format((float)$viewes); }
 
 
 						$attachment_id = get_post_thumbnail_id( get_the_ID() );
@@ -177,14 +177,14 @@ function grid( $atts, $content = null ) {
 					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 					$shares = $share_real;
 					if (!empty($share)){ $shares = $share+$share_real; }
-					$shares = number_format($shares);
+					$shares = number_format((float)$shares);
 
 					// View count meta real and fake.
 					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 					$viewes = $views + "0";
 					if (!empty($view)){ $viewes = $view + $views; }
-					$viewes = number_format($viewes);
+					$viewes = number_format((float)$viewes);
 						$attachment_id = get_post_thumbnail_id( get_the_ID() );
 
 						$shortcode .='<div class="grid-post mt-radius nr-'.$i.' style-2 '; if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
@@ -234,14 +234,14 @@ function grid( $atts, $content = null ) {
 					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 					$shares = $share_real;
 					if (!empty($share)){ $shares = $share+$share_real; }
-					$shares = number_format($shares);
+					$shares = number_format((float)$shares);
 
 					// View count meta real and fake.
 					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 					$viewes = $views + "0";
 					if (!empty($view)){ $viewes = $view + $views; }
-					$viewes = number_format($viewes);
+					$viewes = number_format((float)$viewes);
 						$attachment_id = get_post_thumbnail_id( get_the_ID() );
 
 						$shortcode .='<div class="grid-post mt-radius nr-'.$i.' style-3 '; if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
@@ -288,13 +288,13 @@ function grid( $atts, $content = null ) {
 					$shortcode .='<div class="mt-slide-1 mt-radius">';
 					while ( $the_query->have_posts() ) : $the_query->the_post();
 
-								$shortcode .='<div class="mt-slide-1-img">';
 		              if ( has_post_thumbnail() ) {
 										if($i==1) {
-											$shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'large').'" width="1000" height="1000" /></div>';
-		                }
+											$shortcode .='<div class="mt-slide-1-img">';
+												$shortcode .='<div class="mt-post-image" ><div class="mt-slide-1-image" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'large').');"></div><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div></div>';
+											$shortcode .='</div>';
+										}
 									}
-								$shortcode .='</div>';
 
                 $shortcode .='<div class="mt-slide-1-title nr-'.$i.'">';
 									$shortcode .='<div class="mt-slide-1-cat">';
