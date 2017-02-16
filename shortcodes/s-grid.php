@@ -34,7 +34,7 @@ function grid( $atts, $content = null ) {
 	$item_nr = "4";
 	if($type=="2") { $item_nr = "2"; }
 	if($type=="3") { $item_nr = "3"; }
-	if($type=="4") { $item_nr = "3"; }
+	if($type=="4") { $item_nr = "4"; }
 
 			$args = array(
 				'post_type'=>$posttype,
