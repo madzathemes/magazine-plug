@@ -41,6 +41,7 @@ class Grid_Widget extends WP_Widget {
 	}
 
 	public function form( $instance ) {
+		$title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( '', 'tophot' );
 		$type = ! empty( $instance['type'] ) ? $instance['type'] : esc_html__( 'middle', 'tophot' );
 		$offset = ! empty( $instance['offset'] ) ? $instance['offset'] : esc_html__( '', 'tophot' );
 		$category = ! empty( $instance['category'] ) ? $instance['category'] : esc_html__( '', 'tophot' );
