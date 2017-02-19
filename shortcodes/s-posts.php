@@ -537,7 +537,7 @@ function posts( $atts, $content = null ) {
 					$viewes = $views + "0";
 					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 
-						$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+						$shortcode .='<div class="poster normal normal-small size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius normal-right-small pull-left" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
