@@ -101,7 +101,7 @@ function grid( $atts, $content = null ) {
 			}
       global $post;
 			if($position=="center" and $title != ""){ $shortcode .= '<h2 class="heading"><span>'.$title.'</span></h2>'; }
-			if($position=="left" and $title != ""){ $shortcode .= '<h2 class="heading heading-left"><span>'.$title.'</span></h2>'; }
+			if($position=="left" or $position=="" and $title != ""){ $shortcode .= '<h2 class="heading heading-left"><span>'.$title.'</span></h2>'; }
 			if($position=="right" and $title != ""){ $shortcode .= '<h2 class="heading heading-right"><span>'.$title.'</span></h2>'; }
 
 			if($the_query->have_posts()) {
