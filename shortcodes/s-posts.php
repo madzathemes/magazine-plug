@@ -138,7 +138,7 @@ function posts( $atts, $content = null ) {
 					$attachment_id = get_post_thumbnail_id( get_the_ID() );
 					$img_src = wp_get_attachment_image_url( $attachment_id, 'full' );
 					$img_srcset = wp_get_attachment_image_srcset( $attachment_id, 'full' );
-						$shortcode .='<div class="poster-small-bottom'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+						$shortcode .='<div class="poster-small-bottom'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 									if ( has_post_format( 'video' )) {
@@ -162,7 +162,7 @@ function posts( $atts, $content = null ) {
 					$attachment_id = get_post_thumbnail_id( get_the_ID() );
 					$img_src = wp_get_attachment_image_url( $attachment_id, 'full' );
 					$img_srcset = wp_get_attachment_image_srcset( $attachment_id, 'full' );
-						$shortcode .='<div class="poster-small'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+						$shortcode .='<div class="poster-small'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 									if ( has_post_format( 'video' )) {
@@ -196,7 +196,7 @@ function posts( $atts, $content = null ) {
 				    }
 						$shortcode .='<div class="col-md-6 '.$column.'">';
 
-						$shortcode .='<div class="poster-small'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+						$shortcode .='<div class="poster-small'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 							$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -256,7 +256,7 @@ function posts( $atts, $content = null ) {
 					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 					$viewes = $views + "0";
 					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
-						$shortcode .='<div class="poster size-normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+						$shortcode .='<div class="poster size-normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -337,7 +337,7 @@ function posts( $atts, $content = null ) {
 				        $column = 'column-second';
 				    }
 						$shortcode .='<div class="col-md-6 '.$column.'">';
-						$shortcode .='<div class="poster size-normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+						$shortcode .='<div class="poster size-normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 							$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -433,7 +433,7 @@ function posts( $atts, $content = null ) {
 					$viewes = $views + "0";
 					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 
-						$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+						$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 						if ( has_post_thumbnail() ) {
 							$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -546,7 +546,7 @@ function posts( $atts, $content = null ) {
 						$star .='<div class="mt-star mt-star-not"></div>';
 					$star .= '</div>';
 
-						$shortcode .='<div class="poster normal normal-small size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+						$shortcode .='<div class="poster normal normal-small size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius normal-right-small pull-left" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {

@@ -283,7 +283,7 @@ function posts_tabs( $atts, $content = null ) {
 							else { $icon .='<span class="post-icon mt-theme-background"><i class="ic-open open"></i></span>'; }
 
 							// Shortcode
-							$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+							$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 									$shortcode .= $icon;
@@ -377,7 +377,7 @@ function posts_tabs( $atts, $content = null ) {
 									else { $icon .='<span class="post-icon mt-theme-background"><i class="ic-open open"></i></span>'; }
 
 									// Shortcode
-									$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+									$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 									if ( has_post_thumbnail() ) {
 										$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 											$shortcode .= $icon;
@@ -471,7 +471,7 @@ function posts_tabs( $atts, $content = null ) {
 								else { $icon .='<span class="post-icon mt-theme-background"><i class="ic-open open"></i></span>'; }
 
 								// Shortcode
-								$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+								$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 								if ( has_post_thumbnail() ) {
 									$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 										$shortcode .= $icon;
@@ -565,7 +565,7 @@ function posts_tabs( $atts, $content = null ) {
 							else { $icon .='<span class="post-icon mt-theme-background"><i class="ic-open open"></i></span>'; }
 
 							// Shortcode
-							$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+							$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 									$shortcode .= $icon;
@@ -659,7 +659,7 @@ function posts_tabs( $atts, $content = null ) {
 						else { $icon .='<span class="post-icon mt-theme-background"><i class="ic-open open"></i></span>'; }
 
 						// Shortcode
-						$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+						$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 						if ( has_post_thumbnail() ) {
 							$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 								$shortcode .= $icon;
@@ -754,7 +754,7 @@ function posts_tabs( $atts, $content = null ) {
 					else { $icon .='<span class="post-icon mt-theme-background"><i class="ic-open open"></i></span>'; }
 
 					// Shortcode
-					$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+					$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 					if ( has_post_thumbnail() ) {
 						$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 							$shortcode .= $icon;
@@ -849,7 +849,7 @@ if($tab_trending!="off"){
 				else { $icon .='<span class="post-icon mt-theme-background"><i class="ic-open open"></i></span>'; }
 
 				// Shortcode
-				$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+				$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 				if ( has_post_thumbnail() ) {
 					$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 						$shortcode .= $icon;
