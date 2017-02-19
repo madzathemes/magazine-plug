@@ -268,6 +268,14 @@ function posts_tabs( $atts, $content = null ) {
 							if (get_comments_number()!="0") { $data .='<span class="poster-comments">'.get_comments_number().'</span>'; }
 							$data .='</div>';
 
+							$star = "";
+							$star .= '<div class="mt-stars hidden">';
+								$star .='<div class="mt-star"></div>';
+								$star .='<div class="mt-star"></div>';
+								$star .='<div class="mt-star"></div>';
+								$star .='<div class="mt-star"></div>';
+								$star .='<div class="mt-star"></div>';
+							$star .= '</div>';
 
 							$icon = '';
 							if ( has_post_format( 'video' ) ) { $icon .='<span class="video-icon mt-theme-background"></span>'; }
@@ -288,6 +296,7 @@ function posts_tabs( $atts, $content = null ) {
 								$shortcode .='</a>';
 							}
 								$shortcode .='<div class="poster-content">';
+									$shortcode .= $star;
 									$shortcode .= $categorys;
 									$shortcode .= $data;
 									$shortcode .='<a href="'. get_permalink().'"><div><h2>'. get_the_title() .'</h2></div></a>';
