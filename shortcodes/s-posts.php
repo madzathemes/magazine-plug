@@ -537,6 +537,15 @@ function posts( $atts, $content = null ) {
 					$viewes = $views + "0";
 					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 
+					$star = "";
+					$star .= '<div class="mt-stars hidden">';
+						$star .='<div class="mt-star"></div>';
+						$star .='<div class="mt-star"></div>';
+						$star .='<div class="mt-star"></div>';
+						$star .='<div class="mt-star"></div>';
+						$star .='<div class="mt-star"></div>';
+					$star .= '</div>';
+
 						$shortcode .='<div class="poster normal normal-small size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius normal-right-small pull-left" href="'. get_permalink().'">';
@@ -569,6 +578,7 @@ function posts( $atts, $content = null ) {
 								}
 								if ( has_post_format( 'video' ) and has_post_thumbnail() ) {
 									$shortcode .='<div class="poster-info">';
+									$shortcode .= $star;
 									$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
 										$category_name = get_the_category(get_the_ID());
 										$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
