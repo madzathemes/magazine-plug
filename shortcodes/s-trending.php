@@ -126,7 +126,7 @@ function posts_trending( $atts, $content = null ) {
 						$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 						$viewes = $views + "0";
 						if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
-						$shortcode .='<div class="poster trending-normal'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+						$shortcode .='<div class="poster trending-normal'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 						$shortcode .='<div class="number mt-theme-background">'.$i.'</div>';
 							$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -210,7 +210,7 @@ function posts_trending( $atts, $content = null ) {
 							$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 							$viewes = $views + "0";
 							if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
-							$shortcode .='<div class="poster trending-carousel'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
+							$shortcode .='<div class="poster trending-carousel'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							$shortcode .='<div class="number mt-theme-background">'.$i.'</div>';
 								$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';
 									if ( has_post_format( 'video' )) {
