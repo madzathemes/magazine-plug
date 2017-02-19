@@ -578,7 +578,6 @@ function posts( $atts, $content = null ) {
 								}
 								if ( has_post_format( 'video' ) and has_post_thumbnail() ) {
 									$shortcode .='<div class="poster-info">';
-									$shortcode .= $star;
 									$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
 										$category_name = get_the_category(get_the_ID());
 										$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
@@ -608,7 +607,7 @@ function posts( $atts, $content = null ) {
 									$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
 									if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
 								$shortcode .='</div>';
-
+								$shortcode .= $star;
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 								$shortcode .='<p>'.$excerpt_.'</p>';
