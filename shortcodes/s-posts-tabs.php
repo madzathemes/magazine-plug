@@ -273,8 +273,8 @@ function posts_tabs( $atts, $content = null ) {
 								$star .='<div class="mt-star"></div>';
 								$star .='<div class="mt-star"></div>';
 								$star .='<div class="mt-star"></div>';
-								$star .='<div class="mt-star"></div>';
-								$star .='<div class="mt-star"></div>';
+								$star .='<div class="mt-star mt-star-not"></div>';
+								$star .='<div class="mt-star mt-star-not"></div>';
 							$star .= '</div>';
 
 							$icon = '';
