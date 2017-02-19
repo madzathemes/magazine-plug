@@ -293,8 +293,8 @@ function posts_tabs( $atts, $content = null ) {
 									$shortcode .='<a href="'. get_permalink().'"><div><h2>'. get_the_title() .'</h2></div></a>';
 									$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 									$shortcode .='<p>'.$excerpt_.'</p>';
+									$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html__("View Post", "magazin") .'</a></div>';
 								$shortcode .='</div>';
-								$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html__("View Post", "magazin") .'</a></div>';
 								$shortcode .='<div class="clearfix"></div>';
 							$shortcode .='</div>';
 							$i++;
@@ -386,6 +386,7 @@ function posts_tabs( $atts, $content = null ) {
 											$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 											$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 											$shortcode .='<p>'.$excerpt_.'</p>';
+											$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html__("View Post", "magazin") .'</a></div>';
 										$shortcode .='</div>';
 										$shortcode .='<div class="clearfix"></div>';
 									$shortcode .='</div>';
@@ -479,6 +480,7 @@ function posts_tabs( $atts, $content = null ) {
 										$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 										$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 										$shortcode .='<p>'.$excerpt_.'</p>';
+										$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html__("View Post", "magazin") .'</a></div>';
 									$shortcode .='</div>';
 									$shortcode .='<div class="clearfix"></div>';
 								$shortcode .='</div>';
@@ -572,6 +574,7 @@ function posts_tabs( $atts, $content = null ) {
 									$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 									$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 									$shortcode .='<p>'.$excerpt_.'</p>';
+									$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html__("View Post", "magazin") .'</a></div>';
 								$shortcode .='</div>';
 								$shortcode .='<div class="clearfix"></div>';
 							$shortcode .='</div>';
@@ -665,6 +668,7 @@ function posts_tabs( $atts, $content = null ) {
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 								$shortcode .='<p>'.$excerpt_.'</p>';
+								$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html__("View Post", "magazin") .'</a></div>';
 							$shortcode .='</div>';
 							$shortcode .='<div class="clearfix"></div>';
 						$shortcode .='</div>';
@@ -759,6 +763,7 @@ function posts_tabs( $atts, $content = null ) {
 							$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 							$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 							$shortcode .='<p>'.$excerpt_.'</p>';
+							$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html__("View Post", "magazin") .'</a></div>';
 						$shortcode .='</div>';
 						$shortcode .='<div class="clearfix"></div>';
 					$shortcode .='</div>';
@@ -853,6 +858,7 @@ if($tab_trending!="off"){
 						$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 						$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 						$shortcode .='<p>'.$excerpt_.'</p>';
+						$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html__("View Post", "magazin") .'</a></div>';
 					$shortcode .='</div>';
 					$shortcode .='<div class="clearfix"></div>';
 				$shortcode .='</div>';
