@@ -542,8 +542,8 @@ function posts( $atts, $content = null ) {
 						$star .='<div class="mt-star"></div>';
 						$star .='<div class="mt-star"></div>';
 						$star .='<div class="mt-star"></div>';
-						$star .='<div class="mt-star"></div>';
-						$star .='<div class="mt-star"></div>';
+						$star .='<div class="mt-star mt-star-not"></div>';
+						$star .='<div class="mt-star mt-star-not"></div>';
 					$star .= '</div>';
 
 						$shortcode .='<div class="poster normal normal-small size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
