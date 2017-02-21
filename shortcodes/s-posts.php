@@ -537,6 +537,7 @@ function posts( $atts, $content = null ) {
 					$viewes = $views + "0";
 					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 
+					$stars = "";
 					$star = "";
 					$star .= '<div class="mt-stars hidden">';
 						$star .='<div class="mt-star"></div>';
@@ -607,7 +608,7 @@ function posts( $atts, $content = null ) {
 									$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
 									if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
 								$shortcode .='</div>';
-								$shortcode .= $star;
+								$shortcode .= $stars;
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 								$shortcode .='<p>'.$excerpt_.'</p>';
