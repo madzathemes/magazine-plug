@@ -328,7 +328,6 @@ function post_metabox() {
 		// 'display_cb' => 'yourprefix_display_text_small_column', // Output the display of the column values through a callback.
 	) );
 
-
 }
 
 add_action( 'cmb2_admin_init', 'page_metabox' );
