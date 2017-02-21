@@ -382,7 +382,7 @@ function grid( $atts, $content = null ) {
 
 				if($type=="5"){
           $i=1;
-					$shortcode .='<div class="mt-slide-1 mt-radius">';
+					$shortcode .='<div class="mt-slide-1 mt-radius mt-slide-simple">';
 					while ( $the_query->have_posts() ) : $the_query->the_post();
 
 		              if ( has_post_thumbnail() ) {
