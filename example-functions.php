@@ -319,7 +319,7 @@ function post_metabox() {
 		'name' => esc_html__( 'Featured Image Copyright', 'magazin' ),
 		'desc' => esc_html__( 'Add image copyright bottom to featured image', 'magazin' ),
 		'id'   => $prefix . 'img_copyright',
-		'type' => 'text_small',
+		'type' => 'text',
 		// 'repeatable' => true,
 		// 'column' => array(
 		// 	'name'     => esc_html__( 'Column Title', 'magazin' ), // Set the admin column title
