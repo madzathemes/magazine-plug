@@ -469,8 +469,8 @@ function page_metabox() {
 	) );
 
 }
-
-if(function_exists( 'fullstory_theme_setup' )){
+$my_theme = wp_get_theme( 'fullstory' );
+if($my_theme->exists()){
 	function page_metabox_full() {
 		$prefix = 'magazin_';
 
