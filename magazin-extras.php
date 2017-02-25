@@ -146,11 +146,6 @@ function mt_header_script() {
 			wp_add_inline_script( 'mt-defer', '
 			var today = new Date();
 			var h = today.getHours();
-			var m = today.getMinutes();
-			var s = today.getSeconds();
-			m = checkTime(m);
-			s = checkTime(s);
-			document.getElementById("time-live").innerHTML = h + ":" + m + "<span>:" + s + "</span>";
 			function startTime() {
 			    var today = new Date();
 			    var m = today.getMinutes();
