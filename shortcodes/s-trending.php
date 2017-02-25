@@ -133,7 +133,7 @@ function posts_trending( $atts, $content = null ) {
 									$shortcode .='<span class="video-icon"></span>';
 								}
 								if ( has_post_thumbnail() ) {
-								  $shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
+								  $shortcode .='<div class="mt-post-image" ><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="'.get_the_title().'" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
 								}
 								if ( !has_post_format( 'video' ) ) {
 									$shortcode .='<i class="ic-open open"></i>';
@@ -217,7 +217,7 @@ function posts_trending( $atts, $content = null ) {
 										$shortcode .='<span class="video-icon"></span>';
 									}
 									if ( has_post_thumbnail() ) {
-										$shortcode .='<div class="mt-post-image" ><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy="'. get_the_post_thumbnail_url(get_the_ID(),'medium').'" /></div>';
+										$shortcode .='<div class="mt-post-image" ><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy="'. get_the_post_thumbnail_url(get_the_ID(),'medium').'" alt="'.get_the_title().'"/></div>';
 									}
 									if ( !has_post_format( 'video' ) ) {
 										$shortcode .='<i class="ic-open open"></i>';
