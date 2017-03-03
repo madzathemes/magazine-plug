@@ -297,7 +297,7 @@ function posts_tabs( $atts, $content = null ) {
 								$shortcode .='</a>';
 							}
 								$shortcode .='<div class="poster-content">';
-									$shortcode .= $stars;
+									$shortcode .= $star;
 									$shortcode .= $categorys;
 									$shortcode .= $data;
 									$shortcode .='<a href="'. get_permalink().'"><div><h2>'. get_the_title() .'</h2></div></a>';
