@@ -479,8 +479,43 @@ if($my_theme->exists()){
 		 */
 		$cmb_demo = new_cmb2_box( array(
 			'id'            => $prefix . 'metabox_page_top',
-			'title'         => esc_html__( 'Extra Settings', 'magazin' ),
+			'title'         => esc_html__( 'Page Top Area', 'magazin' ),
 			'object_types'  => array( 'page', ), // Post type
+			// 'show_on_cb' => 'yourprefix_show_if_front_page', // function should return a bool value
+			// 'context'    => 'normal',
+			// 'priority'   => 'high',
+			// 'show_names' => true, // Show field names on the left
+			// 'cmb_styles' => false, // false to disable the CMB stylesheet
+			// 'closed'     => true, // true to keep the metabox closed by default
+			// 'classes'    => 'extra-class', // Extra cmb2-wrap classes
+			// 'classes_cb' => 'yourprefix_add_some_classes', // Add classes through a callback.
+		) );
+
+		$cmb_demo->add_field( array(
+			'name'             => esc_html__( 'Page Top Information', 'magazin' ),
+			'id'               => $prefix . 'page_top',
+			'type'             => 'radio_inline',
+			'show_option_none' => 'Off ',
+			'options'          => array(
+				'on' => esc_html__( 'On', 'magazin' ),
+			),
+		) );
+
+	}
+	add_action( 'cmb2_admin_init', 'page_metabox_full' );
+}
+
+if($my_theme->exists()){
+	function page_metabox_full() {
+		$prefix = 'magazin_';
+
+		/**
+		 * Sample metabox to demonstrate each field type included
+		 */
+		$cmb_demo = new_cmb2_box( array(
+			'id'            => $prefix . 'metabox_page_top',
+			'title'         => esc_html__( 'Extra Settings', 'magazin' ),
+			'object_types'  => array( 'post', ), // Post type
 			// 'show_on_cb' => 'yourprefix_show_if_front_page', // function should return a bool value
 			// 'context'    => 'normal',
 			// 'priority'   => 'high',
@@ -494,16 +529,6 @@ if($my_theme->exists()){
 		$cmb_demo->add_field( array(
 			'name'             => esc_html__( 'First Letter Dropcaps', 'magazin' ),
 			'id'               => $prefix . 'first_letter',
-			'type'             => 'radio_inline',
-			'show_option_none' => 'Off ',
-			'options'          => array(
-				'on' => esc_html__( 'On', 'magazin' ),
-			),
-		) );
-
-		$cmb_demo->add_field( array(
-			'name'             => esc_html__( 'Page Top Information', 'magazin' ),
-			'id'               => $prefix . 'page_top',
 			'type'             => 'radio_inline',
 			'show_option_none' => 'Off ',
 			'options'          => array(
