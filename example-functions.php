@@ -530,9 +530,10 @@ if($my_theme->exists()){
 			'name'             => esc_html__( 'First Letter Dropcaps', 'magazin' ),
 			'id'               => $prefix . 'first_letter',
 			'type'             => 'radio_inline',
-			'show_option_none' => 'Off ',
+			'show_option_none' => 'Default ',
 			'options'          => array(
 				'on' => esc_html__( 'On', 'magazin' ),
+				'off' => esc_html__( 'Off', 'magazin' ),
 			),
 		) );
 
