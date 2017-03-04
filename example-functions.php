@@ -479,7 +479,7 @@ if($my_theme->exists()){
 		 */
 		$cmb_demo = new_cmb2_box( array(
 			'id'            => $prefix . 'metabox_page_top',
-			'title'         => esc_html__( 'Page Top', 'magazin' ),
+			'title'         => esc_html__( 'Extra Settings', 'magazin' ),
 			'object_types'  => array( 'page', ), // Post type
 			// 'show_on_cb' => 'yourprefix_show_if_front_page', // function should return a bool value
 			// 'context'    => 'normal',
@@ -489,6 +489,16 @@ if($my_theme->exists()){
 			// 'closed'     => true, // true to keep the metabox closed by default
 			// 'classes'    => 'extra-class', // Extra cmb2-wrap classes
 			// 'classes_cb' => 'yourprefix_add_some_classes', // Add classes through a callback.
+		) );
+
+		$cmb_demo->add_field( array(
+			'name'             => esc_html__( 'First Letter Dropcaps', 'magazin' ),
+			'id'               => $prefix . 'first_letter',
+			'type'             => 'radio_inline',
+			'show_option_none' => 'Off ',
+			'options'          => array(
+				'on' => esc_html__( 'On', 'magazin' ),
+			),
 		) );
 
 		$cmb_demo->add_field( array(
