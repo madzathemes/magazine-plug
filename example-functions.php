@@ -506,14 +506,14 @@ if($my_theme->exists()){
 }
 
 if($my_theme->exists()){
-	function page_metabox_full() {
+	function post_metabox_full() {
 		$prefix = 'magazin_';
 
 		/**
 		 * Sample metabox to demonstrate each field type included
 		 */
 		$cmb_demo = new_cmb2_box( array(
-			'id'            => $prefix . 'metabox_page_top',
+			'id'            => $prefix . 'metabox_post_extras',
 			'title'         => esc_html__( 'Extra Settings', 'magazin' ),
 			'object_types'  => array( 'post', ), // Post type
 			// 'show_on_cb' => 'yourprefix_show_if_front_page', // function should return a bool value
@@ -537,7 +537,7 @@ if($my_theme->exists()){
 		) );
 
 	}
-	add_action( 'cmb2_admin_init', 'page_metabox_full' );
+	add_action( 'cmb2_admin_init', 'post_metabox_full' );
 }
 /**
  * Hook in and add a demo metabox. Can only happen on the 'cmb2_admin_init' or 'cmb2_init' hook.
