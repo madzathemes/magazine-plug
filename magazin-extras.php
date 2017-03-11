@@ -215,15 +215,17 @@ function magazin_PostViews($post_ID) {
 }
 
 function magazin_custom_oembed_filter($html, $url, $attr, $post_ID) {
+		$input = get_the_title().' '.get_the_permalink(); $title = str_replace( ' ', '+', $input );
+		$urls = wp_get_attachment_url( get_post_thumbnail_id($post_ID));
 		$return = "";
     $return .='<div class="single-share">';
 			$return .='<div class="video-wrap">';
 				$return .='<div class="video-container">';
-					$return .='<div class="single-share-socials mt-radius-b">';
-						$return .='<a href="http://www.facebook.com/sharer.php?u='. get_the_permalink() .'" target="_blank"><div class="facebook mt-radius-b"></div></a>';
-						$return .='<a href="http://twitter.com/home/?status='. get_the_title() .' - '.  get_the_permalink() .'" target="_blank"><div class="twiiter mt-radius-b"></div></a>';
-						$return .='<a href="https://plus.google.com/share?url='. get_the_permalink() .'" target="_blank"><div class="google mt-radius-b"></div></a>';
-					$return .='<a href="http://pinterest.com/pin/create/button/?url='. get_the_permalink() .'&media='. esc_url($url) .'" target="_blank"><div class="pinterest mt-radius-b"></div></a>';
+					$return .='<div class="single-share-socials mt-radius-b" >';
+						$return .='<a target="_blank"  href="http://www.facebook.com/sharer.php?u='. get_the_permalink() .'" ><div class="facebook mt-radius-b"></div></a>';
+						$return .='<a target="_blank"  href="http://twitter.com/home/?status='. $title .'" ><div class="twiiter mt-radius-b"></div></a>';
+						$return .='<a target="_blank"  href="https://plus.google.com/share?url='. get_the_permalink() .'" ><div class="google mt-radius-b"></div></a>';
+					$return .='<a target="_blank"  href="http://pinterest.com/pin/create/button/?url='. get_the_permalink() .'&media='. esc_url($urls) .'" ><div class="pinterest mt-radius-b"></div></a>';
 				$return .='</div>'.$html.'</div>';
 			$return .='</div>';
 		$return .='</div>';
