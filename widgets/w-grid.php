@@ -61,8 +61,10 @@ class Grid_Widget extends WP_Widget {
 				<option value='1'<?php echo ($type=='1')?'selected':''; ?>>Style 1</option>
 				<option value='2'<?php echo ($type=='2')?'selected':''; ?>>Style 2</option>
 				<option value='3'<?php echo ($type=='3')?'selected':''; ?>>Style 3</option>
-				<option value='4'<?php echo ($type=='4')?'selected':''; ?>>Style 4</option>
-				<option value='5'<?php echo ($type=='5')?'selected':''; ?>>Style 5</option>
+				<?php $my_theme = wp_get_theme( 'fullstory' ); if($my_theme->exists()){  ?>
+					<option value='4'<?php echo ($type=='4')?'selected':''; ?>>Style 4</option>
+					<option value='5'<?php echo ($type=='5')?'selected':''; ?>>Style 5</option>
+				<?php } ?>
 			</select>
 		</p>
 		<p>

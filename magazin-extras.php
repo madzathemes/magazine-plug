@@ -301,6 +301,16 @@ function magazin_class($classes) {
 		$body_class .=' mt-menu-full ';
 	}
 
+	$first_leter = get_post_meta(get_the_ID(), "magazin_first_letter", true);
+	if(!empty($first_leter)){
+		if ($first_leter=="on") {
+			$body_class .= ' mt-fl-on ';
+		}
+	} else {
+		if ( true == get_theme_mod( 'mt_first_letter', false ) ) {
+			$body_class .=' mt-fl-on ';
+		}
+	}
 
 	$body_class .= ' '.$zoom.' '.$radius.' '.$colors;
 	$classes[] =  $body_class;
@@ -368,13 +378,6 @@ function SearchFilter($query) {
 
 add_filter('pre_get_posts','SearchFilter');
 
-function wpsites_exclude_latest_post($query) {
-	if ($query->is_category() && $query->is_main_query()) {
-		$query->set( 'offset', '1' );
-	}
-}
-
-add_action('pre_get_posts', 'wpsites_exclude_latest_post');
 
 add_action('pre_get_posts', 'myprefix_query_offset', 1 );
 function myprefix_query_offset(&$query) {
