@@ -377,8 +377,8 @@ function grid( $atts, $content = null ) {
 		              if ( has_post_thumbnail() ) {
 										if($i==1) {
 											$shortcode .='<div class="mt-slide-1-img">';
-												$shortcode .='<div class="mt-slide-1-image" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_1300').');"></div><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_1300_5').');"></div>';
-											$shortcode .='</div>';
+												$shortcode .='<div class="mt-slide-1-image" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_1300').');"></div>';
+											$shortcode .='</div><img class="mt-post-image-background" src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_1300_5').'">';
 										}
 									}
 
