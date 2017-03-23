@@ -9,6 +9,7 @@ function posts_trending( $atts, $content = null ) {
 			'exclude' => '',
 			'category' => '',
 			'tag' => '',
+			'review_star' => 'on',
 			'class' => '',
 			'type' => 'small-two',
 			'offset'=> '',
@@ -147,11 +148,7 @@ function posts_trending( $atts, $content = null ) {
 												if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 											$shortcode .='</span></div>';
 										}
-										$shortcode .='<div class="poster-data color-silver-light">';
-											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-											$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-											if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-										$shortcode .='</div>';
+										$shortcode .= mt_pl_views_shares();
 									$shortcode .='</div>';
 								}
 								if ( has_post_format( 'video' ) and has_post_thumbnail() ) {
@@ -163,22 +160,14 @@ function posts_trending( $atts, $content = null ) {
 										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
 										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 									$shortcode .='</span></div>';
-									$shortcode .='<div class="poster-data color-silver-light">';
-										$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-										$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-										if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-									$shortcode .='</div>';
+									$shortcode .= mt_pl_views_shares();
 									$shortcode .='</div>';
 								}
 							$shortcode .='</a>';
 							$shortcode .='<div class="poster-content-wrap">';
-										$shortcode .='<div class="poster-data color-silver-light">';
-											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-											$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-											if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-										$shortcode .='</div>';
-
-								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
+										if ($review_star!="off") { $shortcode .= mt_review_star(); }
+										$shortcode .= mt_pl_views_shares();
+										$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 							$shortcode .='</div>';
 						$shortcode .='</div>';
@@ -231,11 +220,7 @@ function posts_trending( $atts, $content = null ) {
 													if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 												$shortcode .='</span></div>';
 											}
-											$shortcode .='<div class="poster-data color-silver-light">';
-												$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-												$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-												if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-											$shortcode .='</div>';
+											$shortcode .= mt_pl_views_shares();
 										$shortcode .='</div>';
 									}
 									if ( has_post_format( 'video' ) and has_post_thumbnail() ) {
@@ -247,16 +232,12 @@ function posts_trending( $atts, $content = null ) {
 											if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
 											if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 										$shortcode .='</span></div>';
-										$shortcode .='<div class="poster-data color-silver-light">';
-											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-											$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-											if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-										$shortcode .='</div>';
+										$shortcode .= mt_pl_views_shares();
 										$shortcode .='</div>';
 									}
 								$shortcode .='</a>';
 								$shortcode .='<div class="poster-content-wrap">';
-
+									if ($review_star!="off") { $shortcode .= mt_review_star(); }
 											$shortcode .='<div class="poster-data color-silver-light">';
 												$shortcode .='<span class="poster-shares">'. $shares .' </span>';
 												$shortcode .='<span class="poster-views">'. $viewes .' </span>';

@@ -18,6 +18,7 @@ function posts( $atts, $content = null ) {
 			'author'=> '',
 			'taxonomy'=> '',
 			'taxonomy_term'=> '',
+			'review_star' => 'on',
 			), $atts));
 
 			global $post;
@@ -120,11 +121,7 @@ function posts( $atts, $content = null ) {
 			}
 
 			$shortcode = '';
-			$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-			$shares = "0";
-			if (!empty($share)){
-				$shares = $share;
-			}
+
 			if($title_type=="center" and $title != ""){ $shortcode .= '<h2 class="heading"><span>'.$title.'</span></h2>'; }
 			if($title_type=="left" and $title != ""){ $shortcode .= '<h2 class="heading heading-left"><span>'.$title.'</span></h2>'; }
 			if($title_type=="right" and $title != ""){ $shortcode .= '<h2 class="heading heading-right"><span>'.$title.'</span></h2>'; }
@@ -162,7 +159,7 @@ function posts( $atts, $content = null ) {
 					$attachment_id = get_post_thumbnail_id( get_the_ID() );
 					$img_src = wp_get_attachment_image_url( $attachment_id, 'full' );
 					$img_srcset = wp_get_attachment_image_srcset( $attachment_id, 'full' );
-						$shortcode .='<div class="poster-small'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
+						$shortcode .='<div class="poster-small '.review_type().' '; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 									if ( has_post_format( 'video' )) {
@@ -179,6 +176,7 @@ function posts( $atts, $content = null ) {
 									$shortcode .='</a>';
 							}
 							$shortcode .='<div class="poster-text">';
+								if ($review_star!="off") { $shortcode .= mt_review_star(); }
 								$shortcode .='<a href="'. get_permalink().'"><h4>'. get_the_title() .'</h4></a>';
 								$shortcode .='<small class="mt-pl"><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 							$shortcode .='</div>';
@@ -196,7 +194,7 @@ function posts( $atts, $content = null ) {
 				    }
 						$shortcode .='<div class="col-md-6 '.$column.'">';
 
-						$shortcode .='<div class="poster-small'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
+						$shortcode .='<div class="poster-small '.review_type().' '; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 							$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -212,6 +210,7 @@ function posts( $atts, $content = null ) {
 								$shortcode .='</a>';
 						}
 							$shortcode .='<div class="poster-text">';
+								if ($review_star!="off") { $shortcode .= mt_review_star(); }
 								$shortcode .='<a href="'. get_permalink().'"><h4>'. get_the_title() .'</h4></a>';
 								$shortcode .='<small class="mt-pl"><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 							$shortcode .='</div>';
@@ -244,19 +243,8 @@ function posts( $atts, $content = null ) {
 						if (!empty($excerpt)) { $excerpt_ = $excerpt; }
 					}
 
-					// Share count meta real and fake.
-					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-					$shares = $share_real;
-					if (!empty($share)){ $shares = $share+$share_real; $shares = number_format($shares);}
 
-
-					// View count meta real and fake.
-					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-					$viewes = $views + "0";
-					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
-						$shortcode .='<div class="poster size-normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
+						$shortcode .='<div class="poster size-normal '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -277,11 +265,7 @@ function posts( $atts, $content = null ) {
 												if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 												}
 												$shortcode .='</span></div>';
-										$shortcode .='<div class="poster-data color-silver-light">';
-											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-											$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-											if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-										$shortcode .='</div>';
+										$shortcode .= mt_pl_views_shares();
 									$shortcode .='</div>';
 								}
 								if ( has_post_format( 'video' ) and has_post_thumbnail() ) {
@@ -293,22 +277,15 @@ function posts( $atts, $content = null ) {
 										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
 										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 										$shortcode .='</span></div>';
-									$shortcode .='<div class="poster-data color-silver-light">';
-										$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-										$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-										if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-									$shortcode .='</div>';
+									$shortcode .= mt_pl_views_shares();
 									$shortcode .='</div>';
 								}
 							$shortcode .='</a>';
 						}
 							$shortcode .='<div class="poster-content-wrap">';
 
-										$shortcode .='<div class="poster-data color-silver-light">';
-											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-											$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-											if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-										$shortcode .='</div>';
+								if ($review_star!="off") { $shortcode .= mt_review_star(); }
+								$shortcode .= mt_pl_views_shares();
 
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
@@ -320,24 +297,13 @@ function posts( $atts, $content = null ) {
 					$shortcode .='<div class="row">';
 					$counter = 0;
 					while ( $the_query->have_posts() ) : $the_query->the_post();
-					// Share count meta real and fake.
-					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-					$shares = $share_real;
-					if (!empty($share)){ $shares = $share+$share_real; $shares = number_format($shares);}
 
-
-					// View count meta real and fake.
-					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-					$viewes = $views + "0";
-					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 						$column = 'column-first';
 						if(++$counter % 2 === 0) {
 				        $column = 'column-second';
 				    }
 						$shortcode .='<div class="col-md-6 '.$column.'">';
-						$shortcode .='<div class="poster size-normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
+						$shortcode .='<div class="poster size-normal '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 							$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -358,11 +324,7 @@ function posts( $atts, $content = null ) {
 												if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 												$shortcode .='</span></div>';
 										}
-										$shortcode .='<div class="poster-data color-silver-light">';
-											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-											$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-											if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-										$shortcode .='</div>';
+										$shortcode .= mt_pl_views_shares();
 									$shortcode .='</div>';
 								}
 								if ( has_post_format( 'video' ) and has_post_thumbnail() ) {
@@ -374,22 +336,16 @@ function posts( $atts, $content = null ) {
 										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
 										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 										$shortcode .='</span></div>';
-									$shortcode .='<div class="poster-data color-silver-light">';
-										$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-										$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-										if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-									$shortcode .='</div>';
+									$shortcode .= mt_pl_views_shares();
 									$shortcode .='</div>';
 								}
 							$shortcode .='</a>';
 						}
-									$shortcode .='<div class="poster-data color-silver-light">';
-										$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-										$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-										if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-									$shortcode .='</div>';
+									$shortcode .= mt_pl_views_shares();
 
-							$shortcode .='<div class="poster-content-wrap"><a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
+							$shortcode .='<div class="poster-content-wrap">';
+							if ($review_star!="off") { $shortcode .= mt_review_star(); }
+							$shortcode .= '<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 							$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 						$shortcode .='</div></div>';
 						$shortcode .='</div>';
@@ -420,20 +376,9 @@ function posts( $atts, $content = null ) {
 						if (!empty($excerpt)) { $excerpt_ = $excerpt; }
 					}
 
-					// Share count meta real and fake.
-					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-					$shares = $share_real;
-					if (!empty($share)){ $shares = $share+$share_real; $shares = number_format($shares);}
 
 
-					// View count meta real and fake.
-					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-					$viewes = $views + "0";
-					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
-
-						$shortcode .='<div class="poster normal size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
+						$shortcode .='<div class="poster normal '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 						if ( has_post_thumbnail() ) {
 							$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -454,11 +399,7 @@ function posts( $atts, $content = null ) {
 												if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 												$shortcode .='</span></div>';
 										}
-										$shortcode .='<div class="poster-data color-silver-light">';
-											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-											$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-											if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-										$shortcode .='</div>';
+										$shortcode .= mt_pl_views_shares();
 									$shortcode .='</div>';
 								}
 								if ( has_post_format( 'video' ) and has_post_thumbnail() ) {
@@ -470,16 +411,13 @@ function posts( $atts, $content = null ) {
 										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
 										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 										$shortcode .='</span></div>';
-									$shortcode .='<div class="poster-data color-silver-light">';
-										$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-										$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-										if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-									$shortcode .='</div>';
+									$shortcode .= mt_pl_views_shares();
 									$shortcode .='</div>';
 								}
 							$shortcode .='</a>';
 						}
 							$shortcode .='<div class="poster-content">';
+							if ($review_star!="off") { $shortcode .= mt_review_star(); }
 							$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
 								$category_name = get_the_category(get_the_ID());
 								$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
@@ -487,15 +425,12 @@ function posts( $atts, $content = null ) {
 								if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
 								if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 								$shortcode .='</span></div>';
-								$shortcode .='<div class="poster-data color-silver-light">';
-									$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-									$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-									if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-								$shortcode .='</div>';
+								$shortcode .= mt_pl_views_shares();
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 								$shortcode .='<p>'.$excerpt_.'</p>';
-								$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html__("View Post", "magazine-plug") .'</a></div>';
+								if ( false == get_theme_mod( 't_pl_view_post', false ) ) { $t_view_post = esc_html__("View Post", "magazine-plug");  } else { $t_view_post = get_theme_mod( 't_pl_view_post' ); }
+								$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html($t_view_post) .'</a></div>';
 							$shortcode .='</div>';
 							$shortcode .='<div class="clearfix"></div>';
 						$shortcode .='</div>';
@@ -524,30 +459,10 @@ function posts( $atts, $content = null ) {
 						if (!empty($excerpt)) { $excerpt_ = $excerpt; }
 					}
 
-					// Share count meta real and fake.
-					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-					$shares = $share_real;
-					if (!empty($share)){ $shares = $share+$share_real; $shares = number_format($shares);}
 
 
-					// View count meta real and fake.
-					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-					$viewes = $views + "0";
-					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 
-					$stars = "";
-					$star = "";
-					$star .= '<div class="mt-stars hidden">';
-						$star .='<div class="mt-star"></div>';
-						$star .='<div class="mt-star"></div>';
-						$star .='<div class="mt-star"></div>';
-						$star .='<div class="mt-star mt-star-not"></div>';
-						$star .='<div class="mt-star mt-star-not"></div>';
-					$star .= '</div>';
-
-						$shortcode .='<div class="poster normal normal-small size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
+						$shortcode .='<div class="poster normal normal-small '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius normal-right-small pull-left" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -568,13 +483,7 @@ function posts( $atts, $content = null ) {
 												if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 												$shortcode .='</span></div>';
 										}
-										$shortcode .='<div class="poster-data color-silver-light">';
-
-												$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-
-											$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-											if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-										$shortcode .='</div>';
+										$shortcode .= mt_pl_views_shares();
 									$shortcode .='</div>';
 								}
 								if ( has_post_format( 'video' ) and has_post_thumbnail() ) {
@@ -586,16 +495,13 @@ function posts( $atts, $content = null ) {
 										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
 										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 										$shortcode .='</span></div>';
-									$shortcode .='<div class="poster-data color-silver-light">';
-										$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-										$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-										if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-									$shortcode .='</div>';
+									$shortcode .= mt_pl_views_shares();
 									$shortcode .='</div>';
 								}
 							$shortcode .='</a>';
 						}
 							$shortcode .='<div class="poster-content">';
+							if ($review_star!="off") { $shortcode .= mt_review_star(); }
 							$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
 								$category_name = get_the_category(get_the_ID());
 								$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
@@ -603,12 +509,7 @@ function posts( $atts, $content = null ) {
 								if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
 								if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 								$shortcode .='</span></div>';
-								$shortcode .='<div class="poster-data color-silver-light">';
-									$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-									$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-									if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-								$shortcode .='</div>';
-								$shortcode .= $stars;
+								$shortcode .= mt_pl_views_shares();
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
 								$shortcode .='<p>'.$excerpt_.'</p>';
@@ -657,7 +558,8 @@ function posts( $atts, $content = null ) {
 												$shortcode .='</span></div>';
 											$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 											$shortcode .='<p>'.$excerpt_.'</p>';
-											$shortcode .='<a class="poster-large-link" href="'. get_permalink().'"><div><span>'. esc_html__( 'Read More', 'magazine-plug'  ) .'</span></div></a>';
+											if ( false == get_theme_mod( 't_pl_read_more', false ) ) { $t_read_more = esc_html__("Read More", "magazine-plug");  } else { $t_read_more = get_theme_mod( 't_pl_read_more' ); }
+											$shortcode .='<a class="poster-large-link" href="'. get_permalink().'"><div><span>'. esc_html($t_read_more) .'</span></div></a>';
 										$shortcode .='</div>';
 									$shortcode .='</div>';
 									if ( has_post_thumbnail() ) {

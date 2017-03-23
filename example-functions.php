@@ -515,6 +515,196 @@ if($my_theme->exists()){
 	}
 	add_action( 'cmb2_admin_init', 'page_metabox_full' );
 }
+function review_metabox_top() {
+	$prefix = 'magazin_';
+
+	/**
+	 * Sample metabox to demonstrate each field type included
+	 */
+	$settings = new_cmb2_box( array(
+		'id'            => $prefix . 'metabox_reviews',
+		'title'         => esc_html__( 'Reviews', 'magazin' ),
+		'object_types'  => array( 'post'), // Post type
+		// 'show_on_cb' => 'yourprefix_show_if_front_page', // function should return a bool value
+		// 'context'    => 'normal',
+		'priority'   => 'low',
+		// 'show_names' => true, // Show field names on the left
+		// 'cmb_styles' => false, // false to disable the CMB stylesheet
+		// 'closed'     => true, // true to keep the metabox closed by default
+		// 'classes'    => 'extra-class', // Extra cmb2-wrap classes
+		// 'classes_cb' => 'yourprefix_add_some_classes', // Add classes through a callback.
+	) );
+
+	$settings->add_field( array(
+		'name'             => esc_html__( 'Review Type', 'magazin' ),
+		'id'               => $prefix . 'review_type',
+		'type'             => 'radio_inline',
+		'show_option_none' => 'Off ',
+		'options'          => array(
+			'star' => esc_html__( 'Star', 'magazin' ),
+			#'point' => esc_html__( 'Point', 'magazin' ),
+			#'percentage' => esc_html__( 'Percentage', 'magazin' ),
+		),
+	) );
+
+}
+add_action( 'cmb2_admin_init', 'review_metabox_top' );
+
+function review_metabox() {
+	$prefix = 'magazin_';
+
+	/**
+	 * Sample metabox to demonstrate each field type included
+	 */
+	$settings = new_cmb2_box( array(
+		'id'            => $prefix . 'metabox_reviews_setting',
+		'title'         => esc_html__( 'Reviews Setting', 'magazin' ),
+		'object_types'  => array( 'post'), // Post type
+		// 'show_on_cb' => 'yourprefix_show_if_front_page', // function should return a bool value
+		// 'context'    => 'normal',
+		'priority'   => 'low',
+		// 'show_names' => true, // Show field names on the left
+		// 'cmb_styles' => false, // false to disable the CMB stylesheet
+		// 'closed'     => true, // true to keep the metabox closed by default
+		// 'classes'    => 'extra-class', // Extra cmb2-wrap classes
+		// 'classes_cb' => 'yourprefix_add_some_classes', // Add classes through a callback.
+	) );
+
+	$settings->add_field( array(
+			'name' => 'Review Heading',
+			'id'   => $prefix . 'review_head',
+			'type' => 'text',
+			// 'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
+	) );
+
+	$group_field_id = $settings->add_field( array(
+    'id'          => $prefix . 'review_group',
+    'type'        => 'group',
+    // 'repeatable'  => false, // use false if you want non-repeatable group
+    'options'     => array(
+        'group_title'   => __( 'Field {#}', 'cmb2' ), // since version 1.1.4, {#} gets replaced by row number
+        'add_button'    => __( 'Add Another Field', 'cmb2' ),
+        'remove_button' => __( 'Remove Field', 'cmb2' ),
+        'sortable'      => true, // beta
+        'closed'     => true, // true to have the groups closed by default
+    ),
+) );
+
+		// Id's for group's fields only need to be unique for the group. Prefix is not needed.
+		$settings->add_group_field( $group_field_id, array(
+		    'name' => 'Feature Name',
+		    'id'   => 'name',
+		    'type' => 'text',
+		    // 'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
+		) );
+
+		// Id's for group's fields only need to be unique for the group. Prefix is not needed.
+		$settings->add_group_field( $group_field_id, array(
+		    'name' => 'Number',
+		    'id'   => 'number',
+				#'description' => __( 'Star (1 - 5), Point (1 - 10), Percentage (1 - 100)', 'cmb2' ),
+				'description' => __( 'Star (1 - 5)', 'cmb2' ),
+		    'type' => 'text',
+		    // 'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
+		) );
+
+		$settings->add_field( array(
+				'name' => 'Description',
+				'id'   => $prefix . 'review_decs',
+				'type' => 'wysiwyg',
+				'options' => array(
+	        'wpautop' => true, // use wpautop?
+	        'media_buttons' => false, // show insert/upload button(s)
+
+	        'textarea_rows' => get_option('default_post_edit_rows', 4), // rows="..."
+	        'tabindex' => '',
+	        'editor_css' => '', // intended for extra styles for both visual and HTML editors buttons, needs to include the `<style>` tags, can use "scoped".
+	        'editor_class' => '', // add extra class(es) to the editor textarea
+	        'teeny' => true, // output the minimal editor config used in Press This
+	        'dfw' => false, // replace the default fullscreen with DFW (needs specific css)
+	        'tinymce' => false, // load TinyMCE, can be used to pass settings directly to TinyMCE using an array()
+	        'quicktags' => true // load Quicktags, can be used to pass settings directly to Quicktags using an array()
+	    ),
+				// 'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
+		) );
+
+
+		#$settings->add_field( array(
+		#		'name' => 'Pros',
+		#		'id'   => $prefix . 'review_pros',
+		#		'type' => 'text',
+		#		'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
+		#) );
+
+		#$settings->add_field( array(
+		#		'name' => 'Cons',
+		#		'id'   => $prefix . 'review_cons',
+		#		'type' => 'text',
+		#		'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
+		#) );
+
+		$settings->add_field( array(
+				'name' => 'Button Name',
+				'id'   => $prefix . 'review_btn_name',
+				'type' => 'text_small',
+				// 'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
+		) );
+
+		$settings->add_field( array(
+				'name' => 'Button URL',
+				'id'   => $prefix . 'review_btn_url',
+				'type' => 'text_url',
+				// 'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
+		) );
+
+		$settings->add_field( array(
+			'name'             => esc_html__( 'Review Location', 'magazin' ),
+			'id'               => $prefix . 'review_location',
+			'type'             => 'radio_inline',
+			'show_option_none' => 'After Content ',
+			'options'          => array(
+				'before' => esc_html__( 'Before Content', 'magazin' ),
+				#'shortcode' => esc_html__( 'Custom (use shortcode)', 'magazin' ),
+			),
+		) );
+		$settings->add_field( array(
+			'name'             => esc_html__( 'Review Location', 'magazin' ),
+			'id'               => $prefix . 'review_in_title',
+			'type'             => 'radio_inline',
+			'show_option_none' => 'Default ',
+			'options'          => array(
+				'on' => esc_html__( 'On', 'magazin' ),
+				'off' => esc_html__( 'Off', 'magazin' ),
+				#'shortcode' => esc_html__( 'Custom (use shortcode)', 'magazin' ),
+			),
+		) );
+
+		$settings->add_field( array(
+    'name' => 'Reviews Shortcode',
+    'desc' => 'Copy & paste this shortcode in the content.',
+    'id'   => 'review_shortcode',
+    'type' => 'text',
+    'render_row_cb' => 'cmb_review_render_row_cb',
+) );
+
+
+}
+add_action( 'cmb2_admin_init', 'review_metabox' );
+
+function cmb_review_render_row_cb( $field_args, $field ) {
+    $id          = $field->args( 'id' );
+    $label       = $field->args( 'name' );
+    $name        = $field->args( '_name' );
+    $value       = $field->escaped_value();
+    $description = $field->args( 'description' );
+    ?>
+    <div class="mt-review-shortcode">
+        <p><input id="<?php echo $id; ?>" type="text" name="<?php echo $name; ?>" value='[mt-review id="<?php echo get_the_ID(); ?>"]' readonly="readonly"/></p>
+        <p class="description"><?php echo $description; ?></p>
+    </div>
+    <?php
+}
+
 
 /**
  * Hook in and add a demo metabox. Can only happen on the 'cmb2_admin_init' or 'cmb2_init' hook.

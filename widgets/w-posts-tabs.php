@@ -25,6 +25,7 @@ class Post_Tabs_Widget extends WP_Widget {
 		$tab_videos = "";
 		$tab_galleries = "";
 		$author = "";
+		$review_star = "";
 
 		if ( ! empty( $instance['item_nr'] ) ) { $item_nr = $instance['item_nr'];	}
 		if ( ! empty( $instance['category'] ) ) { $category = $instance['category'];	}
@@ -37,8 +38,9 @@ class Post_Tabs_Widget extends WP_Widget {
 		if ( ! empty( $instance['tab_videos'] ) ) { $tab_videos = $instance['tab_videos'];	}
 		if ( ! empty( $instance['tab_galleries'] ) ) { $tab_galleries = $instance['tab_galleries'];	}
 		if ( ! empty( $instance['author'] ) ) { $author = $instance['author'];	}
+		if ( ! empty( $instance['review_star'] ) ) { $review_star = $instance['review_star']; }
 
-		echo do_shortcode("[posts_tabs item_nr='$item_nr' author='$author' orderby='$orderby' tag='$tag' category='$category' title='$title' tab_popular='$tab_popular' tab_hot='$tab_hot' tab_trending='$tab_trending' tab_posts='$tab_posts' tab_videos='$tab_videos' tab_galleries='$tab_galleries']");
+		echo do_shortcode("[posts_tabs item_nr='$item_nr' author='$author' orderby='$orderby' review_star='$review_star' tag='$tag' category='$category' title='$title' tab_popular='$tab_popular' tab_hot='$tab_hot' tab_trending='$tab_trending' tab_posts='$tab_posts' tab_videos='$tab_videos' tab_galleries='$tab_galleries']");
 
 		echo $args['after_widget'];
 	}
@@ -56,6 +58,7 @@ class Post_Tabs_Widget extends WP_Widget {
 		$tab_videos = ! empty( $instance['tab_videos'] ) ? $instance['tab_videos'] : esc_html__( '', 'tophot' );
 		$tab_galleries = ! empty( $instance['tab_galleries'] ) ? $instance['tab_galleries'] : esc_html__( '', 'tophot' );
 		$author = ! empty( $instance['author'] ) ? $instance['author'] : esc_html__( '', 'tophot' );
+		$review_star = ! empty( $instance['review_star'] ) ? $instance['review_star'] : esc_html__( '', 'tophot' );
 		?>
 
 		<p>
@@ -145,6 +148,14 @@ class Post_Tabs_Widget extends WP_Widget {
 			</select>
 		</p>
 
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'review_star' ) ); ?>"><?php _e( esc_attr( 'Review Star:' ) ); ?></label>
+			<select class='widefat' id="<?php echo $this->get_field_id('review_star'); ?>" name="<?php echo $this->get_field_name('review_star'); ?>" type="text">
+				<option value='on'<?php echo ($review_star=='on')?'selected':''; ?>>On</option>
+				<option value='off'<?php echo ($review_star=='off')?'selected':''; ?>>Off</option>
+			</select>
+		</p>
+
 
 
 		<?php
@@ -164,6 +175,7 @@ class Post_Tabs_Widget extends WP_Widget {
 		$instance['tab_videos'] = ( ! empty( $new_instance['tab_videos'] ) ) ? strip_tags( $new_instance['tab_videos'] ) : '';
 		$instance['tab_galleries'] = ( ! empty( $new_instance['tab_galleries'] ) ) ? strip_tags( $new_instance['tab_galleries'] ) : '';
 		$instance['author'] = ( ! empty( $new_instance['author'] ) ) ? strip_tags( $new_instance['author'] ) : '';
+		$instance['review_star'] = ( ! empty( $new_instance['review_star'] ) ) ? strip_tags( $new_instance['review_star'] ) : '';
 		return $instance;
 	}
 

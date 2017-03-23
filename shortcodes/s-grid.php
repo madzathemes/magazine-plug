@@ -94,11 +94,7 @@ function grid( $atts, $content = null ) {
 			}
 
 			$shortcode = '';
-			$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-			$shares = "0";
-			if (!empty($share)){
-				$shares = $share;
-			}
+
       global $post;
 			if($position=="center" and $title != ""){ $shortcode .= '<h2 class="heading"><span>'.$title.'</span></h2>'; }
 			if($position=="left" or $position=="" and $title != ""){ $shortcode .= '<h2 class="heading heading-left"><span>'.$title.'</span></h2>'; }
@@ -110,18 +106,7 @@ function grid( $atts, $content = null ) {
 				if($type=="1"){
           $i=1;
 					while ( $the_query->have_posts() ) : $the_query->the_post();
-					// Share count meta real and fake.
-					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-					$shares = $share_real;
-					if (!empty($share)){ $shares = $share+$share_real; $shares = number_format((float)$shares);}
 
-
-					// View count meta real and fake.
-					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-					$viewes = $views + "0";
-					if (!empty($view)){ $viewes = $view + $views; $viewes = number_format((float)$viewes); }
 
 
 						$attachment_id = get_post_thumbnail_id( get_the_ID() );
@@ -154,11 +139,7 @@ function grid( $atts, $content = null ) {
 										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
 									$shortcode .='</span></div>';
 									$shortcode .='<h2>'. get_the_title() .'</h2>';
-										$shortcode .='<div class="post-info">';
-                      $shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-                      $shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-											if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-										$shortcode .='</div>';
+										$shortcode .= mt_pl_views_shares_grid();
 
 									$shortcode .='</div>';
 								$shortcode .='</a>';
@@ -172,21 +153,8 @@ function grid( $atts, $content = null ) {
 				if($type=="2"){
 					$i=1;
 					while ( $the_query->have_posts() ) : $the_query->the_post();
-					// Share count meta real and fake.
-					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-					$shares = $share_real;
-					if (!empty($share)){ $shares = $share+$share_real; }
-					$shares = number_format((float)$shares);
 
-					// View count meta real and fake.
-					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-					$viewes = $views + "0";
-					if (!empty($view)){ $viewes = $view + $views; }
-					$viewes = number_format((float)$viewes);
-						$attachment_id = get_post_thumbnail_id( get_the_ID() );
-
+		
 						$shortcode .='<div class="grid-post mt-radius nr-'.$i.' style-2 '; if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 							$shortcode .='<a href="'. get_the_permalink().'">';
 								$shortcode .='<div class="wrap">';
@@ -207,11 +175,7 @@ function grid( $atts, $content = null ) {
 
 									$shortcode .='<h2>'. get_the_title() .'</h2>';
 
-										$shortcode .='<div class="post-info">';
-											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-											$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-											if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-										$shortcode .='</div>';
+										$shortcode .= mt_pl_views_shares_grid();
 
 
 									$shortcode .='</div>';
@@ -229,19 +193,7 @@ function grid( $atts, $content = null ) {
 				if($type=="3"){
 					$i=1;
 					while ( $the_query->have_posts() ) : $the_query->the_post();
-					// Share count meta real and fake.
-					$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-					$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-					$shares = $share_real;
-					if (!empty($share)){ $shares = $share+$share_real; }
-					$shares = number_format((float)$shares);
 
-					// View count meta real and fake.
-					$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-					$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-					$viewes = $views + "0";
-					if (!empty($view)){ $viewes = $view + $views; }
-					$viewes = number_format((float)$viewes);
 						$attachment_id = get_post_thumbnail_id( get_the_ID() );
 
 						$shortcode .='<div class="grid-post mt-radius nr-'.$i.' style-3 '; if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
@@ -264,11 +216,7 @@ function grid( $atts, $content = null ) {
 
 									$shortcode .='<h2>'. get_the_title() .'</h2>';
 
-										$shortcode .='<div class="post-info">';
-											$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-											$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-											if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-										$shortcode .='</div>';
+										$shortcode .= mt_pl_views_shares_grid();
 
 
 									$shortcode .='</div>';
@@ -377,8 +325,8 @@ function grid( $atts, $content = null ) {
 		              if ( has_post_thumbnail() ) {
 										if($i==1) {
 											$shortcode .='<div class="mt-slide-1-img">';
-												$shortcode .='<div class="mt-slide-1-image" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_1300').');"></div>';
-											$shortcode .='</div><img class="mt-post-image-background" src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_1300_5').'">';
+												$shortcode .='<div class="mt-slide-1-image" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_1300').');"></div><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_1300').');"></div>';
+											$shortcode .='</div>';
 										}
 									}
 

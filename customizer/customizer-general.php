@@ -186,6 +186,43 @@ function magazin_customize_general($wp_customize){
              ),
          ) );
 
+         Kirki::add_field( 'mt_post_meta_share_post_list', array(
+              'type'        => 'switch',
+              'settings'    => 'mt_post_meta_share_post_list',
+              'label'       => esc_attr__( 'Share Count in Post List', 'magazin' ),
+              'section'     => 'mt_post_meta',
+              'default'     => '1',
+              'priority'    => 9,
+              'choices'     => array(
+               'on'  => esc_attr__( 'ON', 'magazin' ),
+                'off' => esc_attr__( 'OFF', 'magazin' ),
+              ),
+          ) );
+          Kirki::add_field( 'mt_post_meta_view_post_list', array(
+               'type'        => 'switch',
+               'settings'    => 'mt_post_meta_view_post_list',
+               'label'       => esc_attr__( 'View Count in Post List', 'magazin' ),
+               'section'     => 'mt_post_meta',
+               'default'     => '1',
+               'priority'    => 9,
+               'choices'     => array(
+                'on'  => esc_attr__( 'ON', 'magazin' ),
+                 'off' => esc_attr__( 'OFF', 'magazin' ),
+               ),
+           ) );
+           Kirki::add_field( 'mt_post_meta_review_star', array(
+                'type'        => 'switch',
+                'settings'    => 'mt_post_meta_review_star',
+                'label'       => esc_attr__( 'Star Review in Post List', 'magazin' ),
+                'section'     => 'mt_post_meta',
+                'default'     => '1',
+                'priority'    => 9,
+                'choices'     => array(
+                 'on'  => esc_attr__( 'ON', 'magazin' ),
+                  'off' => esc_attr__( 'OFF', 'magazin' ),
+                ),
+            ) );
+
   $wp_customize->add_section('facebook_excerpt', array(
     'title'    	=> esc_html__('Other', 'magazin'),
     'priority'       => 701,
@@ -205,6 +242,55 @@ function magazin_customize_general($wp_customize){
   		'step' => 1,
   	),
   ) );
+
+  Kirki::add_field( 'mt_post_prev_next_article', array(
+       'type'        => 'switch',
+       'settings'    => 'mt_post_prev_next_article',
+       'label'       => esc_attr__( 'Previous, Next article in post', 'magazin' ),
+       'section'     => 'facebook_excerpt',
+       'default'     => 'on',
+       'priority'    => 99,
+       'choices'     => array(
+        'on'  => esc_attr__( 'ON', 'magazin' ),
+         'off' => esc_attr__( 'OFF', 'magazin' ),
+       ),
+   ) );
+   Kirki::add_field( 'mt_post_top_share', array(
+        'type'        => 'switch',
+        'settings'    => 'mt_post_top_share',
+        'label'       => esc_attr__( 'Top Share Buttons', 'magazin' ),
+        'section'     => 'facebook_excerpt',
+        'default'     => 'on',
+        'priority'    => 99,
+        'choices'     => array(
+         'on'  => esc_attr__( 'ON', 'magazin' ),
+          'off' => esc_attr__( 'OFF', 'magazin' ),
+        ),
+    ) );
+    Kirki::add_field( 'mt_post_bottom_share', array(
+         'type'        => 'switch',
+         'settings'    => 'mt_post_bottom_share',
+         'label'       => esc_attr__( 'Bottom Share Buttons', 'magazin' ),
+         'section'     => 'facebook_excerpt',
+         'default'     => 'on',
+         'priority'    => 99,
+         'choices'     => array(
+          'on'  => esc_attr__( 'ON', 'magazin' ),
+           'off' => esc_attr__( 'OFF', 'magazin' ),
+         ),
+     ) );
+     Kirki::add_field( 'mt_post_title_score', array(
+          'type'        => 'switch',
+          'settings'    => 'mt_post_title_score',
+          'label'       => esc_attr__( 'Review Score In Title', 'magazin' ),
+          'section'     => 'facebook_excerpt',
+          'default'     => 'on',
+          'priority'    => 99,
+          'choices'     => array(
+           'on'  => esc_attr__( 'ON', 'magazin' ),
+            'off' => esc_attr__( 'OFF', 'magazin' ),
+          ),
+      ) );
 
 
   $wp_customize->add_section('css_settings', array(

@@ -24,6 +24,7 @@ class Posts_Trending_Widget extends WP_Widget {
 		$taxonomy = "";
 		$taxonomy_term = "";
 		$widget_id = "";
+		$review_star = "";
 
 		if ( ! empty( $instance['type'] ) ) { $type = $instance['type']; }
 		if ( ! empty( $instance['item_nr'] ) ) { $item_nr = $instance['item_nr'];	}
@@ -36,8 +37,9 @@ class Posts_Trending_Widget extends WP_Widget {
 		if ( ! empty( $instance['author'] ) ) { $author = $instance['author'];	}
 		if ( ! empty( $instance['taxonomy'] ) ) { $taxonomy = $instance['taxonomy'];	}
 		if ( ! empty( $instance['taxonomy_term'] ) ) { $taxonomy_term = $instance['taxonomy_term'];	}
+		if ( ! empty( $instance['review_star'] ) ) { $review_star = $instance['review_star']; }
 
-		echo do_shortcode("[posts_trending type='$type' item_nr='$item_nr' taxonomy='$taxonomy' taxonomy_term='$taxonomy_term' author='$author' offset='$offset' orderby='$orderby' category='$category' tag='$tag' title='$title' title_type='$title_type']");
+		echo do_shortcode("[posts_trending type='$type' item_nr='$item_nr' taxonomy='$taxonomy' review_star='$review_star' taxonomy_term='$taxonomy_term' author='$author' offset='$offset' orderby='$orderby' category='$category' tag='$tag' title='$title' title_type='$title_type']");
 
 		echo $args['after_widget'];
 	}
@@ -55,6 +57,7 @@ class Posts_Trending_Widget extends WP_Widget {
 		$author = ! empty( $instance['author'] ) ? $instance['author'] : esc_html__( '', 'tophot' );
 		$taxonomy = ! empty( $instance['taxonomy'] ) ? $instance['taxonomy'] : esc_html__( '', 'tophot' );
 		$taxonomy_term = ! empty( $instance['taxonomy_term'] ) ? $instance['taxonomy_term'] : esc_html__( '', 'tophot' );
+		$review_star = ! empty( $instance['review_star'] ) ? $instance['review_star'] : esc_html__( '', 'tophot' );
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'type' ) ); ?>"><?php _e( esc_attr( 'Type:' ) ); ?></label>
@@ -114,6 +117,13 @@ class Posts_Trending_Widget extends WP_Widget {
 				<option value='right'<?php echo ($title_type=='right')?'selected':''; ?>>Right</option>
 			</select>
 		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'review_star' ) ); ?>"><?php _e( esc_attr( 'Review Star:' ) ); ?></label>
+			<select class='widefat' id="<?php echo $this->get_field_id('review_star'); ?>" name="<?php echo $this->get_field_name('review_star'); ?>" type="text">
+				<option value='on'<?php echo ($review_star=='on')?'selected':''; ?>>On</option>
+				<option value='off'<?php echo ($review_star=='off')?'selected':''; ?>>Off</option>
+			</select>
+		</p>
 
 
 		<?php
@@ -132,6 +142,7 @@ class Posts_Trending_Widget extends WP_Widget {
 		$instance['author'] = ( ! empty( $new_instance['author'] ) ) ? strip_tags( $new_instance['author'] ) : '';
 		$instance['taxonomy'] = ( ! empty( $new_instance['taxonomy'] ) ) ? strip_tags( $new_instance['taxonomy'] ) : '';
 		$instance['taxonomy_term'] = ( ! empty( $new_instance['taxonomy_term'] ) ) ? strip_tags( $new_instance['taxonomy_term'] ) : '';
+		$instance['review_star'] = ( ! empty( $new_instance['review_star'] ) ) ? strip_tags( $new_instance['review_star'] ) : '';
 		return $instance;
 	}
 

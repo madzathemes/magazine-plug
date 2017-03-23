@@ -4,7 +4,7 @@ Plugin Name: Magazine Plug
 Plugin URI: https://themeforest.net
 Description: Magazin Plugin
 Author: Madars Bitenieks
-Version: 3.7
+Version: 3.8
 Author URI: https://themeforest.net
 */
 include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
@@ -39,6 +39,7 @@ include_once ('widgets/w-trending.php');
 include_once ('customizer/customizer-general.php');
 include_once ('customizer/customizer-ads.php');
 include_once ('customizer/customizer-posts.php');
+include_once ('customizer/customizer-text.php');
 include_once ('example-functions.php');
 include_once ('plugins/kirki/kirki.php');
 add_filter('widget_text', 'do_shortcode');
@@ -298,6 +299,12 @@ function magazin_class($classes) {
 	if ( false == get_theme_mod( 'mt_post_meta_share_post', true ) ) {
 		$body_class .=' remove-ps-share ';
 	}
+	if ( false == get_theme_mod( 'mt_post_meta_share_post_list', true ) ) {
+		$body_class .=' remove-pl-share ';
+	}
+	if ( false == get_theme_mod( 'mt_post_meta_view_post_list', true ) ) {
+		$body_class .=' remove-pl-view ';
+	}
 
 	if ( true == get_theme_mod( 'mt_menu_full', true ) ) {
 		$body_class .=' mt-menu-full ';
@@ -447,6 +454,8 @@ function myprefix_adjust_offset_pagination($found_posts, $query) {
 
 function more_post_ajax(){
 
+	if ( false == get_theme_mod( 't_view_post', false ) ) { $t_view_post = esc_html__("View Post", "magazine-plug");  } else { $t_view_post = get_theme_mod( 't_view_post' ); }
+
     $ppp = (isset($_POST["ppp"])) ? $_POST["ppp"] : 3;
 		$format = (isset($_POST['format'])) ? $_POST['format'] : "all";
 		$category = (isset($_POST['category'])) ? $_POST['category'] : "";
@@ -454,6 +463,7 @@ function more_post_ajax(){
 		$offset = (isset($_POST['offset'])) ? $_POST['offset'] : "";
 		$orderby = (isset($_POST['orderby'])) ? $_POST['orderby'] : "";
 		$author = (isset($_POST['author'])) ? $_POST['author'] : "";
+		$review_star = (isset($_POST['review_star'])) ? $_POST['review_star'] : "";
 
 		$meta_key = "";
 
@@ -545,57 +555,6 @@ function more_post_ajax(){
 
     if ($loop -> have_posts()) :  while ($loop -> have_posts()) : $loop -> the_post();
 
-		$option = get_option("magazin_option");
-		$excerpt_ = magazin_custom_excerpts(27);
-		if (!empty($option['post_meta_excerpt'])) {
-			if($option['post_meta_excerpt']==2){
-				$excerpt_ = get_the_excerpt();
-			}
-			else if($option['post_meta_excerpt']==3){
-				$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
-				if (!empty($excerpt)) { $excerpt_ = $excerpt; }
-			}
-			else if($option['post_meta_excerpt']==4){
-				$excerpt = get_post_meta(get_the_ID(), "magazin_subtitle", true);
-				if (!empty($excerpt)) { $excerpt_ = $excerpt; }
-			}
-
-		} else {
-			$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
-			if (!empty($excerpt)) { $excerpt_ = $excerpt; }
-		}
-
-		// Category Code.
-		$category_name = get_the_category(get_the_ID());
-		$categorys = '';
-		$categorys .='<div class="poster-cat"><span class="mt-theme-text">';
-		$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
-		if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $categorys .=''.$category_name[0]->name.''; }
-		if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $categorys .=', '.$category_name[1]->name.''; }
-		if(!empty($category_name[2]) and $cat_nr == 3) { $categorys .=', '.$category_name[2]->name.''; }
-		$categorys .='</span></div>';
-
-		// Share count meta real and fake.
-		$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
-		$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
-		$shares = $share_real;
-		if (!empty($share)){ $shares = $share+$share_real; $shares = number_format($shares);}
-
-
-		// View count meta real and fake.
-		$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
-		$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
-		$viewes = $views + "0";
-		if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
-
-		// Post data, share counts.
-		$data ='';
-		$data .='<div class="poster-data color-silver-light">';
-		$data .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-		$data .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
-		if (get_comments_number()!="0") { $data .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-		$data .='</div>';
-
 
 		$icon = '';
 		if ( has_post_format( 'video' ) ) { $icon .='<span class="video-icon mt-theme-background"></span>'; }
@@ -608,16 +567,17 @@ function more_post_ajax(){
 			$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 				$shortcode .= $icon;
 				$shortcode .='<div class="mt-post-image" ><img src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_550').'" width="550" height="550" /></div>';
-				$shortcode .='<div class="poster-info">'; $shortcode .= $categorys; $shortcode .= $data; $shortcode .='</div>';
+				$shortcode .='<div class="poster-info">'; $shortcode .= mt_pl_categories(); $shortcode .= mt_pl_views_shares(); $shortcode .='</div>';
 			$shortcode .='</a>';
 		}
 			$shortcode .='<div class="poster-content">';
-				$shortcode .= $categorys;
-				$shortcode .= $data;
+			if ($review_star!="off") { $shortcode .= mt_review_star(); }
+				$shortcode .= mt_pl_categories();
+				$shortcode .= mt_pl_views_shares();
 				$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
 				$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
-				$shortcode .='<p>'.$excerpt_.'</p>';
-				$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html__("View Post", "magazine-plug") .'</a></div>';
+				$shortcode .='<p>'.mt_pl_excerpt_tabs().'</p>';
+				$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html($t_view_post) .'</a></div>';
 			$shortcode .='</div>';
 			$shortcode .='<div class="clearfix"></div>';
 		$shortcode .='</div>';
@@ -656,5 +616,132 @@ function modify_contact_methods($profile_fields) {
 	return $profile_fields;
 }
 add_filter('user_contactmethods', 'modify_contact_methods');
+
+function review_type(){
+	$review_type = get_post_meta(get_the_ID(), "magazin_review_type", true);
+	return $review_type;
+}
+function mt_review_star(){
+	$star = "";
+	if ( true == get_theme_mod( 'mt_post_meta_review_star', true ) ) {
+
+	  $star .= mt_review_stars();
+
+	}
+	return $star;
+}
+
+function mt_review_single(){
+	$review_type = get_post_meta(get_the_ID(), "magazin_review_type", true);
+	$review_head = get_post_meta(get_the_ID(), "magazin_review_head", true);
+	$review_decs = get_post_meta(get_the_ID(), "magazin_review_decs", true);
+	$review_btn_url = get_post_meta(get_the_ID(), "magazin_review_btn_url", true);
+	$review_btn_name = get_post_meta(get_the_ID(), "magazin_review_btn_name", true);
+	$review_group = get_post_meta(get_the_ID(), "magazin_review_group", true);
+	$star = "";
+
+	$star .= '<div class="mt-review">';
+
+	if(!empty($review_head)){ $star .= '<h2 class="heading heading-left"><span>'.$review_head.'</span></h2>'; }
+
+		foreach ( (array) $review_group as $key => $entry ) {
+			if ( !empty( $entry['number'] ) and !empty( $entry['name'] ) ) {
+				$star .= '<div class="mt-review-field">';
+					$star .= '<div class="mt-review-field-name pull-left">';
+						$star .= $entry['name'];
+					$star .= '</div>';
+					$result = $entry['number'];
+
+					$star1 = $star2 = $star3 = $star4 = $star5 = "mt-star-full";
+					if($result<="4.74") { $star5="mt-star-half";
+					if($result<="4.24") { $star5="mt-star-not";
+					if($result<="3.74") { $star4="mt-star-half"; $star5="mt-star-not";
+					if($result<="3.24") { $star4=$star5="mt-star-not";
+					if($result<="2.74") { $star3="mt-star-half"; $star4=$star5="mt-star-not";
+					if($result<="2.24") { $star3=$star4=$star5="mt-star-not";
+					if($result<="1.74") { $star2="mt-star-half"; $star3=$star4=$star5="mt-star-not";
+					if($result<="1.24") { $star2=$star3=$star4=$star5="mt-star-not";
+					if($result<="0.74") { $star1="mt-star-half"; $star2=$star3=$star4=$star5="mt-star-not"; }}}}}}}}}
+
+					$star .= '<div class="mt-stars pull-right">';
+						$star .='<div class="mt-star '.$star1.'"></div>';
+						$star .='<div class="mt-star '.$star2.'"></div>';
+						$star .='<div class="mt-star '.$star3.'"></div>';
+						$star .='<div class="mt-star '.$star4.'"></div>';
+						$star .='<div class="mt-star '.$star5.'"></div>';
+					$star .= '</div>';
+					$star .= '<div class="clearfix"></div>';
+				$star .= '</div>';
+			}
+		}
+		$star .= '<div class="mt-review-info">';
+			$star .= '<div class="mt-review-desc pull-left">';
+				if(!empty($review_decs)){ $star .= '<p>'.$review_decs.'</p>'; }
+				if(!empty($review_btn_name) and !empty($review_btn_url)){ $star .= '<a href="'.$review_btn_url.'">'.$review_btn_name.'</a>'; }
+			$star .= '</div>';
+			$star .= '<div class="mt-review-all-stars pull-right">';
+				$star .= '<h5>'.mt_review_numbers().'/5</h5>';
+				$star .= mt_review_stars();
+			$star .= '</div>';
+			$star .= '<div class="clearfix"></div>';
+		$star .= '</div>';
+	$star .= '</div>';
+	return $star;
+}
+
+function mt_review_stars(){
+	$review_type = get_post_meta(get_the_ID(), "magazin_review_type", true);
+	$review_group = get_post_meta(get_the_ID(), "magazin_review_group", true);
+
+	$star = "";
+
+
+		if ( $review_type == "star" ) {
+
+			$sum = 0; foreach ( (array) $review_group as $key => $entry ) { if ( !empty( $entry['number'] ) ) { $sum+= $entry['number']; } } $result = $sum/count($review_group); $result = substr($result, 0, 4);
+			$star1 = $star2 = $star3 = $star4 = $star5 = "mt-star-full";
+			if($result<="4.74") { $star5="mt-star-half";
+			if($result<="4.24") { $star5="mt-star-not";
+			if($result<="3.74") { $star4="mt-star-half"; $star5="mt-star-not";
+			if($result<="3.24") { $star4=$star5="mt-star-not";
+			if($result<="2.74") { $star3="mt-star-half"; $star4=$star5="mt-star-not";
+			if($result<="2.24") { $star3=$star4=$star5="mt-star-not";
+			if($result<="1.74") { $star2="mt-star-half"; $star3=$star4=$star5="mt-star-not";
+			if($result<="1.24") { $star2=$star3=$star4=$star5="mt-star-not";
+			if($result<="0.74") { $star1="mt-star-half"; $star2=$star3=$star4=$star5="mt-star-not"; }}}}}}}}}
+
+			$star .= '<div class="mt-stars">';
+				$star .='<div class="mt-star '.$star1.'"></div>';
+				$star .='<div class="mt-star '.$star2.'"></div>';
+				$star .='<div class="mt-star '.$star3.'"></div>';
+				$star .='<div class="mt-star '.$star4.'"></div>';
+				$star .='<div class="mt-star '.$star5.'"></div>';
+			$star .= '</div>';
+		}
+
+	return $star;
+}
+
+function mt_review_numbers(){
+	$review_type = get_post_meta(get_the_ID(), "magazin_review_type", true);
+	$review_group = get_post_meta(get_the_ID(), "magazin_review_group", true);
+	$result = "";
+		if ( $review_type != "" ) {
+
+			$sum = 0; foreach ( (array) $review_group as $key => $entry ) { if ( !empty( $entry['number'] ) ) { $sum+= $entry['number']; } } $result = $sum/count($review_group); $result = substr($result, 0, 4);
+		}
+
+	return $result;
+}
+
+function mt_review_title() {
+	$review_type = get_post_meta(get_the_ID(), "magazin_review_type", true);
+	if ( false == get_theme_mod( 't_review_score', false ) ) { $our_score = esc_html__("Our score:", "magazine-plug");  } else { $our_score = get_theme_mod( 't_review_score' ); }
+	$review = "";
+	if ( $review_type != "" ) {
+		$review .= '<div class="mt-single-title-score"><span>'. esc_html($our_score) .'</span>'. mt_review_stars() .'<span>'. mt_review_numbers() .'/5</span></div>';
+	}
+	return $review;
+}
 
 ?>
