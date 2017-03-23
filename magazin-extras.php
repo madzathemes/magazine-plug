@@ -4,7 +4,7 @@ Plugin Name: Magazine Plug
 Plugin URI: https://themeforest.net
 Description: Magazin Plugin
 Author: Madars Bitenieks
-Version: 3.8
+Version: 3.9
 Author URI: https://themeforest.net
 */
 include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
@@ -640,52 +640,55 @@ function mt_review_single(){
 	$review_group = get_post_meta(get_the_ID(), "magazin_review_group", true);
 	$star = "";
 
-	$star .= '<div class="mt-review">';
+	if ( $review_type == "star" ) {
+		
+		$star .= '<div class="mt-review">';
 
-	if(!empty($review_head)){ $star .= '<h2 class="heading heading-left"><span>'.$review_head.'</span></h2>'; }
+		if(!empty($review_head)){ $star .= '<h2 class="heading heading-left"><span>'.$review_head.'</span></h2>'; }
 
-		foreach ( (array) $review_group as $key => $entry ) {
-			if ( !empty( $entry['number'] ) and !empty( $entry['name'] ) ) {
-				$star .= '<div class="mt-review-field">';
-					$star .= '<div class="mt-review-field-name pull-left">';
-						$star .= $entry['name'];
+			foreach ( (array) $review_group as $key => $entry ) {
+				if ( !empty( $entry['number'] ) and !empty( $entry['name'] ) ) {
+					$star .= '<div class="mt-review-field">';
+						$star .= '<div class="mt-review-field-name pull-left">';
+							$star .= $entry['name'];
+						$star .= '</div>';
+						$result = $entry['number'];
+
+						$star1 = $star2 = $star3 = $star4 = $star5 = "mt-star-full";
+						if($result<="4.74") { $star5="mt-star-half";
+						if($result<="4.24") { $star5="mt-star-not";
+						if($result<="3.74") { $star4="mt-star-half"; $star5="mt-star-not";
+						if($result<="3.24") { $star4=$star5="mt-star-not";
+						if($result<="2.74") { $star3="mt-star-half"; $star4=$star5="mt-star-not";
+						if($result<="2.24") { $star3=$star4=$star5="mt-star-not";
+						if($result<="1.74") { $star2="mt-star-half"; $star3=$star4=$star5="mt-star-not";
+						if($result<="1.24") { $star2=$star3=$star4=$star5="mt-star-not";
+						if($result<="0.74") { $star1="mt-star-half"; $star2=$star3=$star4=$star5="mt-star-not"; }}}}}}}}}
+
+						$star .= '<div class="mt-stars pull-right">';
+							$star .='<div class="mt-star '.$star1.'"></div>';
+							$star .='<div class="mt-star '.$star2.'"></div>';
+							$star .='<div class="mt-star '.$star3.'"></div>';
+							$star .='<div class="mt-star '.$star4.'"></div>';
+							$star .='<div class="mt-star '.$star5.'"></div>';
+						$star .= '</div>';
+						$star .= '<div class="clearfix"></div>';
 					$star .= '</div>';
-					$result = $entry['number'];
-
-					$star1 = $star2 = $star3 = $star4 = $star5 = "mt-star-full";
-					if($result<="4.74") { $star5="mt-star-half";
-					if($result<="4.24") { $star5="mt-star-not";
-					if($result<="3.74") { $star4="mt-star-half"; $star5="mt-star-not";
-					if($result<="3.24") { $star4=$star5="mt-star-not";
-					if($result<="2.74") { $star3="mt-star-half"; $star4=$star5="mt-star-not";
-					if($result<="2.24") { $star3=$star4=$star5="mt-star-not";
-					if($result<="1.74") { $star2="mt-star-half"; $star3=$star4=$star5="mt-star-not";
-					if($result<="1.24") { $star2=$star3=$star4=$star5="mt-star-not";
-					if($result<="0.74") { $star1="mt-star-half"; $star2=$star3=$star4=$star5="mt-star-not"; }}}}}}}}}
-
-					$star .= '<div class="mt-stars pull-right">';
-						$star .='<div class="mt-star '.$star1.'"></div>';
-						$star .='<div class="mt-star '.$star2.'"></div>';
-						$star .='<div class="mt-star '.$star3.'"></div>';
-						$star .='<div class="mt-star '.$star4.'"></div>';
-						$star .='<div class="mt-star '.$star5.'"></div>';
-					$star .= '</div>';
-					$star .= '<div class="clearfix"></div>';
-				$star .= '</div>';
+				}
 			}
-		}
-		$star .= '<div class="mt-review-info">';
-			$star .= '<div class="mt-review-desc pull-left">';
-				if(!empty($review_decs)){ $star .= '<p>'.$review_decs.'</p>'; }
-				if(!empty($review_btn_name) and !empty($review_btn_url)){ $star .= '<a href="'.$review_btn_url.'">'.$review_btn_name.'</a>'; }
+			$star .= '<div class="mt-review-info">';
+				$star .= '<div class="mt-review-desc pull-left">';
+					if(!empty($review_decs)){ $star .= '<p>'.$review_decs.'</p>'; }
+					if(!empty($review_btn_name) and !empty($review_btn_url)){ $star .= '<a href="'.$review_btn_url.'">'.$review_btn_name.'</a>'; }
+				$star .= '</div>';
+				$star .= '<div class="mt-review-all-stars pull-right">';
+					$star .= '<h5>'.mt_review_numbers().'/5</h5>';
+					$star .= mt_review_stars();
+				$star .= '</div>';
+				$star .= '<div class="clearfix"></div>';
 			$star .= '</div>';
-			$star .= '<div class="mt-review-all-stars pull-right">';
-				$star .= '<h5>'.mt_review_numbers().'/5</h5>';
-				$star .= mt_review_stars();
-			$star .= '</div>';
-			$star .= '<div class="clearfix"></div>';
 		$star .= '</div>';
-	$star .= '</div>';
+	}
 	return $star;
 }
 
