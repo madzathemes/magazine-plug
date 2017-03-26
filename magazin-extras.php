@@ -641,7 +641,7 @@ function mt_review_single(){
 	$star = "";
 
 	if ( $review_type == "star" ) {
-		
+
 		$star .= '<div class="mt-review">';
 
 		if(!empty($review_head)){ $star .= '<h2 class="heading heading-left"><span>'.$review_head.'</span></h2>'; }
@@ -745,6 +745,43 @@ function mt_review_title() {
 		$review .= '<div class="mt-single-title-score"><span>'. esc_html($our_score) .'</span>'. mt_review_stars() .'<span>'. mt_review_numbers() .'/5</span></div>';
 	}
 	return $review;
+}
+
+function mt_ad_footer(){
+	if ( true == get_theme_mod( 'mt_footer_ad', true ) ) {
+		$optionz = get_option("magazin_theme_options");
+		if (!empty($optionz['article_ad_bottom'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['article_ad_bottom']); ?> </div> <?php }
+	}
+}
+
+function mt_header_ad_top(){
+		$optionz = get_option("magazin_theme_options");
+		if (!empty($optionz['header_ad_top'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['header_ad_top']); ?> </div> <?php }
+}
+
+function mt_article_ad_top(){
+		$optionz = get_option("magazin_theme_options");
+		if (!empty($optionz['article_ad_top'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['article_ad_top']); ?> </div> <?php }
+}
+
+function mt_article_ad_bottom(){
+		$optionz = get_option("magazin_theme_options");
+		if (!empty($optionz['article_ad_bottom'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['article_ad_bottom']); ?> </div> <?php }
+}
+
+function mt_sidebar_ad_top(){
+		$optionz = get_option("magazin_theme_options");
+		if (!empty($optionz['sidebar_ad_top'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['sidebar_ad_top']); ?> </div> <?php }
+}
+
+function mt_sidebar_ad_middle(){
+		$optionz = get_option("magazin_theme_options");
+		if (!empty($optionz['sidebar_ad_middle'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['sidebar_ad_middle']); ?> </div> <?php }
+}
+
+function mt_sidebar_ad_bottom(){
+		$optionz = get_option("magazin_theme_options");
+		if (!empty($optionz['sidebar_ad_bottom'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['sidebar_ad_bottom']); ?> </div> <?php }
 }
 
 ?>
