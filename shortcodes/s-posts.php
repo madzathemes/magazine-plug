@@ -131,6 +131,7 @@ function posts( $atts, $content = null ) {
 			if($the_query->have_posts()) {
 				$shortcode .='<div>';
 				if($type=="small-bottom"){
+					$shortcode .='<div class="poster-small-bottom-wrap">';
 					while ( $the_query->have_posts() ) : $the_query->the_post();
 					$attachment_id = get_post_thumbnail_id( get_the_ID() );
 					$img_src = wp_get_attachment_image_url( $attachment_id, 'full' );
@@ -153,6 +154,7 @@ function posts( $atts, $content = null ) {
 							$shortcode .='<div class="clearfix"></div>';
 						$shortcode .='</div>';
 					endwhile;
+					$shortcode .='</div>';
 				}
 				if($type=="small"){
 					while ( $the_query->have_posts() ) : $the_query->the_post();
