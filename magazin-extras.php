@@ -756,7 +756,7 @@ function mt_ad_footer(){
 
 function mt_header_ad_top(){
 		$optionz = get_option("magazin_theme_options");
-		if (!empty($optionz['header_ad_top'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['header_ad_top']); ?> </div> <?php }
+		if (!empty($optionz['header_ad_top'])) {  ?><div class="mt-top-advertise text-center"> <?php echo html_entity_decode($optionz['header_ad_top']); ?> </div> <?php }
 }
 
 function mt_article_ad_top(){
