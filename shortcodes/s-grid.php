@@ -19,9 +19,11 @@ function grid( $atts, $content = null ) {
 			), $atts));
 
 			global $exclude_single_id, $post;
-      if (is_single()) { $exclude = $exclude_single_id; }
 
-			else {
+      if (is_single()) {
+				$exclude = $exclude_single_id;
+				$paged = "";
+			} else {
 				$paged = "";
 			}
 
@@ -154,7 +156,7 @@ function grid( $atts, $content = null ) {
 					$i=1;
 					while ( $the_query->have_posts() ) : $the_query->the_post();
 
-		
+
 						$shortcode .='<div class="grid-post mt-radius nr-'.$i.' style-2 '; if (has_post_format( 'video' )) { $shortcode .= ' video'; } $shortcode .='">';
 							$shortcode .='<a href="'. get_the_permalink().'">';
 								$shortcode .='<div class="wrap">';

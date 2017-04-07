@@ -20,8 +20,8 @@ function mt_pl_views_shares() {
 	// Post data, share counts.
 	$data ='';
 	$data .='<div class="poster-data color-silver-light">';
-	$data .='<span class="poster-shares">'. $shares .' '. esc_html($t_shares) .'</span>';
-	$data .='<span class="poster-views">'. $viewes .' '. esc_html($t_views) .'</span>';
+	$data .='<span class="poster-shares">'. $shares .' <span class="mt-data-text">'. esc_html($t_shares) .'</span></span>';
+	$data .='<span class="poster-views">'. $viewes .' <span class="mt-data-text">'. esc_html($t_views) .'</span></span>';
 	if (get_comments_number()!="0") { $data .='<span class="poster-comments">'.get_comments_number().'</span>'; }
 	$data .='</div>';
 
@@ -43,7 +43,7 @@ function mt_pl_views_shares_grid() {
 	$view = get_post_meta(get_the_ID(), "magazin_view_count", true);
 	$views = get_post_meta(get_the_ID(), "magazin_post_views_count", true);
 	$viewes = $views + "0";
-	if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); } 	
+	if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 	$shortcode = "";
 	$shortcode .='<div class="post-info">';
 		$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
