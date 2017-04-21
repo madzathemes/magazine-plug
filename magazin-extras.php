@@ -784,4 +784,25 @@ function mt_sidebar_ad_bottom(){
 		if (!empty($optionz['sidebar_ad_bottom'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['sidebar_ad_bottom']); ?> </div> <?php }
 }
 
+function mt_weather_funciton(){ ?>
+
+<div class="weather-city hidden"><?php
+					if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+						$ip = $_SERVER['HTTP_CLIENT_IP'];
+					} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+						$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+					} else {
+						$ip = $_SERVER['REMOTE_ADDR'];
+					}
+					$query = @unserialize(wp_remote_fopen('http://ip-api.com/php/'.$ip));
+					if($query && $query['status'] == 'success') {
+						echo esc_attr($query['city']);
+					} else {
+						echo 'London';
+					}
+				?></div>
+				<div class="head-weather">
+					<div id="weather"></div>
+				</div>
+<?php }
 ?>

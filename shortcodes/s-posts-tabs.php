@@ -296,7 +296,7 @@ function posts_tabs( $atts, $content = null ) {
 			$shortcode = '';
 
 			$shortcode .='<div class="mt-tab-wrap">';
-			$shortcode .= '<div class="mt-post-tabs"><h2 class="heading heading-left pull-left"><span>'.$title.'</span></h2>';
+			$shortcode .= '<div class="mt-post-tabs"><h2 class="heading heading-left pull-left"><span>'.$title.'</span></h2><div class="pull-right mt-post-tabs-nav">';
 			if($tab_galleries=="on"){ if($the_query_tab_4->have_posts()) { $shortcode .= '<div class="mt-tabc mt-tabc-4 pull-right" data-tab="mt-tab-4">'. esc_html($t_galleries) .'</div>'; } }
 			if($tab_videos=="on"){ if($the_query_tab_3->have_posts()) { $shortcode .= '<div class="mt-tabc mt-tabc-3 pull-right" data-tab="mt-tab-3">'. esc_html($t_videos) .'</div>'; } }
 			if($tab_posts=="on"){ if($the_query_tab_2->have_posts()) { $shortcode .= '<div class="mt-tabc mt-tabc-2 pull-right" data-tab="mt-tab-2">'. esc_html($t_posts) .'</div>'; } }
@@ -304,7 +304,7 @@ function posts_tabs( $atts, $content = null ) {
 			if($tab_hot!="off"){ if($the_query_tab_hot->have_posts()) { $shortcode .= '<div class="mt-tabc mt-tabc-hot pull-right" data-tab="mt-tab-hot">'. esc_html($t_hot) .'</div>'; } }
 			if($tab_trending!="off"){ if($the_query_tab_trending->have_posts()) { $shortcode .= '<div class="mt-tabc mt-tabc-trending pull-right" data-tab="mt-tab-trending">'. esc_html($t_trending) .'</div>'; } }
 			$shortcode .= '<div class="mt-tabc mt-tabc-1 pull-right active" data-tab="mt-tab-1">'. esc_html($t_all) .'</div>';
-			$shortcode .= '</div><div class="clearfix"></div>';
+			$shortcode .= '</div></div><div class="clearfix"></div>';
 
 
 				if($type=="normal-right"){
