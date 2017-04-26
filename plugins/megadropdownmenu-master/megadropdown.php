@@ -360,14 +360,13 @@ class megadropdown {
 					}
 					$new_item->title .= '</div>'; // close tag for tab content
 					$new_item->title .= '</div>'; // close tag for col-md-9 (container of tab content)
-
-					$new_item->title .= '<a>';
 					// load content posts end here
 
 				}
 
 				$new_item->title .= '</div>'; // close tag for row
 				$new_item->title .= '</div>'; // close tag for megamenu
+				$new_item->title .= '<a>';
 
 				$buffer_items[] = $new_item;
 			}else{
