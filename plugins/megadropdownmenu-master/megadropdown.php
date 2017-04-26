@@ -262,8 +262,9 @@ class megadropdown {
 					$new_item->title .= '<a  data-toggle="tab" href="#df-pane-'.esc_attr( $megadropdown_menu_cat ).'-'.esc_attr( $no_item ).'">All</a>';
 					$new_item->title .= '</li>';
 					foreach($sub_cat as $sc){
+						$catid = $sc->cat_ID;
 						$new_item->title .= '<li class="">';
-							$new_item->title .= '<a data-toggle="tab" href="#df-pane-'.esc_attr( $sc->cat_ID ).'-'.esc_attr( $no_item ).'" class="">'.$sc->cat_name.'</a>';
+							$new_item->title .= '<a data-toggle="tab" href="#df-pane-'.get_category_link( $catid ).'-'.esc_attr( $no_item ).'" class="">'.$sc->cat_name.'</a>';
 						$new_item->title .= '</li>';
 					}
 					$new_item->title .= '</ul>';
@@ -445,6 +446,34 @@ class megadropdown {
     	if(!empty($posts)) {
 
     		if($has_sub_cat == 'false'){
+    			$buff .= '<div class="mega-post-wrap megamenu-grid-container-'.esc_attr($cat_id).'-'.esc_attr($no_item).'">';
+	    		// $buff .= '<div class="'. $found_post .'"><a href="#">Prev</a> | <a href="#">Next</a></div>';
+	    		// print_r($found_post);
+	    		foreach ($posts as $post) {
+	    			$buff .= '<div class="megamenu-span mega-5">';
+						$buff .= '<div class="mega-post-in">';
+
+	    			$buff .= '<a href="'. $this->get_href($post) .'" >';
+
+												$buff .='<div class="poster-cat mt-theme-background"><span>';
+													$category_name = get_the_category($post->ID);
+													$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+													if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $buff .=''.$category_name[0]->name.''; }
+													if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $buff .=', '.$category_name[1]->name.''; }
+													if(!empty($category_name[2]) and $cat_nr == 3) { $buff .=', '.$category_name[2]->name.''; }
+												$buff .= '</span></div>';
+
+						$buff .= $this->image_post($post);
+
+						$buff .= '</a>';
+						$buff .= '<a href="'. $this->get_href($post) .'" ><h4>';
+						$buff .= ''.$post->post_title.'';
+	    			$buff .= '</h4></a>';
+						$buff .= '</div>';
+	    			$buff .= '</div>';
+	    		}
+	    		$buff .= '</div>';
+    		} else {
     			$buff .= '<div class="mega-post-wrap megamenu-grid-container-'.esc_attr($cat_id).'-'.esc_attr($no_item).'">';
 	    		// $buff .= '<div class="'. $found_post .'"><a href="#">Prev</a> | <a href="#">Next</a></div>';
 	    		// print_r($found_post);

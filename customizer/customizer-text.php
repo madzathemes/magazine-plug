@@ -551,6 +551,12 @@ function magazin_customize_text($wp_customize){
     'label'       => esc_attr__( "Contact Us:", 'magazin' ),
     'section'     => 'mt_translate_other',
   ));
+  Kirki::add_field( 't_o_all', array(
+    'type'        => 'text',
+    'settings'    => 't_o_all',
+    'label'       => esc_attr__( "All", 'magazin' ),
+    'section'     => 'mt_translate_other',
+  ));
 
 
 

@@ -434,6 +434,21 @@ function magazin_customize_general($wp_customize){
   ));
 
 
+
+  Kirki::add_field( 'mt_facebook_meta', array(
+       'type'        => 'switch',
+       'settings'    => 'mt_facebook_meta',
+       'label'       => esc_attr__( 'Facebook meta tags', 'magazin' ),
+       'section'     => 'facebook_excerpt',
+       'default'     => 'on',
+       'priority'    => 99,
+       'choices'     => array(
+        'on'  => esc_attr__( 'ON', 'magazin' ),
+         'off' => esc_attr__( 'OFF', 'magazin' ),
+       ),
+   ) );
+
+
 }
 
 add_action('customize_register', 'magazin_customize_general');

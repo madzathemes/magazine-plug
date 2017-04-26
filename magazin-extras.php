@@ -4,11 +4,12 @@ Plugin Name: Magazine Plug
 Plugin URI: https://themeforest.net
 Description: Magazin Plugin
 Author: Madars Bitenieks
-Version: 3.9
+Version: 4.0
 Author URI: https://themeforest.net
 */
 include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
-include_once ('plugins/megadropdownmenu-master/megadropdown.php');
+include_once ('plugins/megamenu-master/df-megamenu.php');
+#include_once ('plugins/megadropdownmenu-master/megadropdown.php');
 if (class_exists('WPBakeryShortCode')) {
 	include_once ('vc-shortcodes/vc-posts-tabs.php');
 	include_once ('vc-shortcodes/vc-ads.php');
@@ -122,13 +123,13 @@ function magazin_header_hooks() {
 	if ( $excerpt_ == '' ) {
 	    $excerpt_ = wp_trim_words( $post->post_content, $excerpt_count );
 	} ?>
-
+	<?php if ( true == get_theme_mod( 'mt_facebook_meta', true ) ) { ?>
 	  <meta property="og:url"           content="<?php the_permalink();?>" />
 		<meta property="og:type"          content="<?php wp_title();?>" />
 		<meta property="og:title"         content="<?php the_title();?>" />
 		<meta property="og:description"   content="<?php echo esc_html( $excerpt_ ); ?>" />
 		<meta property="og:image"         content="<?php  if ( has_post_thumbnail() ) { the_post_thumbnail_url(); } ?>" />
-	<?php } } ?>
+	<?php } } } ?>
 	<style type="text/css"><?php echo balanceTags(get_option("custom_css")); ?></style>
 	<?php
 }
