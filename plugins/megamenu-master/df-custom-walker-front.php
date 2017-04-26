@@ -8,8 +8,8 @@
 	*/
 class DF_Megamenu_Walker extends Walker_Nav_Menu {
 
-	function start_lvl(&$output,  $depth = 0, $args= array()) {	
-		$indent        	= str_repeat( "\t", $depth ); 
+	function start_lvl(&$output,  $depth = 0, $args= array()) {
+		$indent        	= str_repeat( "\t", $depth );
 		$class_names	= 'dropdown-menu';
 		// build html
 		$output .= "\n" . $indent . '<ul class="' . $class_names . ' ul-'.$depth.'">' . "\n";
@@ -18,7 +18,7 @@ class DF_Megamenu_Walker extends Walker_Nav_Menu {
 	}
 
 	function start_el(&$output, $item, $depth = 0, $args = array(), $id = 0) {
-	    
+
        	global $wp_query, $wpdb, $wpdb2;
 
        	$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
@@ -26,13 +26,13 @@ class DF_Megamenu_Walker extends Walker_Nav_Menu {
        	$class_names = $value = '';
        	$walkerObj = $args->walker;
        	$has_children_item_menu = $walkerObj->has_children;
-       	
+
        	$classes = empty( $item->classes ) ? array() : (array) $item->classes;
 
        	$classes[] = 'menu-item-' . $item->ID . '-'.$depth;
 
        	// $classes[] = ($has_children) ? 'dropdown' : '';
-       
+
        	$classes[] = ($item->is_mega_menu == true) ? 'list_megamenu-'.$item->is_mega_menu : '';
 
         // $is_mega_menu = ($item->is_mega_menu == true) ? 'is_mega_menu' : 'is_not_mega_menu';
@@ -45,7 +45,7 @@ class DF_Megamenu_Walker extends Walker_Nav_Menu {
        	$id = $id ? ' id="' . esc_attr( $id ) . '"' : '';
 
        	$output .= $indent . '<li id="menu-item-'. $item->ID . '"' . $value . $class_names .'>';
-       	
+
        	$atts = array();
 
 	   	$atts['title']  = ! empty( $item->attr_title ) ? $item->attr_title : '';
@@ -66,11 +66,11 @@ class DF_Megamenu_Walker extends Walker_Nav_Menu {
         $item_output = $args->before;
 
         if($item->is_mega_menu == null){
-        	$item_output .= '<a'. $attributes .' class=""> ';
-        
-        }	
+        	$item_output .= '<a'. $attributes .' class="intar"> ';
+
+        }
         // $item_output .= $args->link_before .$prepend.apply_filters( 'the_title', $item->title, $item->ID ).$append;
-        
+
          /** This filter is documented in wp-includes/post-template.php */
         $item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
 
@@ -96,29 +96,13 @@ class DF_Megamenu_Walker extends Walker_Nav_Menu {
         // if( ($depth == 0 && $item->is_mega_menu == '1') ){
         //     $item_output .= '&nbsp;<span class="caret megamenu-'.$item->is_mega_menu.' depth-'.$depth.' child-'.$has_children_item_menu.'"></span>';
         // }
-       
+
         if ($item->is_mega_menu == null) {
             $item_output .= '</a>';
         }
 
         $item_output .= $args->after;
 
-       	if($item->is_mega_menu == '1'){
-       		if($item->found_posts > 4){
-       			$stylefirst = ($item->current_page == '1') ? 'pointer-events: none; cursor: default; color: #ccc' : '';
-	       		$output .= '<div class="row">
-                                <div class="row_next_prev hidden-xs row_next_prev-'.$item->cat_id.'-'.$item->no_item.'">
-    	       						<div class="" style="">
-    	       							<a href="#" style="'.$stylefirst.'" data-cat="'.$item->cat_id.'" data-item="'.$item->no_item.'" id="prev-'.$item->cat_id.'-'.$item->no_item.'" class="prev_megamenu">Prev</a> | 
-    	       							<a href="#" style="" data-cat="'.$item->cat_id.'" data-item="'.$item->no_item.'" id="next-'.$item->cat_id.'-'.$item->no_item.'" class="next_megamenu">Next</a>
-    	       						</div>
-    	       					</div>
-                            </div>';
-            }
-	       	// }else{
-	       	// 	$output .= '<div class="row"><div class="row_next_prev hidden-xs"></div></div>';
-	       	// }
-       	}
 
         $output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
     }
