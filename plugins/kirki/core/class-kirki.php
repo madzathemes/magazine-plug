@@ -83,7 +83,7 @@ class Kirki extends Kirki_Init {
 	 * Modules object.
 	 *
 	 * @access public
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 * @var object
 	 */
 	public $modules;
@@ -182,6 +182,13 @@ class Kirki extends Kirki_Init {
 			if ( class_exists( $classname ) ) {
 				new $classname( $config_id, $args );
 				return;
+			}
+			if ( false !== strpos( $classname, 'Kirki_Field_Kirki_' ) ) {
+				$classname = str_replace( 'Kirki_Field_Kirki_', 'Kirki_Field_', $classname );
+				if ( class_exists( $classname ) ) {
+					new $classname( $config_id, $args );
+					return;
+				}
 			}
 		}
 

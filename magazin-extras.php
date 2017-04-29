@@ -142,7 +142,7 @@ function mt_header_script() {
 		wp_enqueue_script('mt-effects', get_template_directory_uri() . '/inc/js/effects.js', array('jquery'), '1.0', true);
 		if(is_rtl()){ wp_add_inline_script( 'mt-effects', 'var $rtl = true;', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $rtl = false;', 'before' ); }
 		if(!empty($autoplay)){ if($autoplay=="1"){ wp_add_inline_script( 'mt-effects', 'var $autoplay = true;', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' ); } } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' ); }
-		if(!empty($options)){ if($options=="1"){ wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); } } else { wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); }
+		if(!empty($options)){ if($options=="1"){ wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .sticky_row .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); } } else { wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .sticky_row .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); }
 		wp_enqueue_script( 'mt-defer', get_template_directory_uri(). '/inc/js/defer.js', array( 'jquery'),  '1.0', true );
 		if ( true == get_theme_mod( 'mt_header_time', false ) ) {
 			wp_add_inline_script( 'mt-defer', '
@@ -757,7 +757,7 @@ function mt_ad_footer(){
 
 function mt_header_ad_top(){
 		$optionz = get_option("magazin_theme_options");
-		if (!empty($optionz['header_ad_top'])) {  ?><div class="mt-top-advertise text-center"> <?php echo html_entity_decode($optionz['header_ad_top']); ?> </div> <?php }
+		if (!empty($optionz['header_ad_top'])) {  ?> <?php echo html_entity_decode($optionz['header_ad_top']); ?>  <?php }
 }
 
 function mt_article_ad_top(){
@@ -806,4 +806,27 @@ function mt_weather_funciton(){ ?>
 					<div id="weather"></div>
 				</div>
 <?php }
+function custom_row_style_fields($fields) {
+  $fields['sticky_row'] = array(
+      'name'        => __('Sticky Sidebar', 'siteorigin-panels'),
+      'type'        => 'checkbox',
+      'group'       => 'attributes',
+      'description' => __('Enabled sticky for columns', 'siteorigin-panels'),
+      'priority'    => 1,
+  );
+
+  return $fields;
+}
+
+add_filter( 'siteorigin_panels_row_style_fields', 'custom_row_style_fields' );
+
+function custom_row_style_attributes( $attributes, $args ) {
+    if( !empty( $args['sticky_row'] ) ) {
+        array_push($attributes['class'], 'sticky_row');
+    }
+
+    return $attributes;
+}
+
+add_filter('siteorigin_panels_row_style_attributes', 'custom_row_style_attributes', 10, 2);
 ?>

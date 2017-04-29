@@ -17,7 +17,9 @@ module.exports = function( grunt ) {
 					'modules/reset/reset.css':                      'modules/reset/reset.scss',
 					'modules/tooltips/tooltip.css':                 'modules/tooltips/tooltip.scss',
 					'modules/custom-sections/sections.css':         'modules/custom-sections/sections.scss',
+					'modules/collapsible/collapsible.css':          'modules/collapsible/collapsible.scss',
 
+					'controls/background/background.css':           'controls/background/background.scss',
 					'controls/code/code.css':                       'controls/code/code.scss',
 					'controls/color/color.css':                     'controls/color/color.scss',
 					'controls/color-palette/color-palette.css':     'controls/color-palette/color-palette.scss',
@@ -25,7 +27,6 @@ module.exports = function( grunt ) {
 					'controls/date/date.css':                       'controls/date/date.scss',
 					'controls/dimension/dimension.css':             'controls/dimension/dimension.scss',
 					'controls/dimensions/dimensions.css':           'controls/dimensions/dimensions.scss',
-					'controls/dropdown-pages/selectize.css':        'controls/dropdown-pages/selectize.scss',
 					'controls/editor/editor.css':                   'controls/editor/editor.scss',
 					'controls/generic/generic.css':                 'controls/generic/generic.scss',
 					'controls/multicheck/multicheck.css':           'controls/multicheck/multicheck.scss',
@@ -115,7 +116,7 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-jscs' );
 
-	grunt.registerTask( 'default', ['sass'] );
+	grunt.registerTask( 'default', ['sass', 'curl:google-fonts-source', 'json2php', 'clean', 'wp_readme_to_markdown'] );
 	grunt.registerTask( 'dev', ['sass', 'jscs', 'watch'] );
 	grunt.registerTask( 'googlefonts', ['curl:google-fonts-source', 'json2php', 'clean'] );
 	grunt.registerTask( 'readme', ['wp_readme_to_markdown'] );

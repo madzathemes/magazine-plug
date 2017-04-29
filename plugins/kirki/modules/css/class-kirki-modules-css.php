@@ -7,7 +7,7 @@
  * @author      Aristeides Stathopoulos
  * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
- * @since       2.4.0
+ * @since       3.0.0
  */
 
 /**
@@ -40,21 +40,40 @@ class Kirki_Modules_CSS {
 	public static $ajax = false;
 
 	/**
+	 * The Kirki_CSS_To_File object.
+	 *
+	 * @access protected
+	 * @since 3.0.0
+	 * @var object
+	 */
+	protected $css_to_file;
+
+	/**
 	 * Constructor
 	 *
 	 * @access public
 	 */
 	public function __construct() {
 
-		include_once wp_normalize_path( dirname( __FILE__ ) . '/class-kirki-modules-css-generator.php' );
-		include_once wp_normalize_path( dirname( __FILE__ ) . '/class-kirki-output.php' );
-		include_once wp_normalize_path( dirname( __FILE__ ) . '/field/class-kirki-output-field-multicolor.php' );
-		include_once wp_normalize_path( dirname( __FILE__ ) . '/field/class-kirki-output-field-dimensions.php' );
-		include_once wp_normalize_path( dirname( __FILE__ ) . '/field/class-kirki-output-field-typography.php' );
-		include_once wp_normalize_path( dirname( __FILE__ ) . '/property/class-kirki-output-property.php' );
-		include_once wp_normalize_path( dirname( __FILE__ ) . '/property/class-kirki-output-property-background-image.php' );
-		include_once wp_normalize_path( dirname( __FILE__ ) . '/property/class-kirki-output-property-background-position.php' );
-		include_once wp_normalize_path( dirname( __FILE__ ) . '/property/class-kirki-output-property-font-family.php' );
+		$class_files = array(
+			'Kirki_CSS_To_File'                         => '/class-kirki-css-to-file.php',
+			'Kirki_Modules_CSS_Generator'               => '/class-kirki-modules-css-generator.php',
+			'Kirki_Output'                              => '/class-kirki-output.php',
+			'Kirki_Output_Field_Background'             => '/field/class-kirki-output-field-background.php',
+			'Kirki_Output_Field_Multicolor'             => '/field/class-kirki-output-field-multicolor.php',
+			'Kirki_Output_Field_Dimensions'             => '/field/class-kirki-output-field-dimensions.php',
+			'Kirki_Output_Field_Typography'             => '/field/class-kirki-output-field-typography.php',
+			'Kirki_Output_Property'                     => '/property/class-kirki-output-property.php',
+			'Kirki_Output_Property_Background_Image'    => '/property/class-kirki-output-property-background-image.php',
+			'Kirki_Output_Property_Background_Position' => '/property/class-kirki-output-property-background-position.php',
+			'Kirki_Output_Property_Font_Family'         => '/property/class-kirki-output-property-font-family.php',
+		);
+
+		foreach ( $class_files as $class_name => $file ) {
+			if ( ! class_exists( $class_name ) ) {
+				include_once wp_normalize_path( dirname( __FILE__ ) . $file );
+			}
+		}
 
 		add_action( 'init', array( $this, 'init' ) );
 
@@ -82,6 +101,23 @@ class Kirki_Modules_CSS {
 			return;
 		}
 
+		$this->css_to_file = new Kirki_CSS_To_File();
+
+		// If we're in the customizer, load inline no matter what.
+		if ( $wp_customize ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'inline_dynamic_css' ), $priority );
+			return;
+		}
+
+		// Attempt to write the CSS to file.
+		// If we succesd, load this file.
+		$failed = get_transient( 'kirki_css_write_to_file_failed' );
+		// If writing CSS to file hasn't failed, just enqueue this file.
+		if ( ! $failed ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_compiled_file' ), $priority );
+			return;
+		}
+
 		// If we are in the customizer, load CSS using inline-styles.
 		// If we are in the frontend AND self::$ajax is true, then load dynamic CSS using AJAX.
 		if ( ! $wp_customize && ( ( true === self::$ajax ) || ( isset( $config['inline_css'] ) && false === $config['inline_css'] ) ) ) {
@@ -93,6 +129,17 @@ class Kirki_Modules_CSS {
 		}
 	}
 
+	/**
+	 * Enqueues compiled CSS file.
+	 *
+	 * @access public
+	 * @since 3.0.0
+	 */
+	public function enqueue_compiled_file() {
+
+		wp_enqueue_style( 'kirki-styles', $this->css_to_file->get_url() );
+
+	}
 	/**
 	 * Adds inline styles.
 	 *
@@ -182,7 +229,7 @@ class Kirki_Modules_CSS {
 			}
 
 			// Only continue if $field['output'] is set.
-			if ( isset( $field['output'] ) && ! empty( $field['output'] ) && 'background' != $field['type'] ) {
+			if ( isset( $field['output'] ) && ! empty( $field['output'] ) ) {
 				$css  = Kirki_Helper::array_replace_recursive( $css, Kirki_Modules_CSS_Generator::css( $field ) );
 
 				// Add the globals.

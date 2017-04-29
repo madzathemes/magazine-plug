@@ -6,7 +6,7 @@
  * @subpackage  Modules
  * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
- * @since       2.4.0
+ * @since       3.0.0
  */
 
 /**
@@ -20,21 +20,33 @@ class Kirki_Modules_Loading {
 	 * @access public
 	 */
 	public function __construct() {
+
+		add_action( 'init', array( $this, 'init' ) );
+
+	}
+
+	/**
+	 * Runs on init.
+	 *
+	 * @access public
+	 * @since 3.0.0
+	 */
+	public function init() {
+
 		global $wp_customize;
 		if ( ! $wp_customize ) {
 			return;
 		}
-
 		// Allow disabling the custom loader using the kirki/config filter.
 		$config = apply_filters( 'kirki/config', array() );
 		if ( isset( $config['disable_loader'] ) && true === $config['disable_loader'] ) {
 			return;
 		}
-
 		// Add the "loading" icon.
 		add_action( 'wp_footer', array( $this, 'add_loader_to_footer' ) );
 		add_action( 'wp_head', array( $this, 'add_loader_styles_to_header' ), 99 );
 		$this->remove_default_loading_styles();
+
 	}
 
 	/**

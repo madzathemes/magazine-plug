@@ -32,24 +32,23 @@ class Kirki_Field_Checkbox extends Kirki_Field {
 	 */
 	protected function set_sanitize_callback() {
 
-		$this->sanitize_callback = array( 'Kirki_Field_Checkbox', 'sanitize' );
+		$this->sanitize_callback = array( $this, 'sanitize' );
 
 	}
 
 	/**
 	 * Sanitizes checkbox values.
 	 *
-	 * @static
 	 * @access public
 	 * @param boolean|integer|string|null $value The checkbox value.
 	 * @return bool
 	 */
-	public static function sanitize( $value = null ) {
+	public function sanitize( $value = null ) {
 
 		if ( '0' === $value || 0 === $value || 'false' === $value ) {
-			return false;
+			return 0;
 		} elseif ( '1' === $value || 1 === $value || 'true' === $value ) {
-			return true;
+			return 1;
 		}
 
 		return (bool) $value;

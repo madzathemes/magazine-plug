@@ -1,8 +1,8 @@
 .customize-control-kirki-editor {}
 
 #kirki_editor_pane {
-  background: #fff;
-  z-index: 1;
+  background: rgba(255,255,255,.6);
+  // z-index: 1;
   padding-top: 5px;
   border-top: 1px solid #dedede;
   position: absolute;
@@ -19,4 +19,17 @@
   }
 }
 
-.mce-container.mce-panel.mce-floatpanel.mce-window.mce-in {}
+div.mce-inline-toolbar-grp {
+  z-index: 500000 !important;
+}
+
+.ui-autocomplete {
+  &.wplink-autocomplete {
+    z-index: 500000 !important;
+  }
+}
+
+#wp-link-wrap,
+.mce-tooltip {
+  z-index: 500000 !important;
+}

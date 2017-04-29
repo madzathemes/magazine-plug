@@ -268,9 +268,29 @@ class Kirki_Field {
 	 *
 	 * @access protected
 	 * @var array
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	protected $button_labels = array();
+
+	/**
+	 * Use only on select controls.
+	 * Defines if this is a multi-select or not.
+	 * If value is > 1, then the maximum number of selectable options
+	 * is the number defined here.
+	 *
+	 * @access protected
+	 * @var integer
+	 */
+	protected $multiple = 1;
+
+	/**
+	 * Allows fields to be collapsible.
+	 *
+	 * @access protected
+	 * @since 3.0.0
+	 * @var bool
+	 */
+	protected $collapsible = false;
 
 	/**
 	 * The class constructor.
@@ -403,11 +423,6 @@ class Kirki_Field {
 		// Add the field to the static $fields variable properly indexed.
 		Kirki::$fields[ $this->settings ] = $args;
 
-		if ( 'background' === $this->type ) {
-			// Build the background fields.
-			Kirki::$fields = Kirki_Explode_Background_Field::process_fields( Kirki::$fields );
-		}
-
 	}
 
 	/**
@@ -529,7 +544,9 @@ class Kirki_Field {
 		// This is just to allow us to process everything the same way and avoid code duplication.
 		// if settings is not an array then it will not be set as an array in the end.
 		if ( ! is_array( $this->settings ) ) {
-			$this->settings = array( 'kirki_placeholder_setting' => $this->settings );
+			$this->settings = array(
+				'kirki_placeholder_setting' => $this->settings,
+			);
 		}
 		$settings = array();
 		foreach ( $this->settings as $setting_key => $setting_value ) {
@@ -675,7 +692,11 @@ class Kirki_Field {
 			return;
 		}
 		if ( ! empty( $this->output ) && ! is_array( $this->output ) ) {
-			$this->output = array( array( 'element' => $this->output ) );
+			$this->output = array(
+				array(
+					'element' => $this->output,
+				),
+			);
 		}
 		// Convert to array of arrays if needed.
 		if ( isset( $this->output['element'] ) ) {
@@ -683,7 +704,7 @@ class Kirki_Field {
 		}
 		$outputs = array();
 		foreach ( $this->output as $output ) {
-			if ( ! isset( $output['element'] ) || ( ! isset( $output['property'] ) && ! in_array( $this->type, array( 'kirki-typography', 'background' ), true ) ) ) {
+			if ( ! isset( $output['element'] ) || ( ! isset( $output['property'] ) && ! in_array( $this->type, array( 'kirki-typography', 'kirki-background' ), true ) ) ) {
 				continue;
 			}
 			if ( ! isset( $output['sanitize_callback'] ) && isset( $output['callback'] ) ) {
@@ -840,6 +861,17 @@ class Kirki_Field {
 	protected function set_priority() {
 
 		$this->priority = absint( $this->priority );
+
+	}
+
+	/**
+	 * Sets the $collapsible var.
+	 *
+	 * @access protected
+	 */
+	protected function set_collapsible() {
+
+		$this->collapsible = (bool) $this->collapsible;
 
 	}
 }

@@ -90,15 +90,13 @@ class Kirki_Active_Callback {
 				return true;
 			}
 
-			if ( is_array( $requirement ) ) {
-				// Handles "OR" functionality.
-				$show = false;
-				foreach ( $requirement as $sub_requirement ) {
-					$show = self::evaluate_requirement( $object, $field, $sub_requirement );
-					// No need to go on if one sub_requirement returns true.
-					if ( $show ) {
-						return true;
-					}
+			// Handles "OR" functionality.
+			$show = false;
+			foreach ( $requirement as $sub_requirement ) {
+				$show = self::evaluate_requirement( $object, $field, $sub_requirement );
+				// No need to go on if one sub_requirement returns true.
+				if ( $show ) {
+					return true;
 				}
 			}
 		}
@@ -172,7 +170,7 @@ class Kirki_Active_Callback {
 			default:
 				$show = ( $value1 == $value2 ) ? true : false;
 
-		}
+		} // End switch().
 
 		if ( isset( $show ) ) {
 			return $show;

@@ -37,7 +37,7 @@ class Kirki_Field_Spacing extends Kirki_Field_Number {
 		if ( ! empty( $this->sanitize_callback ) ) {
 			return;
 		}
-		$this->sanitize_callback = array( $this, 'sanitize' );
+		$this->sanitize_callback = array( $this, 'sanitize_value' );
 
 	}
 
@@ -48,7 +48,7 @@ class Kirki_Field_Spacing extends Kirki_Field_Number {
 	 * @param array $value The value.
 	 * @return array
 	 */
-	public function sanitize( $value ) {
+	public function sanitize_value( $value ) {
 
 		// Sanitize each sub-value separately.
 		foreach ( $value as $key => $sub_value ) {
@@ -56,18 +56,6 @@ class Kirki_Field_Spacing extends Kirki_Field_Number {
 		}
 		return $value;
 
-	}
-
-	/**
-	 * Sets the $js_vars.
-	 * Currentlly postMessage does not work with spacing fields
-	 * so we have to force using the `refresh` mode.
-	 *
-	 * @access protected
-	 */
-	protected function set_js_vars() {
-		$this->js_vars   = array();
-		$this->transport = 'refresh';
 	}
 
 	/**

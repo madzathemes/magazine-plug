@@ -145,7 +145,7 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 						break;
 				}
 			}
-		}
+		} // End foreach().
 
 		$this->fields = $args['fields'];
 
@@ -193,8 +193,8 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 						}
 					}
 				}
-			}
-		}
+			} // End foreach().
+		} // End if().
 	}
 
 	/**
@@ -242,17 +242,20 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 		// If we have a color picker field we need to enqueue the Wordpress Color Picker style and script.
 		if ( is_array( $this->fields ) && ! empty( $this->fields ) ) {
 			foreach ( $this->fields as $field ) {
-				if ( isset( $field['type'] ) && 'color' === $field['type'] ) {
-					wp_enqueue_script( 'wp-color-picker' );
-					wp_enqueue_style( 'wp-color-picker' );
-					break;
-				}
-			}
+				if ( isset( $field['type'] ) ) {
 
-			foreach ( $this->fields as $field ) {
-				if ( isset( $field['type'] ) && 'dropdown-pages' === $field['type'] ) {
-					wp_enqueue_script( 'kirki-dropdown-pages' );
-					break;
+					// Some field-types require extra scripts.
+					switch ( $field['type'] ) {
+						case 'color':
+							wp_enqueue_script( 'wp-color-picker' );
+							wp_enqueue_style( 'wp-color-picker' );
+							break;
+						case 'select':
+						case 'dropdown-pages':
+							wp_enqueue_script( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/js/select2.full.js', array( 'jquery' ), false, true );
+							wp_enqueue_style( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/css/select2.min.css', null );
+							break;
+					}
 				}
 			}
 		}
@@ -352,7 +355,7 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 									<# if ( field.description ) { #>
 										<span class="description customize-control-description">{{ field.description }}</span>
 									<# } #>
-									<select data-field="{{{ field.id }}}">
+									<select data-field="{{{ field.id }}}"<# if ( 'undefined' !== typeof field.multiple && false !== field.multiple ) { #> multiple="multiple" data-multiple="{{ field.multiple }}"<# } #>>
 										<# _.each( field.choices, function( choice, i ) { #>
 											<option value="{{{ i }}}" <# if ( field.default == i ) { #> selected="selected" <# } #>>{{ choice }}</option>
 										<# }); #>
@@ -410,24 +413,24 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 							<# } else if ( 'color' === field.type ) { #>
 
 								<# var defaultValue = '';
-						        if ( field.default ) {
-						            if ( '#' !== field.default.substring( 0, 1 ) ) {
-						                defaultValue = '#' + field.default;
-						            } else {
-						                defaultValue = field.default;
-						            }
-						            defaultValue = ' data-default-color=' + defaultValue; // Quotes added automatically.
-						        } #>
-						        <label>
-						            <# if ( field.label ) { #>
-						                <span class="customize-control-title">{{{ field.label }}}</span>
-						            <# } #>
-						            <# if ( field.description ) { #>
-						                <span class="description customize-control-description">{{{ field.description }}}</span>
-						            <# } #>
-						            <input class="color-picker-hex" type="text" maxlength="7" placeholder="<?php echo esc_attr( $this->l10n( 'hex-value' ) ); ?>"  value="{{{ field.default }}}" data-field="{{{ field.id }}}" {{ defaultValue }} />
+								if ( field.default ) {
+									if ( '#' !== field.default.substring( 0, 1 ) ) {
+										defaultValue = '#' + field.default;
+									} else {
+										defaultValue = field.default;
+									}
+									defaultValue = ' data-default-color=' + defaultValue; // Quotes added automatically.
+								} #>
+								<label>
+									<# if ( field.label ) { #>
+										<span class="customize-control-title">{{{ field.label }}}</span>
+									<# } #>
+									<# if ( field.description ) { #>
+										<span class="description customize-control-description">{{{ field.description }}}</span>
+									<# } #>
+									<input class="color-picker-hex" type="text" maxlength="7" placeholder="<?php echo esc_attr( $this->l10n( 'hex-value' ) ); ?>"  value="{{{ field.default }}}" data-field="{{{ field.id }}}" {{ defaultValue }} />
 
-						        </label>
+								</label>
 
 							<# } else if ( 'textarea' === field.type ) { #>
 
@@ -536,7 +539,7 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 	 * Validate row-labels.
 	 *
 	 * @access protected
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 * @param array $args {@see WP_Customize_Control::__construct}.
 	 */
 	protected function row_label( $args ) {
@@ -568,7 +571,7 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 	 * Returns an array of translation strings.
 	 *
 	 * @access protected
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 * @param string|false $id The string-ID.
 	 * @return string
 	 */
@@ -577,6 +580,7 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 			'row'               => esc_attr__( 'row', 'kirki' ),
 			'add-new'           => esc_attr__( 'Add new', 'kirki' ),
 			'select-page'       => esc_attr__( 'Select a Page', 'kirki' ),
+			/* translators: %s represents the number of rows we're limiting the repeater to allow. */
 			'limit-rows'        => esc_attr__( 'Limit: %s rows', 'kirki' ),
 			'hex-value'         => esc_attr__( 'Hex Value', 'kirki' ),
 			'no-image-selected' => esc_attr__( 'No Image Selected', 'kirki' ),

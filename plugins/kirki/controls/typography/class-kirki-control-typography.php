@@ -52,15 +52,64 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 	public $kirki_config = 'global';
 
 	/**
+	 * Constructor.
+	 *
+	 * Supplied `$args` override class property defaults.
+	 *
+	 * If `$args['settings']` is not defined, use the $id as the setting ID.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param WP_Customize_Manager $manager Customizer bootstrap instance.
+	 * @param string               $id      Control ID.
+	 * @param array                $args    {
+	 *     Optional. Arguments to override class property defaults.
+	 *
+	 *     @type int                  $instance_number Order in which this instance was created in relation
+	 *                                                 to other instances.
+	 *     @type WP_Customize_Manager $manager         Customizer bootstrap instance.
+	 *     @type string               $id              Control ID.
+	 *     @type array                $settings        All settings tied to the control. If undefined, `$id` will
+	 *                                                 be used.
+	 *     @type string               $setting         The primary setting for the control (if there is one).
+	 *                                                 Default 'default'.
+	 *     @type int                  $priority        Order priority to load the control. Default 10.
+	 *     @type string               $section         Section the control belongs to. Default empty.
+	 *     @type string               $label           Label for the control. Default empty.
+	 *     @type string               $description     Description for the control. Default empty.
+	 *     @type array                $choices         List of choices for 'radio' or 'select' type controls, where
+	 *                                                 values are the keys, and labels are the values.
+	 *                                                 Default empty array.
+	 *     @type array                $input_attrs     List of custom input attributes for control output, where
+	 *                                                 attribute names are the keys and values are the values. Not
+	 *                                                 used for 'checkbox', 'radio', 'select', 'textarea', or
+	 *                                                 'dropdown-pages' control types. Default empty array.
+	 *     @type array                $json            Deprecated. Use WP_Customize_Control::json() instead.
+	 *     @type string               $type            Control type. Core controls include 'text', 'checkbox',
+	 *                                                 'textarea', 'radio', 'select', and 'dropdown-pages'. Additional
+	 *                                                 input types such as 'email', 'url', 'number', 'hidden', and
+	 *                                                 'date' are supported implicitly. Default 'text'.
+	 * }
+	 */
+	public function __construct( $manager, $id, $args = array() ) {
+
+		parent::__construct( $manager, $id, $args );
+		add_action( 'customize_controls_enqueue_scripts', array( $this, 'enqueue_scripts' ), 999 );
+
+	}
+
+	/**
 	 * Enqueue control related scripts/styles.
 	 *
 	 * @access public
 	 */
-	public function enqueue() {
+	public function enqueue_scripts() {
 
-		wp_enqueue_script( 'selectize', trailingslashit( Kirki::$url ) . 'controls/typography/selectize.js', array( 'jquery' ), false, true );
+		wp_enqueue_script( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/js/select2.full.js', array( 'jquery' ), false, true );
+		wp_enqueue_style( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/css/select2.min.css', null );
+		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'wp-color-picker-alpha', trailingslashit( Kirki::$url ) . 'controls/typography/wp-color-picker-alpha.js', array( 'wp-color-picker' ), '1.2', true );
-		wp_enqueue_script( 'kirki-typography', trailingslashit( Kirki::$url ) . 'controls/typography/typography.js', array( 'jquery', 'customize-base', 'selectize', 'wp-color-picker-alpha' ), false, true );
+		wp_enqueue_script( 'kirki-typography', trailingslashit( Kirki::$url ) . 'controls/typography/typography.js', array( 'jquery', 'customize-base', 'select2', 'wp-color-picker-alpha' ), false, true );
 
 		// Add fonts to our JS objects.
 		$google_fonts   = Kirki_Fonts::get_google_fonts();
@@ -105,14 +154,20 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 			$available_variants = array();
 			foreach ( $variants as $variant ) {
 				if ( array_key_exists( $variant, $all_variants ) ) {
-					$available_variants[] = array( 'id' => $variant, 'label' => $all_variants[ $variant ] );
+					$available_variants[] = array(
+						'id' => $variant,
+						'label' => $all_variants[ $variant ],
+					);
 				}
 			}
 
 			$available_subsets = array();
 			foreach ( $subsets as $subset ) {
 				if ( array_key_exists( $subset, $all_subsets ) ) {
-					$available_subsets[] = array( 'id' => $subset, 'label' => $all_subsets[ $subset ] );
+					$available_subsets[] = array(
+						'id' => $subset,
+						'label' => $all_subsets[ $subset ],
+					);
 				}
 			}
 
@@ -123,7 +178,10 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 				'subsets'      => $available_subsets,
 			);
 		}
-		$final = array_merge( $standard_fonts_final, $google_fonts_final );
+		$final = array(
+			'standard' => $standard_fonts_final,
+			'google'   => $google_fonts_final,
+		);
 		wp_localize_script( 'kirki-typography', 'kirkiAllFonts', $final );
 
 		wp_enqueue_style( 'kirki-typography-css', trailingslashit( Kirki::$url ) . 'controls/typography/typography.css', null );
@@ -172,6 +230,24 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 		$this->json['default'] = wp_parse_args( $this->json['default'], $defaults );
 		$this->json['show_variants'] = ( true === Kirki_Fonts_Google::$force_load_all_variants ) ? false : true;
 		$this->json['show_subsets']  = ( true === Kirki_Fonts_Google::$force_load_all_subsets ) ? false : true;
+		$this->json['languages'] = array(
+			'cyrillic'     => 'Cyrillic',
+			'cyrillic-ext' => 'Cyrillic Extended',
+			'devanagari'   => 'Devanagari',
+			'greek'        => 'Greek',
+			'greek-ext'    => 'Greek Extended',
+			'khmer'        => 'Khmer',
+			'latin'        => 'Latin',
+			'latin-ext'    => 'Latin Extended',
+			'vietnamese'   => 'Vietnamese',
+			'hebrew'       => 'Hebrew',
+			'arabic'       => 'Arabic',
+			'bengali'      => 'Bengali',
+			'gujarati'     => 'Gujarati',
+			'tamil'        => 'Tamil',
+			'telugu'       => 'Telugu',
+			'thai'         => 'Thai',
+		);
 	}
 
 	/**
@@ -202,7 +278,9 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 				<# if ( data.choices['fonts'] ) { data.fonts = data.choices['fonts']; } #>
 				<div class="font-family">
 					<h5>{{ data.l10n['font-family'] }}</h5>
-					<select {{{ data.inputAttrs }}} id="kirki-typography-font-family-{{{ data.id }}}" placeholder="{{ data.l10n['select-font-family'] }}"></select>
+					<select {{{ data.inputAttrs }}} id="kirki-typography-font-family-{{{ data.id }}}" placeholder="{{ data.l10n['select-font-family'] }}">
+						<option value="{{ data.value['font-family'] }}" selected="selected">{{ data.value['font-family'] }}</option>
+					</select>
 				</div>
 				<# if ( true === data.show_variants || false !== data.default.variant ) { #>
 					<div class="variant hide-on-standard-fonts kirki-variant-wrapper">
@@ -213,7 +291,11 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 				<# if ( true === data.show_subsets ) { #>
 					<div class="subsets hide-on-standard-fonts kirki-subsets-wrapper">
 						<h5>{{ data.l10n['subsets'] }}</h5>
-						<select {{{ data.inputAttrs }}} class="subset" id="kirki-typography-subsets-{{{ data.id }}}"></select>
+						<select {{{ data.inputAttrs }}} class="subset" id="kirki-typography-subsets-{{{ data.id }}}" multiple>
+							<# _.each( data.value.subsets, function( subset ) { #>
+								<option value="{{ subset }}" selected="selected">{{ data.languages[ subset ] }}</option>
+							<# } ); #>
+						</select>
 					</div>
 				<# } #>
 			<# } #>
@@ -330,6 +412,10 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 			$old_values['variant'] = 'regular';
 		}
 
+		if ( isset( $value['variant'] ) && in_array( $value['variant'], array( '100light', '600bold', '800bold', '900bold' ) ) ) {
+			$value['variant'] = (string) intval( $value['variant'] );
+		}
+
 		// Letter spacing was in px, now it requires units.
 		if ( isset( $value['letter-spacing'] ) && is_numeric( $value['letter-spacing'] ) && $value['letter-spacing'] ) {
 			$value['letter-spacing'] .= 'px';
@@ -357,7 +443,7 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 	 * Returns an array of translation strings.
 	 *
 	 * @access protected
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 * @param string|false $id The string-ID.
 	 * @return string
 	 */

@@ -99,6 +99,13 @@
 
 								cssArray[ i ] = '';
 								_.each( newval, function( subValueValue, subValueKey ) {
+									// Simple tweak for background-image properties.
+									if ( 'background-image' === subValueKey ) {
+										if ( 0 > subValueValue.indexOf( 'url(' ) ) {
+											subValueValue = 'url("' + subValueValue + '")';
+										}
+									}
+
 									if ( 'undefined' !== typeof args.choice ) {
 										if ( args.choice === subValueKey ) {
 											cssArray[ i ] += args.element + '{' + args.property + ':' + args.prefix + subValueValue + args.units + args.suffix + ';}';
@@ -129,15 +136,12 @@
 							}
 
 							// Attach to <head>
-							if ( '' !== css ) {
-
-								// Make sure we have a stylesheet with the defined ID.
-								// If we don't then add it.
-								if ( ! jQuery( '#kirki-customizer-postmessage' + setting.replace( /\[/g, '-' ).replace( /\]/g, '' ) ).size() ) {
-									jQuery( 'head' ).append( '<style id="kirki-customizer-postmessage' + setting.replace( /\[/g, '-' ).replace( /\]/g, '' ) + '"></style>' );
-								}
-								jQuery( '#kirki-customizer-postmessage' + setting.replace( /\[/g, '-' ).replace( /\]/g, '' ) ).text( css );
+							// Make sure we have a stylesheet with the defined ID.
+							// If we don't then add it.
+							if ( ! jQuery( '#kirki-customizer-postmessage' + setting.replace( /\[/g, '-' ).replace( /\]/g, '' ) ).size() ) {
+								jQuery( 'head' ).append( '<style id="kirki-customizer-postmessage' + setting.replace( /\[/g, '-' ).replace( /\]/g, '' ) + '"></style>' );
 							}
+							jQuery( '#kirki-customizer-postmessage' + setting.replace( /\[/g, '-' ).replace( /\]/g, '' ) ).text( css );
 
 						}, 100 );
 

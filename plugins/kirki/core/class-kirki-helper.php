@@ -153,6 +153,7 @@ class Kirki_Helper {
 		foreach ( $posts as $post ) {
 			$items[ $post->ID ] = $post->post_title;
 		}
+		wp_reset_postdata();
 
 		return $items;
 
@@ -170,7 +171,9 @@ class Kirki_Helper {
 		$items = array();
 
 		// Get the taxonomies.
-		$taxonomies = get_taxonomies( array( 'public' => true ) );
+		$taxonomies = get_taxonomies( array(
+			'public' => true,
+		) );
 
 		// Build the array.
 		foreach ( $taxonomies as $taxonomy ) {
@@ -195,7 +198,9 @@ class Kirki_Helper {
 		$items = array();
 
 		// Get the post types.
-		$post_types = get_post_types( array( 'public' => true ), 'objects' );
+		$post_types = get_post_types( array(
+			'public' => true,
+		), 'objects' );
 
 		// Build the array.
 		foreach ( $post_types as $post_type ) {
@@ -615,7 +620,7 @@ class Kirki_Helper {
 					return $colors[ $context ];
 				}
 				return $colors['primary'];
-		}
+		} // End switch().
 	}
 
 	/**

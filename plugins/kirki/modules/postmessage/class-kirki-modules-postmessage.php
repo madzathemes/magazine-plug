@@ -7,7 +7,7 @@
  * @author      Aristeides Stathopoulos
  * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
- * @since       2.4.0
+ * @since       3.0.0
  */
 
 // Exit if accessed directly.
@@ -18,13 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Adds styles to the customizer.
  */
-class Kirki_Modules_postMessage {
+class Kirki_Modules_PostMessage {
 
 	/**
 	 * Constructor.
 	 *
 	 * @access public
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function __construct() {
 		add_action( 'customize_preview_init', array( $this, 'postmessage' ) );

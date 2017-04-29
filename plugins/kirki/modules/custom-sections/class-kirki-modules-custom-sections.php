@@ -7,7 +7,7 @@
  * @author      Aristeides Stathopoulos
  * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
- * @since       2.4.0
+ * @since       3.0.0
  */
 
 // Exit if accessed directly.
@@ -24,7 +24,7 @@ class Kirki_Modules_Custom_Sections {
 	 * Constructor.
 	 *
 	 * @access public
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function __construct() {
 
@@ -43,7 +43,7 @@ class Kirki_Modules_Custom_Sections {
 	 * Add the custom section types.
 	 *
 	 * @access public
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 * @param array $section_types The registered section-types.
 	 * @return array
 	 */
@@ -61,22 +61,34 @@ class Kirki_Modules_Custom_Sections {
 	 * Include the custom-section classes.
 	 *
 	 * @access public
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function include_sections() {
 
 		$folder_path = dirname( __FILE__ ) . '/sections/';
 
-		include_once wp_normalize_path( $folder_path . 'class-kirki-sections-default-section.php' );
-		include_once wp_normalize_path( $folder_path . 'class-kirki-sections-expanded-section.php' );
+		$section_types = apply_filters( 'kirki/section_types', array() );
 
+		foreach ( $section_types as $id => $class ) {
+			if ( ! class_exists( $class ) ) {
+				$path = wp_normalize_path( $folder_path . 'class-kirki-sections-' . $id . '-section.php' );
+				if ( file_exists( $path ) ) {
+					include_once $path;
+					continue;
+				}
+				$path = str_replace( 'class-kirki-sections-kirki-', 'class-kirki-sections-', $path );
+				if ( file_exists( $path ) ) {
+					include_once $path;
+				}
+			}
+		}
 	}
 
 	/**
 	 * Enqueues any necessary scripts and styles.
 	 *
 	 * @access public
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 */
 	public function enqueue_scrips() {
 

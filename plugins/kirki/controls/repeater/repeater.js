@@ -1,10 +1,9 @@
 /*jshint -W065 */
-var RepeaterRow = function( rowIndex, container, label ) {
+var RepeaterRow = function( rowIndex, container, label, control ) {
 
 	'use strict';
 
 	var self        = this;
-
 	this.rowIndex   = rowIndex;
 	this.container  = container;
 	this.label      = label;
@@ -49,13 +48,28 @@ var RepeaterRow = function( rowIndex, container, label ) {
 
 	this.updateLabel = function() {
 		var rowLabelField,
-		    rowLabel;
+		    rowLabel,
+		    rowLabelSelector;
 
 		if ( 'field' === this.label.type ) {
 			rowLabelField = this.container.find( '.repeater-field [data-field="' + this.label.field + '"]' );
 			if ( 'function' === typeof rowLabelField.val ) {
 				rowLabel = rowLabelField.val();
 				if ( '' !== rowLabel ) {
+					if ( 'undefined' !== typeof control.params.fields[ this.label.field ] ) {
+						if ( 'undefined' !== typeof control.params.fields[ this.label.field ].type ) {
+							if ( 'select' === control.params.fields[ this.label.field ].type ) {
+								if ( 'undefined' !== typeof control.params.fields[ this.label.field ].choices ) {
+									if ( 'undefined' !== typeof control.params.fields[ this.label.field ].choices[ rowLabelField.val() ] ) {
+										rowLabel = control.params.fields[ this.label.field ].choices[ rowLabelField.val() ];
+									}
+								}
+							} else if ( 'radio' === control.params.fields[ this.label.field ].type || 'radio-image' === control.params.fields[ this.label.field ].type ) {
+								rowLabelSelector = control.selector + ' [data-row="' + this.rowIndex + '"] .repeater-field [data-field="' + this.label.field + '"]:checked';
+								rowLabel = jQuery( rowLabelSelector ).val();
+							}
+						}
+					}
 					this.header.find( '.repeater-row-label' ).text( rowLabel );
 					return;
 				}
@@ -106,7 +120,7 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 				theNewRow = control.addRow();
 				theNewRow.toggleMinimize();
 				control.initColorPicker();
-				control.initDropdownPages( theNewRow );
+				control.initSelect( theNewRow );
 			} else {
 				jQuery( control.selector + ' .limit' ).addClass( 'highlight' );
 			}
@@ -167,7 +181,7 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 			_.each( settingValue, function( subValue ) {
 				theNewRow = control.addRow( subValue );
 				control.initColorPicker();
-				control.initDropdownPages( theNewRow, subValue );
+				control.initSelect( theNewRow, subValue );
 			});
 		}
 
@@ -662,7 +676,8 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 			newRow = new RepeaterRow(
 				control.currentIndex,
 				jQuery( template ).appendTo( control.repeaterFieldsContainer ),
-				control.params.row_label
+				control.params.row_label,
+				control
 			);
 
 			newRow.container.on( 'row:remove', function( e, rowIndex ) {
@@ -853,36 +868,39 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 	},
 
 	/**
-	 * Init the dropdown-pages field with selectize
+	 * Init the dropdown-pages field with select2
 	 * Called after AddRow
 	 *
 	 * @param {object} theNewRow the row that was added to the repeater
 	 * @param {object} data the data for the row if we're initializing a pre-existing row
 	 *
 	 */
-	initDropdownPages: function( theNewRow, data ) {
+	initSelect: function( theNewRow, data ) {
 
 		'use strict';
 
 		var control  = this,
-		    dropdown = theNewRow.container.find( '.repeater-dropdown-pages select' ),
+		    dropdown = theNewRow.container.find( '.repeater-field select' ),
 		    $select,
-		    selectize,
-		    dataField;
+		    dataField,
+		    multiple,
+		    select2Options = {};
 
 		if ( 0 === dropdown.length ) {
 			return;
 		}
 
-		$select   = jQuery( dropdown ).selectize();
-		selectize = $select[0].selectize;
 		dataField = dropdown.data( 'field' );
-
-		if ( data ) {
-			selectize.setValue( data[dataField] );
+		multiple  = jQuery( dropdown ).data( 'multiple' );
+		if ( 'undefed' !== multiple && jQuery.isNumeric( multiple ) ) {
+			multiple = parseInt( multiple );
+			if ( 1 < multiple ) {
+				select2Options.maximumSelectionLength = multiple;
+			}
 		}
+		$select   = jQuery( dropdown ).select2( select2Options ).val( data[ dataField ] );
 
-		this.container.on( 'change', '.repeater-dropdown-pages select', function( event ) {
+		this.container.on( 'change', '.repeater-field select', function( event ) {
 
 			var currentDropdown = jQuery( event.target ),
 				row             = currentDropdown.closest( '.repeater-row' ),
