@@ -829,4 +829,5 @@ function custom_row_style_attributes( $attributes, $args ) {
 }
 
 add_filter('siteorigin_panels_row_style_attributes', 'custom_row_style_attributes', 10, 2);
+
 ?>

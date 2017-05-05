@@ -19,11 +19,13 @@ function mt_pl_views_shares() {
 
 	// Post data, share counts.
 	$data ='';
-	$data .='<div class="poster-data color-silver-light">';
-	$data .='<span class="poster-shares">'. $shares .' <span class="mt-data-text">'. esc_html($t_shares) .'</span></span>';
-	$data .='<span class="poster-views">'. $viewes .' <span class="mt-data-text">'. esc_html($t_views) .'</span></span>';
-	if (get_comments_number()!="0") { $data .='<span class="poster-comments">'.get_comments_number().'</span>'; }
-	$data .='</div>';
+	if($shares!="0" and $shares!="" or $viewes!="0" and $viewes!=""){
+		$data .='<div class="poster-data color-silver-light">';
+		if($shares!="0" and $shares!=""){$data .='<span class="poster-shares">'. $shares .' <span class="mt-data-text">'. esc_html($t_shares) .'</span></span>';}
+		if($viewes!="0" and $viewes!=""){ $data .='<span class="poster-views">'. $viewes .' <span class="mt-data-text">'. esc_html($t_views) .'</span></span>';}
+		if (get_comments_number()!="0") { $data .='<span class="poster-comments">'.get_comments_number().'</span>'; }
+		$data .='</div>';
+	}
 
 	return $data;
 }

@@ -103,7 +103,7 @@ function grid( $atts, $content = null ) {
 			if($position=="right" and $title != ""){ $shortcode .= '<h2 class="heading heading-right"><span>'.$title.'</span></h2>'; }
 
 			if($the_query->have_posts()) {
-				$shortcode .='<div>';
+				$shortcode .='<div class="grid-wrap">';
 
 				if($type=="1"){
           $i=1;
