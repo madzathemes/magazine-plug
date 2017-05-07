@@ -48,8 +48,8 @@ function mt_pl_views_shares_grid() {
 	if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 	$shortcode = "";
 	$shortcode .='<div class="post-info">';
-		$shortcode .='<span class="poster-shares">'. $shares .' '. esc_html__("shares", "magazine-plug") .'</span>';
-		$shortcode .='<span class="poster-views">'. $viewes .' '. esc_html__("views", "magazine-plug") .'</span>';
+		if($shares!="0" and $shares!=""){$data .='<span class="poster-shares">'. $shares .' <span class="mt-data-text">'. esc_html($t_shares) .'</span></span>';}
+		if($viewes!="0" and $viewes!=""){ $data .='<span class="poster-views">'. $viewes .' <span class="mt-data-text">'. esc_html($t_views) .'</span></span>';}
 		if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
 	$shortcode .='</div>';
 
