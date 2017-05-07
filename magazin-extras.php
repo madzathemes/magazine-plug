@@ -760,6 +760,11 @@ function mt_header_ad_top(){
 		if (!empty($optionz['header_ad_top'])) {  ?><div class="text-center"> <?php echo html_entity_decode($optionz['header_ad_top']); ?> </div>  <?php }
 }
 
+function mt_header_ad_menu(){
+		$optionz = get_option("magazin_theme_options");
+		if (!empty($optionz['header_ad_menu'])) {  ?><?php echo html_entity_decode($optionz['header_ad_menu']); ?> <?php }
+}
+
 function mt_article_ad_top(){
 		$optionz = get_option("magazin_theme_options");
 		if (!empty($optionz['article_ad_top'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['article_ad_top']); ?> </div> <?php }
