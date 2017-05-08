@@ -5,6 +5,7 @@ function mt_pl_views_shares() {
 	if ( false == get_theme_mod( 't_pl_views', false ) ) { $t_views = esc_html__("views", "magazine-plug");  } else { $t_views = get_theme_mod( 't_pl_views' ); }
 
 	// Share count meta real and fake.
+	$share_real = "0";
 	$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
 	$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 	$shares = $share_real;
@@ -21,7 +22,7 @@ function mt_pl_views_shares() {
 	$data ='';
 	if($shares!="0" and $shares!="" or $viewes!="0" and $viewes!=""){
 		$data .='<div class="poster-data color-silver-light">';
-		if($shares!="0" and $shares!=""){$data .='<span class="poster-shares">'. $shares .' <span class="mt-data-text">'. esc_html($t_shares) .'</span></span>';}
+		if($shares!="0" and $shares!=""){ $data .='<span class="poster-shares">'. $shares .' <span class="mt-data-text">'. esc_html($t_shares) .'</span></span>';}
 		if($viewes!="0" and $viewes!=""){ $data .='<span class="poster-views">'. $viewes .' <span class="mt-data-text">'. esc_html($t_views) .'</span></span>';}
 		if (get_comments_number()!="0") { $data .='<span class="poster-comments">'.get_comments_number().'</span>'; }
 		$data .='</div>';
@@ -35,6 +36,7 @@ function mt_pl_views_shares_grid() {
 	if ( false == get_theme_mod( 't_pl_views', false ) ) { $t_views = esc_html__("views", "magazine-plug");  } else { $t_views = get_theme_mod( 't_pl_views' ); }
 
 	// Share count meta real and fake.
+	$share_real = "0";
 	$share = get_post_meta(get_the_ID(), "magazin_share_count", true);
 	$share_real = get_post_meta(get_the_ID(), "magazin_share_count_real", true);
 	$shares = $share_real;
@@ -48,8 +50,8 @@ function mt_pl_views_shares_grid() {
 	if (!empty($view)){ $viewes = $view + $views; $viewes = number_format($viewes); }
 	$shortcode = "";
 	$shortcode .='<div class="post-info">';
-		if($shares!="0" and $shares!=""){$data .='<span class="poster-shares">'. $shares .' <span class="mt-data-text">'. esc_html($t_shares) .'</span></span>';}
-		if($viewes!="0" and $viewes!=""){ $data .='<span class="poster-views">'. $viewes .' <span class="mt-data-text">'. esc_html($t_views) .'</span></span>';}
+		if($shares!="0" or $shares!=""){ $data .='<span class="poster-shares">'. $shares .' <span class="mt-data-text">'. esc_html($t_shares) .'</span></span>';}
+		if($viewes!="0" or $viewes!=""){ $data .='<span class="poster-views">'. $viewes .' <span class="mt-data-text">'. esc_html($t_views) .'</span></span>';}
 		if (get_comments_number()!="0") { $shortcode .='<span class="poster-comments">'.get_comments_number().'</span>'; }
 	$shortcode .='</div>';
 
