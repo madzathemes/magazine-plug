@@ -69,6 +69,7 @@ function magazin_random_template() {
        }
 }
 
+
 function magazin_theme_setup() {
 
 	add_image_size( 'magazin_430', 430, 240, true);
