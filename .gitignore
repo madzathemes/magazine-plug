@@ -1,4 +1,4 @@
-
+.gitignore
 .DS_Store
 gulpfile.js
 package.json
