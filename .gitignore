@@ -1,4 +1,4 @@
-gul.gitignore
+.gitignore
 .DS_Store
 package.json
 /node_modules
