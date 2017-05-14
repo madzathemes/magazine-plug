@@ -1,0 +1,36 @@
+{
+  "name": "magazine-plug",
+  "version": "1.0.0",
+  "description": "plugins themam",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madzathemes/magazine-plug.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/madzathemes/magazine-plug/issues"
+  },
+  "homepage": "https://github.com/madzathemes/magazine-plug#readme",
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "gulp": "^3.9.1",
+    "gulp-bump": "^2.7.0",
+    "gulp-ignore": "^2.0.2",
+    "gulp-inject-version": "^1.0.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-replace": "^0.5.4",
+    "gulp-watch": "^4.3.11",
+    "gulp-zip": "^4.0.0",
+    "yargs": "^8.0.1"
+  },
+  "dependencies": {
+    "gulp-ignore": "^2.0.2",
+    "gulp-jshint": "^2.0.4",
+    "jshint": "^2.9.4"
+  }
+}
