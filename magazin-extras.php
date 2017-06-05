@@ -350,7 +350,7 @@ function get_access_token_mt() {
 
 function magazin_get_shares( $post_id ) {
 
-		$cache_key = 'magazin_share_cache' . $post_id;
+		$cache_key = 'magazin_share_cachez' . $post_id;
 		$access_token = 'APP_ID|APP_SECRET';
 		$count = get_transient( $cache_key ); // try to get value from Wordpress cache
 
