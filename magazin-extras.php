@@ -349,18 +349,19 @@ function get_access_token_mt() {
 }
 
 function magazin_get_shares( $post_id ) {
-
+$mt_social = get_option( 'socialcountplus_settings');
 		$cache_key = 'magazin_share_cachez' . $post_id;
-		$access_token = 'APP_ID|APP_SECRET';
-		$count = get_transient( $cache_key ); // try to get value from Wordpress cache
 
 		$facebook_token = get_option("facebook_token");
+		$facebook_token = get_access_token_mt();
+		$access_token = $mt_social['facebook_app_id'].'|'.$mt_social['facebook_app_secret'];
+		$count = get_transient( $cache_key ); // try to get value from Wordpress cache
+
 		$share_time = get_option("share_time");
 
 		if(!empty( $share_time )){ $share_times = $share_time; } else { $share_times = 36000;  }
 
 
-		$access_token = get_access_token_mt();
 
 
 
