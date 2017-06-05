@@ -6,7 +6,7 @@ module.exports = function( grunt ) {
 		curl: {
 			'google-fonts-source': {
 				src: 'https://www.googleapis.com/webfonts/v1/webfonts?sort=alpha&key=AIzaSyCDiOc36EIOmwdwspLG3LYwCg9avqC5YLs',
-				dest: 'core/webfonts.json'
+				dest: 'modules/webfonts/webfonts.json'
 			}
 		},
 
@@ -14,10 +14,13 @@ module.exports = function( grunt ) {
 		sass: {
 			dist: {
 				files: {
+					'assets/vendor/select2/kirki.css':              'assets/vendor/select2/kirki.scss',
 					'modules/reset/reset.css':                      'modules/reset/reset.scss',
 					'modules/tooltips/tooltip.css':                 'modules/tooltips/tooltip.scss',
 					'modules/custom-sections/sections.css':         'modules/custom-sections/sections.scss',
 					'modules/collapsible/collapsible.css':          'modules/collapsible/collapsible.scss',
+					'modules/search/search.css':                    'modules/search/search.scss',
+					'modules/resize/resize.css':                    'modules/resize/resize.scss',
 
 					'controls/background/background.css':           'controls/background/background.scss',
 					'controls/code/code.css':                       'controls/code/code.scss',
@@ -28,7 +31,10 @@ module.exports = function( grunt ) {
 					'controls/dimension/dimension.css':             'controls/dimension/dimension.scss',
 					'controls/dimensions/dimensions.css':           'controls/dimensions/dimensions.scss',
 					'controls/editor/editor.css':                   'controls/editor/editor.scss',
+					'controls/fontawesome/fontawesome.css':         'controls/fontawesome/fontawesome.scss',
 					'controls/generic/generic.css':                 'controls/generic/generic.scss',
+					'controls/gradient/gradient.css':               'controls/gradient/gradient.scss',
+					'controls/image/image.css':                     'controls/image/image.scss',
 					'controls/multicheck/multicheck.css':           'controls/multicheck/multicheck.scss',
 					'controls/multicolor/multicolor.css':           'controls/multicolor/multicolor.scss',
 					'controls/number/number.css':                   'controls/number/number.scss',
@@ -62,28 +68,29 @@ module.exports = function( grunt ) {
 			convert: {
 				expand: true,
 				ext: '.php',
-				src: ['core/webfonts.json']
+				src: ['modules/webfonts/webfonts.json']
 			}
 		},
 
 		// Check JS syntax
 		jscs: {
-		    src: [
-                'Gruntfile.js',
-				'assets/js/**/*.js',
+			src: [
+				'Gruntfile.js',
 				'controls/**/*.js',
-                '!assets/js/**/*.min.js',
-                '!assets/js/vendor/*'
-            ],
-		    options: {
-		        config: '.jscsrc',
-		        verbose: true
-		    }
+				'modules/**/*.js',
+				'!modules/search/fuse.js',
+				'!modules/search/fuse.min.js',
+				'!assets/vendor/*'
+			],
+			options: {
+				config: '.jscsrc',
+				verbose: true
+			}
 		},
 
 		// Delete the json array
 		clean: [
-			'core/webfonts.json'
+			'modules/webfonts/webfonts.json'
 		],
 
 		// Watch task (run with "grunt watch")
@@ -96,13 +103,14 @@ module.exports = function( grunt ) {
 				],
 				tasks: ['sass']
 			},
-			// scripts: {
-			// 	files: [
-			// 		'assets/**/*.js',
-			// 		'Gruntfile.js'
-			// 	],
-			// 	tasks: ['jscs']
-			// }
+			scripts: {
+				files: [
+					'Gruntfile.js',
+					'controls/**/*.js',
+					'modules/**/*.js'
+				],
+				tasks: ['jscs']
+			}
 		}
 	});
 

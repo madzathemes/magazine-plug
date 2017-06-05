@@ -25,6 +25,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'sidebar_ad_top',
     'default'     => '',
     'priority'    => 10,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -48,6 +49,7 @@ function magazin_customize_ads($wp_customize){
     'default'     => '',
     'priority'    => 10,
     'option_type' => 'option',
+    'sanitize_callback' => 'do_not_filter_anything',
     'choices'     => array(
       'language' => 'css, html, javascript',
       'theme'    => 'monokai',
@@ -68,6 +70,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'sidebar_ad_bottom',
     'default'     => '',
     'priority'    => 10,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -90,6 +93,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'article_ad_top',
     'default'     => '',
     'priority'    => 10,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -111,6 +115,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'article_ad_bottom',
     'default'     => '',
     'priority'    => 10,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -133,6 +138,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'footer_ad_top',
     'default'     => '',
     'priority'    => 10,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -155,6 +161,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'custom_ad_1',
     'default'     => '',
     'priority'    => 10,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -177,6 +184,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'custom_ad_2',
     'default'     => '',
     'priority'    => 10,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -199,6 +207,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'custom_ad_3',
     'default'     => '',
     'priority'    => 10,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -219,6 +228,7 @@ function magazin_customize_ads($wp_customize){
     'label'       =>  esc_html__( 'YOUR AD CODE', 'magazin' ),
     'section'     => 'custom_ad_4',
     'default'     => '',
+    'sanitize_callback' => 'do_not_filter_anything',
     'priority'    => 10,
     'option_type' => 'option',
     'choices'     => array(
@@ -241,6 +251,7 @@ function magazin_customize_ads($wp_customize){
     'label'       => esc_html__( 'YOUR AD CODE', 'magazin' ),
     'section'     => 'custom_ad_5',
     'default'     => '',
+    'sanitize_callback' => 'do_not_filter_anything',
     'priority'    => 10,
     'option_type' => 'option',
     'choices'     => array(
@@ -262,6 +273,7 @@ function magazin_customize_ads($wp_customize){
     'label'       =>  esc_html__( 'YOUR AD CODE', 'magazin' ),
     'section'     => 'custom_ad_6',
     'default'     => '',
+    'sanitize_callback' => 'do_not_filter_anything',
     'priority'    => 10,
     'option_type' => 'option',
     'choices'     => array(
@@ -284,6 +296,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'custom_ad_7',
     'default'     => '',
     'priority'    => 10,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -306,6 +319,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'custom_ad_8',
     'default'     => '',
     'priority'    => 10,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -327,6 +341,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'custom_ad_9',
     'default'     => '',
     'priority'    => 10,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -347,6 +362,7 @@ function magazin_customize_ads($wp_customize){
     'section'     => 'header_ad_top',
     'default'     => '',
     'priority'    => 1,
+    'sanitize_callback' => 'do_not_filter_anything',
     'option_type' => 'option',
     'choices'     => array(
       'language' => 'css, html, javascript',
@@ -371,6 +387,7 @@ function magazin_customize_ads($wp_customize){
       'section'     => 'header_ad_menu',
       'default'     => '',
       'priority'    => 1,
+      'sanitize_callback' => 'do_not_filter_anything',
       'option_type' => 'option',
       'choices'     => array(
         'language' => 'css, html, javascript',

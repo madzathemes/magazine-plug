@@ -376,65 +376,6 @@ function magazin_customize_general($wp_customize){
 ));
 
 
-
-
-
-
-  $wp_customize->add_section('social_widget', array(
-    'title'    	=> esc_html__('Social Widget Settings', 'magazin'),
-    'panel'  => 'magazin_general'
-  ));
-
-  $wp_customize->add_setting('facebook_username', array(
-      'default'        => '',
-      'capability'     => 'edit_theme_options',
-      'type'           => 'option',
-      'sanitize_callback' => 'esc_attr',
-  ));
-  $wp_customize->add_control('facebook_username', array(
-      'label'    	=> esc_html__('Facebook username', 'magazin'),
-      'section'    => 'social_widget',
-      'settings'   => 'facebook_username',
-  ));
-
-  $wp_customize->add_setting('facebook_token', array(
-      'default'        => '',
-      'capability'     => 'edit_theme_options',
-      'type'           => 'option',
-      'sanitize_callback' => 'esc_attr',
-  ));
-  $wp_customize->add_control('facebook_token', array(
-      'label'    	=> esc_html__('Facebook token', 'magazin'),
-      'section'    => 'social_widget',
-      'settings'   => 'facebook_token',
-  ));
-
-  $wp_customize->add_setting('twitter_username', array(
-      'default'        => '',
-      'capability'     => 'edit_theme_options',
-      'type'           => 'option',
-      'sanitize_callback' => 'esc_attr',
-  ));
-  $wp_customize->add_control('twitter_username', array(
-      'label'    	=> esc_html__('Twitter username', 'magazin'),
-      'section'    => 'social_widget',
-      'settings'   => 'twitter_username',
-  ));
-
-  $wp_customize->add_setting('youtube_username', array(
-      'default'        => '',
-      'capability'     => 'edit_theme_options',
-      'type'           => 'option',
-      'sanitize_callback' => 'esc_attr',
-  ));
-  $wp_customize->add_control('youtube_username', array(
-      'label'    	=> esc_html__('YouTube username', 'magazin'),
-      'section'    => 'social_widget',
-      'settings'   => 'youtube_username',
-  ));
-
-
-
   Kirki::add_field( 'mt_facebook_meta', array(
        'type'        => 'switch',
        'settings'    => 'mt_facebook_meta',
@@ -447,6 +388,14 @@ function magazin_customize_general($wp_customize){
          'off' => esc_attr__( 'OFF', 'magazin' ),
        ),
    ) );
+
+   Kirki::add_field( 'socialcountplus_settings[facebook_app_id]', array(
+     'type'        => 'text',
+     'settings'    => 'socialcountplus_settings[facebook_app_id]',
+     'label'       => esc_attr__( "Facebook App ID", 'magazin' ),
+     'option_type'     => 'option',
+     'section'     => 'performance_',
+   ));
 
 
 }

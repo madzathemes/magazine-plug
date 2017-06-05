@@ -10,7 +10,7 @@ wp.customize.controlConstructor['kirki-color'] = wp.customize.Control.extend({
 		    clear;
 
 		// If we have defined any extra choices, make sure they are passed-on to Iris.
-		if ( 'undefined' !== typeof control.params.choices ) {
+		if ( ! _.isUndefined( control.params.choices ) ) {
 			picker.wpColorPicker( control.params.choices );
 		}
 
@@ -24,7 +24,7 @@ wp.customize.controlConstructor['kirki-color'] = wp.customize.Control.extend({
 
 		// Saves our settings to the WP API
 		picker.wpColorPicker({
-			change: function( event, ui ) {
+			change: function() {
 
 				// Small hack: the picker needs a small delay
 				setTimeout( function() {

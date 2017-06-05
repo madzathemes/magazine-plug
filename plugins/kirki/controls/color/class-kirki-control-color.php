@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
@@ -118,10 +118,6 @@ class Kirki_Control_Color extends WP_Customize_Control {
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
 
-		if ( 'user_meta' === $this->option_type ) {
-			$this->json['value'] = get_user_meta( get_current_user_id(), $this->id, true );
-		}
-
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
 			$this->json['inputAttrs'] .= $attr . '="' . esc_attr( $value ) . '" ';
@@ -137,10 +133,18 @@ class Kirki_Control_Color extends WP_Customize_Control {
 	 * @access public
 	 */
 	public function enqueue_scripts() {
+
+		Kirki_Custom_Build::register_dependency( 'jquery' );
+		Kirki_Custom_Build::register_dependency( 'wp-color-picker-alpha' );
+		Kirki_Custom_Build::register_dependency( 'customize-base' );
+
 		wp_enqueue_script( 'wp-color-picker-alpha', trailingslashit( Kirki::$url ) . 'assets/vendor/wp-color-picker-alpha/wp-color-picker-alpha.js', array( 'wp-color-picker' ), '1.2', true );
-		wp_enqueue_script( 'kirki-color', trailingslashit( Kirki::$url ) . 'controls/color/color.js', array( 'jquery', 'customize-base', 'wp-color-picker-alpha' ), false, true );
+
+		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+			wp_enqueue_script( 'kirki-color', trailingslashit( Kirki::$url ) . 'controls/color/color.js', array( 'jquery', 'customize-base', 'wp-color-picker-alpha' ), false, true );
+			wp_enqueue_style( 'kirki-color-css', trailingslashit( Kirki::$url ) . 'controls/color/color.css', null );
+		}
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_style( 'kirki-color-css', trailingslashit( Kirki::$url ) . 'controls/color/color.css', null );
 	}
 
 	/**

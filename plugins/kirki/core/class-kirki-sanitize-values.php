@@ -6,7 +6,7 @@
  * @package     Kirki
  * @category    Core
  * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
@@ -121,7 +121,7 @@ class Kirki_Sanitize_Values {
 		}
 
 		// Return empty if there are no numbers in the value.
-		if ( ! preg_match( '#[0-9]#' , $value ) ) {
+		if ( ! preg_match( '#[0-9]#', $value ) ) {
 			return '';
 		}
 

@@ -6,7 +6,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
@@ -68,9 +68,17 @@ class Kirki_Control_Editor extends WP_Customize_Control {
 	 * @access public
 	 */
 	public function enqueue() {
-		wp_enqueue_script( 'kirki-editor', trailingslashit( Kirki::$url ) . 'controls/editor/editor.js', array( 'jquery', 'customize-base' ), false, true );
-		wp_localize_script( 'kirki-editor', 'editorKirkiL10n', $this->l10n() );
-		wp_enqueue_style( 'kirki-editor-css', trailingslashit( Kirki::$url ) . 'controls/editor/editor.css', null );
+
+		Kirki_Custom_Build::register_dependency( 'jquery' );
+		Kirki_Custom_Build::register_dependency( 'customize-base' );
+
+		$script_to_localize = 'kirki-build';
+		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+			$script_to_localize = 'kirki-editor';
+			wp_enqueue_script( 'kirki-editor', trailingslashit( Kirki::$url ) . 'controls/editor/editor.js', array( 'jquery', 'customize-base' ), false, true );
+			wp_enqueue_style( 'kirki-editor-css', trailingslashit( Kirki::$url ) . 'controls/editor/editor.css', null );
+		}
+		wp_localize_script( $script_to_localize, 'editorKirkiL10n', $this->l10n() );
 	}
 
 	/**
@@ -91,10 +99,6 @@ class Kirki_Control_Editor extends WP_Customize_Control {
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
 		$this->json['l10n']    = $this->l10n();
-
-		if ( 'user_meta' === $this->option_type ) {
-			$this->json['value'] = get_user_meta( get_current_user_id(), $this->id, true );
-		}
 
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
@@ -147,6 +151,6 @@ class Kirki_Control_Editor extends WP_Customize_Control {
 			'close-editor'  => esc_attr__( 'Close Editor', 'kirki' ),
 			'switch-editor' => esc_attr__( 'Switch Editor', 'kirki' ),
 		);
-		return apply_filters( 'kirki/' . $this->kirki_config . '/l10n', $translation_strings );
+		return apply_filters( "kirki/{$this->kirki_config}/l10n", $translation_strings );
 	}
 }

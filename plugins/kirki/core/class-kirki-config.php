@@ -5,7 +5,7 @@
  * @package     Kirki
  * @category    Core
  * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  */
 
@@ -85,14 +85,14 @@ final class Kirki_Config {
 	 *
 	 * @access private
 	 *
-	 * @param string $id     @see Kirki_Config::get_instance().
-	 * @param array  $args   @see Kirki_Config::get_instance().
+	 * @param string $config_id @see Kirki_Config::get_instance().
+	 * @param array  $args      @see Kirki_Config::get_instance().
 	 */
-	private function __construct( $id = 'global', $args = array() ) {
+	private function __construct( $config_id = 'global', $args = array() ) {
 
 		// Get defaults from the class.
 		$defaults = get_class_vars( __CLASS__ );
-		// Skip the what we don't need in this context.
+		// Skip what we don't need in this context.
 		unset( $defaults['config_final'] );
 		unset( $defaults['instances'] );
 		// Apply any kirki/config global filters.
@@ -109,7 +109,7 @@ final class Kirki_Config {
 		}
 
 		$this->config_final       = $args;
-		$this->config_final['id'] = $id;
+		$this->config_final['id'] = $config_id;
 
 	}
 

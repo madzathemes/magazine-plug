@@ -3,8 +3,8 @@
  * The default section.
  *
  * @package     Kirki
- * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @subpackage  Custom Sections Module
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.2.0
  */

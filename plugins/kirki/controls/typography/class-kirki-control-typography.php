@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.0
  */
@@ -105,86 +105,35 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/js/select2.full.js', array( 'jquery' ), false, true );
-		wp_enqueue_style( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/css/select2.min.css', null );
+		Kirki_Custom_Build::register_dependency( 'jquery' );
+		Kirki_Custom_Build::register_dependency( 'customize-base' );
+		Kirki_Custom_Build::register_dependency( 'select2' );
+		Kirki_Custom_Build::register_dependency( 'wp-color-picker-alpha' );
+
+		wp_enqueue_script( 'wp-color-picker-alpha', trailingslashit( Kirki::$url ) . 'assets/vendor/wp-color-picker-alpha/wp-color-picker-alpha.js', array( 'wp-color-picker' ), '1.2', true );
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_script( 'wp-color-picker-alpha', trailingslashit( Kirki::$url ) . 'controls/typography/wp-color-picker-alpha.js', array( 'wp-color-picker' ), '1.2', true );
-		wp_enqueue_script( 'kirki-typography', trailingslashit( Kirki::$url ) . 'controls/typography/typography.js', array( 'jquery', 'customize-base', 'select2', 'wp-color-picker-alpha' ), false, true );
 
-		// Add fonts to our JS objects.
-		$google_fonts   = Kirki_Fonts::get_google_fonts();
-		$standard_fonts = Kirki_Fonts::get_standard_fonts();
-		$all_variants   = Kirki_Fonts::get_all_variants();
-		$all_subsets    = Kirki_Fonts::get_google_font_subsets();
-
-		$standard_fonts_final = array();
-		foreach ( $standard_fonts as $font ) {
-			$standard_fonts_final[] = array(
-				'family'      => $font['stack'],
-				'label'       => $font['label'],
-				'subsets'     => array(),
-				'is_standard' => true,
-				'variants'    => array(
-					array(
-						'id'    => 'regular',
-						'label' => $all_variants['regular'],
-					),
-					array(
-						'id'    => 'italic',
-						'label' => $all_variants['italic'],
-					),
-					array(
-						'id'    => '700',
-						'label' => $all_variants['700'],
-					),
-					array(
-						'id'    => '700italic',
-						'label' => $all_variants['700italic'],
-					),
-				),
-			);
+		$script_to_localize = 'kirki-build';
+		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+			$script_to_localize = 'kirki-typography';
+			wp_enqueue_script( 'kirki-typography', trailingslashit( Kirki::$url ) . 'controls/typography/typography.js', array( 'jquery', 'customize-base', 'select2', 'wp-color-picker-alpha' ), false, true );
+			wp_enqueue_style( 'kirki-typography-css', trailingslashit( Kirki::$url ) . 'controls/typography/typography.css', null );
 		}
 
-		$google_fonts_final = array();
-		foreach ( $google_fonts as $family => $args ) {
-			$label    = ( isset( $args['label'] ) ) ? $args['label'] : $family;
-			$variants = ( isset( $args['variants'] ) ) ? $args['variants'] : array( 'regular', '700' );
-			$subsets  = ( isset( $args['subsets'] ) ) ? $args['subsets'] : array();
+		wp_enqueue_script( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/js/select2.full.js', array( 'jquery' ), '4.0.3', true );
+		wp_enqueue_style( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/css/select2.css', array(), '4.0.3' );
+		wp_enqueue_style( 'kirki-select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/kirki.css', null );
 
-			$available_variants = array();
-			foreach ( $variants as $variant ) {
-				if ( array_key_exists( $variant, $all_variants ) ) {
-					$available_variants[] = array(
-						'id' => $variant,
-						'label' => $all_variants[ $variant ],
-					);
-				}
-			}
-
-			$available_subsets = array();
-			foreach ( $subsets as $subset ) {
-				if ( array_key_exists( $subset, $all_subsets ) ) {
-					$available_subsets[] = array(
-						'id' => $subset,
-						'label' => $all_subsets[ $subset ],
-					);
-				}
-			}
-
-			$google_fonts_final[] = array(
-				'family'       => $family,
-				'label'        => $label,
-				'variants'     => $available_variants,
-				'subsets'      => $available_subsets,
-			);
-		}
-		$final = array(
-			'standard' => $standard_fonts_final,
-			'google'   => $google_fonts_final,
+		$custom_fonts_array = ( isset( $this->choices['fonts'] ) && ( isset( $this->choices['fonts']['google'] ) || isset( $this->choices['fonts']['standard'] ) ) && ( ! empty( $this->choices['fonts']['google'] ) || ! empty( $this->choices['fonts']['standard'] ) ) );
+		$localize_script_var_name = ( $custom_fonts_array ) ? 'kirkiFonts' . $this->id : 'kirkiAllFonts';
+		wp_localize_script(
+			$script_to_localize,
+			$localize_script_var_name,
+			array(
+				'standard' => $this->get_standard_fonts(),
+				'google'   => $this->get_google_fonts(),
+			)
 		);
-		wp_localize_script( 'kirki-typography', 'kirkiAllFonts', $final );
-
-		wp_enqueue_style( 'kirki-typography-css', trailingslashit( Kirki::$url ) . 'controls/typography/typography.css', null );
 
 	}
 
@@ -201,22 +150,17 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 			$this->json['default'] = $this->default;
 		}
 		$this->json['output']  = $this->output;
-		$this->json['value']   = $this->value();
+		$this->json['value']   = Kirki_Field_Typography::sanitize( $this->value() );
 		$this->json['choices'] = $this->choices;
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
 		$this->json['l10n']    = $this->l10n();
-
-		if ( 'user_meta' === $this->option_type ) {
-			$this->json['value'] = get_user_meta( get_current_user_id(), $this->id, true );
-		}
 
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
 			$this->json['inputAttrs'] .= $attr . '="' . esc_attr( $value ) . '" ';
 		}
 
-		$this->add_values_backwards_compatibility();
 		$defaults = array(
 			'font-family'    => false,
 			'font-size'      => false,
@@ -230,24 +174,7 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 		$this->json['default'] = wp_parse_args( $this->json['default'], $defaults );
 		$this->json['show_variants'] = ( true === Kirki_Fonts_Google::$force_load_all_variants ) ? false : true;
 		$this->json['show_subsets']  = ( true === Kirki_Fonts_Google::$force_load_all_subsets ) ? false : true;
-		$this->json['languages'] = array(
-			'cyrillic'     => 'Cyrillic',
-			'cyrillic-ext' => 'Cyrillic Extended',
-			'devanagari'   => 'Devanagari',
-			'greek'        => 'Greek',
-			'greek-ext'    => 'Greek Extended',
-			'khmer'        => 'Khmer',
-			'latin'        => 'Latin',
-			'latin-ext'    => 'Latin Extended',
-			'vietnamese'   => 'Vietnamese',
-			'hebrew'       => 'Hebrew',
-			'arabic'       => 'Arabic',
-			'bengali'      => 'Bengali',
-			'gujarati'     => 'Gujarati',
-			'tamil'        => 'Tamil',
-			'telugu'       => 'Telugu',
-			'thai'         => 'Thai',
-		);
+		$this->json['languages']     = Kirki_Fonts::get_google_font_subsets();
 	}
 
 	/**
@@ -278,12 +205,16 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 				<# if ( data.choices['fonts'] ) { data.fonts = data.choices['fonts']; } #>
 				<div class="font-family">
 					<h5>{{ data.l10n['font-family'] }}</h5>
-					<select {{{ data.inputAttrs }}} id="kirki-typography-font-family-{{{ data.id }}}" placeholder="{{ data.l10n['select-font-family'] }}">
-						<option value="{{ data.value['font-family'] }}" selected="selected">{{ data.value['font-family'] }}</option>
-					</select>
+					<select {{{ data.inputAttrs }}} id="kirki-typography-font-family-{{{ data.id }}}" placeholder="{{ data.l10n['select-font-family'] }}"></select>
 				</div>
+				<# if ( ! _.isUndefined( data.choices['font-backup'] ) && true === data.choices['font-backup'] ) { #>
+					<div class="font-backup hide-on-standard-fonts kirki-font-backup-wrapper">
+						<h5>{{ data.l10n['font-backup'] }}</h5>
+						<select {{{ data.inputAttrs }}} id="kirki-typography-font-backup-{{{ data.id }}}" placeholder="{{ data.l10n['select-font-family'] }}"></select>
+					</div>
+				<# } #>
 				<# if ( true === data.show_variants || false !== data.default.variant ) { #>
-					<div class="variant hide-on-standard-fonts kirki-variant-wrapper">
+					<div class="variant kirki-variant-wrapper">
 						<h5>{{ data.l10n['variant'] }}</h5>
 						<select {{{ data.inputAttrs }}} class="variant" id="kirki-typography-variant-{{{ data.id }}}"></select>
 					</div>
@@ -291,7 +222,7 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 				<# if ( true === data.show_subsets ) { #>
 					<div class="subsets hide-on-standard-fonts kirki-subsets-wrapper">
 						<h5>{{ data.l10n['subsets'] }}</h5>
-						<select {{{ data.inputAttrs }}} class="subset" id="kirki-typography-subsets-{{{ data.id }}}" multiple>
+						<select {{{ data.inputAttrs }}} class="subset" id="kirki-typography-subsets-{{{ data.id }}}"<# if ( _.isUndefined( data.choices['disable-multiple-variants'] ) || false === data.choices['disable-multiple-variants'] ) { #> multiple<# } #>>
 							<# _.each( data.value.subsets, function( subset ) { #>
 								<option value="{{ subset }}" selected="selected">{{ data.languages[ subset ] }}</option>
 							<# } ); #>
@@ -384,59 +315,29 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 					<input {{{ data.inputAttrs }}} type="text" data-palette="{{ data.palette }}" data-default-color="{{ data.default['color'] }}" value="{{ data.value['color'] }}" class="kirki-color-control color-picker" {{{ data.link }}} />
 				</div>
 			<# } #>
+
+			<# if ( data.default['margin-top'] ) { #>
+				<div class="margin-top">
+					<h5>{{ data.l10n['margin-top'] }}</h5>
+					<input {{{ data.inputAttrs }}} type="text" value="{{ data.value['margin-top'] }}"/>
+				</div>
+			<# } #>
+
+			<# if ( data.default['margin-bottom'] ) { #>
+				<div class="margin-bottom">
+					<h5>{{ data.l10n['margin-bottom'] }}</h5>
+					<input {{{ data.inputAttrs }}} type="text" value="{{ data.value['margin-bottom'] }}"/>
+				</div>
+			<# } #>
 		</div>
+		<#
+		if ( ! _.isUndefined( data.value['font-family'] ) ) {
+			data.value['font-family'] = data.value['font-family'].replace( /&quot;/g, '&#39' );
+		}
+		valueJSON = JSON.stringify( data.value ).replace( /'/g, '&#39' );
+		#>
+		<input class="typography-hidden-value" type="hidden" value='{{{ valueJSON }}}' {{{ data.link }}}>
 		<?php
-	}
-
-	/**
-	 * Adds backwards-compatibility for values.
-	 * Converts font-weight to variant
-	 * Adds units to letter-spacing
-	 *
-	 * @access protected
-	 */
-	protected function add_values_backwards_compatibility() {
-		$value = $this->value();
-		$old_values = array(
-			'font-family'    => '',
-			'font-size'      => '',
-			'variant'        => ( isset( $value['font-weight'] ) ) ? $value['font-weight'] : 'regular',
-			'line-height'    => '',
-			'letter-spacing' => '',
-			'color'          => '',
-		);
-
-		// Font-weight is now variant.
-		// All values are the same with the exception of 400 (becomes regular).
-		if ( '400' === $old_values['variant'] || 400 === $old_values['variant'] ) {
-			$old_values['variant'] = 'regular';
-		}
-
-		if ( isset( $value['variant'] ) && in_array( $value['variant'], array( '100light', '600bold', '800bold', '900bold' ) ) ) {
-			$value['variant'] = (string) intval( $value['variant'] );
-		}
-
-		// Letter spacing was in px, now it requires units.
-		if ( isset( $value['letter-spacing'] ) && is_numeric( $value['letter-spacing'] ) && $value['letter-spacing'] ) {
-			$value['letter-spacing'] .= 'px';
-		}
-
-		$this->json['value'] = wp_parse_args( $value, $old_values );
-
-		// Cleanup.
-		if ( isset( $this->json['value']['font-weight'] ) ) {
-			unset( $this->json['value']['font-weight'] );
-		}
-
-		// Make sure we use "subsets" instead of "subset".
-		if ( isset( $this->json['value']['subset'] ) ) {
-			if ( ! empty( $this->json['value']['subset'] ) ) {
-				if ( ! isset( $this->json['value']['subsets'] ) || empty( $this->json['value']['subsets'] ) ) {
-					$this->json['value']['subsets'] = $this->json['value']['subset'];
-				}
-			}
-			unset( $this->json['value']['subset'] );
-		}
 	}
 
 	/**
@@ -444,13 +345,14 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 	 *
 	 * @access protected
 	 * @since 3.0.0
-	 * @param string|false $id The string-ID.
+	 * @param string|false $config_id The string-ID.
 	 * @return string
 	 */
-	protected function l10n( $id = false ) {
+	protected function l10n( $config_id = false ) {
 		$translation_strings = array(
 			'inherit'        => esc_attr__( 'Inherit', 'kirki' ),
 			'font-family'    => esc_attr__( 'Font Family', 'kirki' ),
+			'font-backup'    => esc_attr__( 'Backup Font', 'kirki' ),
 			'font-size'      => esc_attr__( 'Font Size', 'kirki' ),
 			'line-height'    => esc_attr__( 'Line Height', 'kirki' ),
 			'letter-spacing' => esc_attr__( 'Letter Spacing', 'kirki' ),
@@ -469,12 +371,129 @@ class Kirki_Control_Typography extends WP_Customize_Control {
 			'uppercase'      => esc_attr__( 'Uppercase', 'kirki' ),
 			'lowercase'      => esc_attr__( 'Lowercase', 'kirki' ),
 			'initial'        => esc_attr__( 'Initial', 'kirki' ),
+			'margin-top'     => esc_attr__( 'Margin Top', 'kirki' ),
+			'margin-bottom'  => esc_attr__( 'Margin Bottom', 'kirki' ),
 		);
-		$translation_strings = apply_filters( 'kirki/' . $this->kirki_config . '/l10n', $translation_strings );
-		if ( false === $id ) {
+		$translation_strings = apply_filters( "kirki/{$this->kirki_config}/l10n", $translation_strings );
+		if ( false === $config_id ) {
 			return $translation_strings;
 		}
-		return $translation_strings[ $id ];
+		return $translation_strings[ $config_id ];
+	}
+
+	/**
+	 * Formats variants.
+	 *
+	 * @access protected
+	 * @since 3.0.0
+	 * @param array $variants The variants.
+	 * @return array
+	 */
+	protected function format_variants_array( $variants ) {
+
+		$all_variants = Kirki_Fonts::get_all_variants();
+		$final_variants = array();
+		foreach ( $variants as $variant ) {
+			if ( is_string( $variant ) ) {
+				$final_variants[] = array(
+					'id'    => $variant,
+					'label' => isset( $all_variants[ $variant ] ) ? $all_variants[ $variant ] : $variant,
+				);
+			} elseif ( is_array( $variant ) && isset( $variant['id'] ) && isset( $variant['label'] ) ) {
+				$final_variants[] = $variant;
+			}
+		}
+		return $final_variants;
+	}
+
+	/**
+	 * Gets standard fonts properly formatted for our control.
+	 *
+	 * @access protected
+	 * @since 3.0.0
+	 * @return array
+	 */
+	protected function get_standard_fonts() {
+		// Add fonts to our JS objects.
+		$standard_fonts = Kirki_Fonts::get_standard_fonts();
+
+		$std_user_keys = $this->choices['fonts']['standard'];
+
+		$standard_fonts_final = array();
+		$default_variants = $this->format_variants_array( array(
+			'regular',
+			'italic',
+			'700',
+			'700italic',
+		) );
+		foreach ( $standard_fonts as $key => $font ) {
+			if ( ! empty( $std_user_keys ) && ! in_array( $key, $std_user_keys, true ) ) {
+				continue;
+			}
+			$standard_fonts_final[] = array(
+				'family'      => $font['stack'],
+				'label'       => $font['label'],
+				'subsets'     => array(),
+				'is_standard' => true,
+				'variants'    => ( isset( $font['variants'] ) ) ? $this->format_variants_array( $font['variants'] ) : $default_variants,
+			);
+		}
+		return $standard_fonts_final;
+	}
+
+	/**
+	 * Gets google fonts properly formatted for our control.
+	 *
+	 * @access protected
+	 * @since 3.0.0
+	 * @return array
+	 */
+	protected function get_google_fonts() {
+		// Add fonts to our JS objects.
+		$google_fonts = Kirki_Fonts::get_google_fonts();
+		$all_variants = Kirki_Fonts::get_all_variants();
+		$all_subsets  = Kirki_Fonts::get_google_font_subsets();
+
+		$gf_user_keys = $this->choices['fonts']['google'];
+
+		$google_fonts_final = array();
+		foreach ( $google_fonts as $family => $args ) {
+			if ( ! empty( $gf_user_keys ) && ! in_array( $family, $gf_user_keys, true ) ) {
+				continue;
+			}
+
+			$label    = ( isset( $args['label'] ) ) ? $args['label'] : $family;
+			$variants = ( isset( $args['variants'] ) ) ? $args['variants'] : array( 'regular', '700' );
+			$subsets  = ( isset( $args['subsets'] ) ) ? $args['subsets'] : array();
+
+			$available_variants = array();
+			foreach ( $variants as $variant ) {
+				if ( array_key_exists( $variant, $all_variants ) ) {
+					$available_variants[] = array(
+						'id' => $variant,
+						'label' => $all_variants[ $variant ],
+					);
+				}
+			}
+
+			$available_subsets = array();
+			foreach ( $subsets as $subset ) {
+				if ( array_key_exists( $subset, $all_subsets ) ) {
+					$available_subsets[] = array(
+						'id' => $subset,
+						'label' => $all_subsets[ $subset ],
+					);
+				}
+			}
+
+			$google_fonts_final[] = array(
+				'family'       => $family,
+				'label'        => $label,
+				'variants'     => $available_variants,
+				'subsets'      => $available_subsets,
+			);
+		} // End foreach().
+		return $google_fonts_final;
 	}
 
 	/**

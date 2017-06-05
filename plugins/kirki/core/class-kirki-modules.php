@@ -5,7 +5,7 @@
  * @package     Kirki
  * @category    Core
  * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       3.0.0
  */
@@ -60,7 +60,7 @@ class Kirki_Modules {
 			'css'                => 'Kirki_Modules_CSS',
 			'customizer-styling' => 'Kirki_Modules_Customizer_Styling',
 			'icons'              => 'Kirki_Modules_Icons',
-			'loading'            => 'Kirki_Modules_Loading',
+			// 'loading'            => 'Kirki_Modules_Loading',
 			'reset'              => 'Kirki_Modules_Reset',
 			'tooltips'           => 'Kirki_Modules_Tooltips',
 			'branding'           => 'Kirki_Modules_Customizer_Branding',
@@ -68,7 +68,10 @@ class Kirki_Modules {
 			'selective-refresh'  => 'Kirki_Modules_Selective_Refresh',
 			'field-dependencies' => 'Kirki_Modules_Field_Dependencies',
 			'custom-sections'    => 'Kirki_Modules_Custom_Sections',
-			'collapsible'        => 'Kirki_Modules_Collapsible',
+			// 'collapsible'        => 'Kirki_Modules_Collapsible',
+			// 'search'             => 'Kirki_Modules_Search',
+			// 'resize'             => 'Kirki_Modules_Resize',
+			'webfonts'           => 'Kirki_Modules_Webfonts',
 		) );
 
 	}
@@ -83,7 +86,7 @@ class Kirki_Modules {
 
 		foreach ( self::$modules as $key => $module_class ) {
 			if ( class_exists( $module_class ) ) {
-				self::$active_modules[ $key ] = new $module_class();
+				self::$active_modules[ $key ] = $module_class::get_instance();
 			}
 		}
 

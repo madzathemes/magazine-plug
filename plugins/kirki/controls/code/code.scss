@@ -32,6 +32,7 @@
   border-right: 1px solid #ddd;
   background-color: #f7f7f7;
   white-space: nowrap;
+  height: 100% !important;
 }
 
 .CodeMirror-linenumbers {}
@@ -325,8 +326,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .CodeMirror-gutter {
   white-space: normal;
-  height: 100%;
-  display: inline-block;
   margin-bottom: -30px;
   /* Hack to make IE7 behave */
   *zoom: 1;

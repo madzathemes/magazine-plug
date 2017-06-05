@@ -5,7 +5,7 @@
  * @package     Kirki
  * @category    Core
  * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
@@ -79,7 +79,7 @@ final class Kirki_Fonts {
 	 *
 	 * @return array    Standard websafe fonts.
 	 */
-	 public static function get_standard_fonts() {
+	public static function get_standard_fonts() {
 		$standard_fonts = array(
 			'serif' => array(
 				'label' => 'Serif',
@@ -122,7 +122,7 @@ final class Kirki_Fonts {
 
 		if ( null === self::$google_fonts || empty( self::$google_fonts ) ) {
 
-			$fonts = include wp_normalize_path( Kirki::$path . '/core/webfonts.php' );
+			$fonts = include_once wp_normalize_path( dirname( __FILE__ ) . '/webfonts.php' );
 
 			$google_fonts = array();
 			if ( is_array( $fonts ) ) {

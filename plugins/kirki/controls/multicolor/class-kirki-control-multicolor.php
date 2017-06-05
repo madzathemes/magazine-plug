@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.2.7
  */
@@ -96,9 +96,18 @@ class Kirki_Control_Multicolor extends WP_Customize_Control {
 	 * @access public
 	 */
 	public function enqueue_scripts() {
+
+		Kirki_Custom_Build::register_dependency( 'jquery' );
+		Kirki_Custom_Build::register_dependency( 'customize-base' );
+		Kirki_Custom_Build::register_dependency( 'wp-color-picker-alpha' );
+
 		wp_enqueue_script( 'wp-color-picker-alpha', trailingslashit( Kirki::$url ) . 'assets/vendor/wp-color-picker-alpha/wp-color-picker-alpha.js', array( 'wp-color-picker' ), '1.2', true );
-		wp_enqueue_script( 'kirki-multicolor', trailingslashit( Kirki::$url ) . 'controls/multicolor/multicolor.js', array( 'jquery', 'customize-base', 'wp-color-picker-alpha' ), false, true );
-		wp_enqueue_style( 'kirki-multicolor-css', trailingslashit( Kirki::$url ) . 'controls/multicolor/multicolor.css', null );
+
+		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+			wp_enqueue_script( 'kirki-multicolor', trailingslashit( Kirki::$url ) . 'controls/multicolor/multicolor.js', array( 'jquery', 'customize-base', 'wp-color-picker-alpha' ), false, true );
+			wp_enqueue_style( 'kirki-multicolor-css', trailingslashit( Kirki::$url ) . 'controls/multicolor/multicolor.css', null );
+		}
+		wp_enqueue_style( 'wp-color-picker' );
 	}
 
 	/**
@@ -118,10 +127,6 @@ class Kirki_Control_Multicolor extends WP_Customize_Control {
 		$this->json['choices'] = $this->choices;
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
-
-		if ( 'user_meta' === $this->option_type ) {
-			$this->json['value'] = get_user_meta( get_current_user_id(), $this->id, true );
-		}
 
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
@@ -160,7 +165,7 @@ class Kirki_Control_Multicolor extends WP_Customize_Control {
 			<# } #>
 		</div>
 		<div class="iris-target"></div>
-		<input type="hidden" value="" {{{ data.link }}} />
+		<input class="multicolor-hidden-value" type="hidden" value='{{{ JSON.stringify( data.value ) }}}' {{{ data.link }}}>
 		<?php
 	}
 

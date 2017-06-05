@@ -8,7 +8,7 @@
  * @package     Kirki
  * @category    Modules
  * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       3.0.0
  */
@@ -24,141 +24,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Kirki_Modules_Customizer_Styling {
 
 	/**
-	 * Background Color.
+	 * The object instance.
 	 *
-	 * @access public
-	 * @var string
+	 * @static
+	 * @access private
+	 * @since 3.0.0
+	 * @var object
 	 */
-	public $color_back = false;
-
-	/**
-	 * Font Color.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $color_font = false;
-
-	/**
-	 * Accent Color.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $color_accent;
-
-	/**
-	 * Border Color.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $border_color;
-
-	/**
-	 * Buttons Color.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $buttons_color;
-
-	/**
-	 * Controls Color.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $controls_color;
-
-	/**
-	 * Arrows Color.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $arrows_color;
-
-	/**
-	 * Accent text Color.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $color_accent_text;
-
-	/**
-	 * Section Background Color.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $section_background_color;
-
-	/**
-	 * Have we already processed styling?
-	 *
-	 * @access public
-	 * @var bool
-	 */
-	public $process = false;
+	private static $instance;
 
 	/**
 	 * Constructor.
 	 *
-	 * @access public
+	 * @access protected
 	 */
-	public function __construct() {
-		add_action( 'customize_controls_print_styles', array( $this, 'customizer_styles' ), 99 );
+	protected function __construct() {
+		add_action( 'customize_controls_print_styles', array( $this, 'custom_css' ), 99 );
 	}
 
 	/**
-	 * Enqueue the stylesheets required.
+	 * Gets an instance of this object.
+	 * Prevents duplicate instances which avoid artefacts and improves performance.
 	 *
+	 * @static
 	 * @access public
+	 * @since 3.0.0
+	 * @return object
 	 */
-	public function customizer_styles() {
-		wp_add_inline_style( 'common-css', $this->custom_css() );
+	public static function get_instance() {
+		if ( ! self::$instance ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
 	}
-
-	/**
-	 * Gets the colors used.
-	 *
-	 * @access public
-	 * @return null|void
-	 */
-	public function get_colors() {
-
-		$config = apply_filters( 'kirki/config', array() );
-
-		// No need to proceed if we haven't set any colors.
-		if ( ( ! isset( $config['color_back'] ) || ! $config['color_back'] ) && ( ! isset( $config['color_accent'] ) || ! $config['color_accent'] ) ) {
-			return;
-		}
-		// Set the $process to true.
-		$this->process = true;
-		// Calculate the accent color.
-		if ( isset( $config['color_accent'] ) ) {
-			$this->color_accent = Kirki_Color::sanitize_hex( $config['color_accent'] );
-		}
-
-		// Calculate the background & font colors.
-		if ( isset( $config['color_back'] ) ) {
-			$this->color_back = Kirki_Color::sanitize_hex( $config['color_back'] );
-			$this->color_font = ( 170 > Kirki_Color::get_brightness( $this->color_back ) ) ? '#f2f2f2' : '#222';
-		}
-
-		if ( $this->color_back ) {
-			$this->buttons_color = ( 170 > Kirki_Color::get_brightness( $this->color_back ) ) ? Kirki_Color::adjust_brightness( $this->color_back, 80 ) : Kirki_Color::adjust_brightness( $this->color_back, -80 );
-			$this->border_color             = ( 170 > Kirki_Color::get_brightness( $this->color_back ) ) ? 'rgba(255,255,255,.2)' : 'rgba(0,0,0,.2)';
-			$this->arrows_color             = ( 170 > Kirki_Color::get_brightness( $this->color_back ) ) ? Kirki_Color::adjust_brightness( $this->color_back, 120 ) : Kirki_Color::adjust_brightness( $this->color_back, -120 );
-			$this->section_background_color = Kirki_Color::mix_colors( $this->color_back, '#ffffff', 10 );
-		}
-		$this->controls_color           = ( ( 170 > Kirki_Color::get_brightness( $this->color_accent ) ) ) ? '#ffffff;' : '#333333';
-		$this->color_accent_text        = ( 170 > Kirki_Color::get_brightness( $this->color_accent ) ) ? Kirki_Color::adjust_brightness( $this->color_accent, 120 ) : Kirki_Color::adjust_brightness( $this->color_accent, -120 );
-
-	}
-
 
 	/**
 	 * Add custom CSS rules to the head, applying our custom styles.
@@ -167,77 +65,411 @@ class Kirki_Modules_Customizer_Styling {
 	 */
 	public function custom_css() {
 
-		$this->get_colors();
-		if ( ! $this->process ) {
-			return;
-		}
-		$styles = $this->include_stylesheets();
-		$styles = $this->replace_placeholders( $styles );
-
-		return $styles;
-
-	}
-
-	/**
-	 * Replaces CSS placefolders with our settings.
-	 *
-	 * @access public
-	 * @param string $styles The CSS.
-	 * @return string
-	 */
-	public function replace_placeholders( $styles ) {
-
-		// Replace CSS placeholders with actual values.
-		$replacements = array(
-			'COLOR_BACK'               => $this->color_back,
-			'COLOR_ACCENT_TEXT'        => $this->color_accent_text,
-			'COLOR_ACCENT'             => $this->color_accent,
-			'BORDER_COLOR'             => $this->border_color,
-			'BUTTONS_COLOR'            => $this->buttons_color,
-			'COLOR_FONT'               => $this->color_font,
-			'CONTROLS_COLOR'           => $this->controls_color,
-			'ARROWS_COLOR'             => $this->arrows_color,
-			'SECTION_BACKGROUND_COLOR' => $this->section_background_color,
-		);
-		foreach ( $replacements as $placeholder => $replacement ) {
-			$styles = str_replace( $placeholder, $replacement, $styles );
-		}
-
-		return $styles;
-
-	}
-
-	/**
-	 * Get the stylesheets.
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function include_stylesheets() {
+		$css = '';
 
 		$config = apply_filters( 'kirki/config', array() );
-		$styles = '';
+		if ( ! isset( $config['color_accent'] ) && ! isset( $config['color_back'] ) ) {
+			return;
+		}
+		$back     = isset( $config['color_back'] ) ? $config['color_back'] : false;
+		$back_obj = ( $back ) ? ariColor::newColor( $back ) : false;
+		if ( $back ) {
+			$text_on_back = ( 60 > $back_obj->lightness ) ?
+				$back_obj->getNew( 'lightness', $back_obj->lightness + 60 )->toCSS( $back_obj->mode ) :
+				$back_obj->getNew( 'lightness', $back_obj->lightness - 60 )->toCSS( $back_obj->mode );
+			$border_on_back = ( 80 < $back_obj->lightness ) ?
+				$back_obj->getNew( 'lightness', $back_obj->lightness - 13 )->toCSS( $back_obj->mode ) :
+				$back_obj->getNew( 'lightness', $back_obj->lightness + 13 )->toCSS( $back_obj->mode );
+			$back_on_back = ( 90 < $back_obj->lightness ) ?
+				$back_obj->getNew( 'lightness', $back_obj->lightness - 6 )->toCSS( $back_obj->mode ) :
+				$back_obj->getNew( 'lightness', $back_obj->lightness + 11 )->toCSS( $back_obj->mode );
+			$hover_on_back = ( 90 < $back_obj->lightness ) ?
+				$back_obj->getNew( 'lightness', $back_obj->lightness - 3 )->toCSS( $back_obj->mode ) :
+				$back_obj->getNew( 'lightness', $back_obj->lightness + 3 )->toCSS( $back_obj->mode );
+			$arrows_on_back = ( 50 > $back_obj->lightness ) ?
+				$back_obj->getNew( 'lightness', $back_obj->lightness + 30 )->toCSS( $back_obj->mode ) :
+				$back_obj->getNew( 'lightness', $back_obj->lightness - 30 )->toCSS( $back_obj->mode );
+			$back_disabled_obj = ( 35 < $back_obj->lightness ) ?
+				$back_obj->getNew( 'lightness', $back_obj->lightness - 30 ) :
+				$back_obj->getNew( 'lightness', $back_obj->lightness + 30 );
+			$back_disabled = $back_disabled_obj->toCSS( $back_disabled_obj->mode );
+			$text_on_back_disabled = ( 60 > $back_disabled_obj->lightness ) ?
+				$back_disabled_obj->getNew( 'lightness', $back_disabled_obj->lightness + 60 )->toCSS( $back_disabled_obj->mode ) :
+				$back_disabled_obj->getNew( 'lightness', $back_disabled_obj->lightness - 60 )->toCSS( $back_disabled_obj->mode );
+			$border_on_back_disabled = ( 50 < $back_disabled_obj->lightness ) ?
+				$back_disabled_obj->getNew( 'lightness', $back_disabled_obj->lightness - 4 )->toCSS( $back_disabled_obj->mode ) :
+				$back_disabled_obj->getNew( 'lightness', $back_disabled_obj->lightness + 4 )->toCSS( $back_disabled_obj->mode );
+		}
+		$accent     = ( isset( $config['color_accent'] ) ) ? $config['color_accent'] : false;
+		$accent_obj = ( $accent ) ? ariColor::newColor( $accent ) : false;
+		if ( $accent ) {
+			$text_on_accent = ( 60 > $accent_obj->lightness ) ?
+				$accent_obj->getNew( 'lightness', $accent_obj->lightness + 60 )->toCSS( $accent_obj->mode ) :
+				$accent_obj->getNew( 'lightness', $accent_obj->lightness - 60 )->toCSS( $accent_obj->mode );
+			$border_on_accent = ( 50 < $accent_obj->lightness ) ?
+				$accent_obj->getNew( 'lightness', $accent_obj->lightness - 4 )->toCSS( $accent_obj->mode ) :
+				$accent_obj->getNew( 'lightness', $accent_obj->lightness + 4 )->toCSS( $accent_obj->mode );
+			$accent_disabled_obj = ( 35 < $accent_obj->lightness ) ?
+				$accent_obj->getNew( 'lightness', $accent_obj->lightness - 30 ) :
+				$accent_obj->getNew( 'lightness', $accent_obj->lightness + 30 );
+			$accent_disabled = $accent_disabled_obj->toCSS( $accent_disabled_obj->mode );
+			$text_on_accent_disabled = ( 60 > $accent_disabled_obj->lightness ) ?
+				$accent_disabled_obj->getNew( 'lightness', $accent_disabled_obj->lightness + 60 )->toCSS( $accent_disabled_obj->mode ) :
+				$accent_disabled_obj->getNew( 'lightness', $accent_disabled_obj->lightness - 60 )->toCSS( $accent_disabled_obj->mode );
+			$border_on_accent_disabled = ( 50 < $accent_disabled_obj->lightness ) ?
+				$accent_disabled_obj->getNew( 'lightness', $accent_disabled_obj->lightness - 4 )->toCSS( $accent_disabled_obj->mode ) :
+				$accent_disabled_obj->getNew( 'lightness', $accent_disabled_obj->lightness + 4 )->toCSS( $accent_disabled_obj->mode );
+		}
 
-		// Include the width CSS if necessary.
+		if ( $back ) {
+			$elements = array(
+				'.wp-full-overlay-sidebar',
+				'#customize-controls .customize-info .accordion-section-title',
+				'#customize-controls .panel-meta.customize-info .accordion-section-title:hover',
+				'#customize-theme-controls .accordion-section-title',
+				'.customize-section-title',
+				'#customize-theme-controls .control-section-themes .accordion-section-title',
+				'#customize-theme-controls .control-section-themes .accordion-section-title',
+				'#customize-theme-controls .control-section-themes .accordion-section-title:hover',
+			);
+
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'background:' . $back . ';';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'#customize-controls .customize-info .panel-title',
+				'#customize-controls .customize-pane-child .customize-section-title h3',
+				'#customize-controls .customize-pane-child h3.customize-section-title',
+				'.customize-control',
+				'#customize-controls .description',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'#customize-controls .customize-info',
+				'#customize-header-actions',
+				'.customize-section-title',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'border-bottom-color: ' . $border_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.wp-full-overlay-sidebar .wp-full-overlay-header',
+				'.customize-controls-close',
+				'.expanded .wp-full-overlay-footer',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= 'background-color:' . $back_on_back . ';';
+			$css .= 'border-color:' . $border_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.accordion-section',
+				'#customize-theme-controls .customize-pane-child.accordion-section-content',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'background:' . $back_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'#accordion-section-themes+.control-section',
+				'#customize-theme-controls .control-section:last-of-type.open',
+				'#customize-theme-controls .control-section:last-of-type > .accordion-section-title',
+				'#customize-theme-controls .control-section.open',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'border-bottom-color:' . $border_on_back . ';';
+			$css .= 'border-top-color:' . $border_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'#customize-theme-controls .accordion-section-title',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'border-bottom-color:' . $border_on_back . ';';
+			$css .= 'border-left-color:' . $border_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'#customize-theme-controls .control-section-themes .accordion-section-title',
+				'#customize-theme-controls .control-section-themes .accordion-section-title:hover',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'border-bottom-color:' . $border_on_back . ';';
+			$css .= 'border-top-color:' . $border_on_back . ';';
+			$css .= 'border-bottom-color:' . $border_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'#customize-theme-controls .accordion-section-title:after',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'color:' . $arrows_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.wp-core-ui .button',
+				'.wp-core-ui .button-secondary',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'background-color:' . $back . ';';
+			$css .= 'border-color:' . $border_on_back . ';';
+			$css .= 'box-shadow:0 1px 0 ' . $border_on_back . ';';
+			$css .= '-webkit-box-shadow:0 1px 0 ' . $border_on_back . ';';
+			$css .= 'text-shadow:0 -1px 1px ' . $border_on_back . ', 1px 0 1px ' . $border_on_back . ', 0 1px 1px ' . $border_on_back . ', -1px 0 1px ' . $border_on_back . ';';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= '}';
+
+			$css .= '@media screen and (max-width: 640px) {.customize-controls-preview-toggle{';
+			$css .= 'background-color:' . $back . ';';
+			$css .= 'border-color:' . $border_on_back . ';';
+			$css .= 'box-shadow:0 1px 0 ' . $border_on_back . ';';
+			$css .= '-webkit-box-shadow:0 1px 0 ' . $border_on_back . ';';
+			$css .= 'text-shadow:0 -1px 1px ' . $border_on_back . ', 1px 0 1px ' . $border_on_back . ', 0 1px 1px ' . $border_on_back . ', -1px 0 1px ' . $border_on_back . ';';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= '}}';
+
+			$elements = array(
+				'.wp-core-ui .button.focus',
+				'.wp-core-ui .button.hover',
+				'.wp-core-ui .button:focus',
+				'.wp-core-ui .button:hover',
+				'.wp-core-ui .button-secondary.focus',
+				'.wp-core-ui .button-secondary.hover',
+				'.wp-core-ui .button-secondary:focus',
+				'.wp-core-ui .button-secondary:hover',
+				'.customize-panel-back',
+				'.customize-section-back',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'background-color:' . $back_on_back . ';';
+			$css .= 'border-color:' . $border_on_back . ';';
+			$css .= 'box-shadow: 0 1px 0 ' . $border_on_back . ';';
+			$css .= '-webkit-box-shadow: 0 1px 0 ' . $border_on_back . ';';
+			$css .= 'text-shadow: 0 -1px 1px ' . $border_on_back . ', 1px 0 1px ' . $border_on_back . ', 0 1px 1px ' . $border_on_back . ', -1px 0 1px ' . $border_on_back . ';';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= '}';
+
+			$css .= '@media screen and (max-width: 640px) {.customize-controls-preview-toggle.focus,.customize-controls-preview-toggle.hover,.customize-controls-preview-toggle:focus,.customize-controls-preview-toggle:hover{';
+			$css .= 'background-color:' . $back_on_back . ';';
+			$css .= 'border-color:' . $border_on_back . ';';
+			$css .= 'box-shadow: 0 1px 0 ' . $border_on_back . ';';
+			$css .= '-webkit-box-shadow: 0 1px 0 ' . $border_on_back . ';';
+			$css .= 'text-shadow: 0 -1px 1px ' . $border_on_back . ', 1px 0 1px ' . $border_on_back . ', 0 1px 1px ' . $border_on_back . ', -1px 0 1px ' . $border_on_back . ';';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= '}}';
+			$elements = array(
+				'.customize-control-kirki-background .background-attachment .buttonset .switch-label',
+				'.customize-control-kirki-background .background-size .buttonset .switch-label',
+				'.customize-control-kirki-radio-buttonset .buttonset .switch-label',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.wp-color-result',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'border-color:' . $border_on_back . ';';
+			$css .= '-webkit-box-shadow: 0 1px 0 ' . $border_on_back . ';';
+			$css .= 'box-shadow: 0 1px 0 ' . $border_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.wp-color-result:focus',
+				'.wp-color-result:hover',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'border-color:' . $border_on_back . ';';
+			$css .= 'background:' . $back_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.wp-color-result:after',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'border-color:' . $border_on_back . ';';
+			$css .= 'background:' . $back . ';';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.wp-color-result:focus:after',
+				'.wp-color-result:hover:after',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.customize-control input[type=tel]',
+				'.customize-control input[type=url]',
+				'.customize-control input[type=text]',
+				'.customize-control input[type=password]',
+				'.customize-control input[type=email]',
+				'.customize-control input[type=number]',
+				'.customize-control input[type=search]',
+				'.customize-control input[type=radio]',
+				'.customize-control input[type=checkbox]',
+				'.customize-control select',
+				'.select2-container--default .select2-selection--single',
+				'.select2-container--default .select2-selection--multiple',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'background:' . $back . ';';
+			$css .= 'border-color:' . $border_on_back . ';';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= '}';
+
+			$css .= '.customize-control-kirki-slider input[type=range]::-webkit-slider-thumb{background-color:' . $accent . ';}';
+			$css .= '.customize-control-kirki-slider input[type=range]::-moz-range-thumb{background-color:' . $accent . ';}';
+			$css .= '.customize-control-kirki-slider input[type=range]::-ms-thumb{background-color:' . $accent . ';}';
+
+			$css .= '.customize-control-kirki-slider input[type=range]{background:' . $border_on_back . ';}';
+
+			$elements = array(
+				'.select2-container--default .select2-selection--single .select2-selection__rendered',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'color:' . $text_on_back . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.wp-full-overlay-footer .devices',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'background: none;';
+			$css .= 'background: transparent;';
+			$css .= 'box-shadow: none;';
+			$css .= '-webkit-box-shadow: none;';
+			$css .= '}';
+
+			$css .= '.kirki-reset-section .dashicons{color:' . $back_on_back . ';}';
+
+		} // End if().
+
+		if ( $back || $accent ) {
+			$elements = array(
+				'#customize-controls .control-section .accordion-section-title:focus',
+				'#customize-controls .control-section .accordion-section-title:hover',
+				'#customize-controls .control-section.open .accordion-section-title',
+				'#customize-controls .control-section:hover > .accordion-section-title',
+				'.customize-panel-back:focus',
+				'.customize-panel-back:hover',
+				'.customize-section-back:focus',
+				'.customize-section-back:hover',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= ( $back ) ? 'background:' . $hover_on_back . ';' : '';
+			$css .= ( $accent ) ? 'color:' . $accent . ';border-left-color:' . $accent . ';' : '';
+			$css .= '}';
+
+			$css .= '.customize-controls-close:hover{';
+			$css .= ( $back ) ? 'background-color:' . $back . ';' : '';
+			$css .= ( $accent ) ? 'color:' . $accent . ';border-color:' . $accent . ';' : '';
+			$css .= '}';
+
+		}
+
+		if ( $accent ) {
+			$elements = array(
+				'#customize-theme-controls .control-section .accordion-section-title:focus:after',
+				'#customize-theme-controls .control-section .accordion-section-title:hover:after',
+				'#customize-theme-controls .control-section.open .accordion-section-title:after',
+				'#customize-theme-controls .control-section:hover>.accordion-section-title:after',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'color:' . $accent . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.wp-core-ui .button.button-primary',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'background-color:' . $accent . ';';
+			$css .= 'border-color:' . $border_on_accent . ';';
+			$css .= 'box-shadow:0 1px 0 ' . $border_on_accent . ';';
+			$css .= '-webkit-box-shadow:0 1px 0 ' . $border_on_accent . ';';
+			$css .= 'text-shadow:0 -1px 1px ' . $border_on_accent . ', 1px 0 1px ' . $border_on_accent . ', 0 1px 1px ' . $border_on_accent . ', -1px 0 1px ' . $border_on_accent . ';';
+			$css .= 'color:' . $text_on_accent . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.wp-core-ui .button.button-primary.focus',
+				'.wp-core-ui .button.button-primary.hover',
+				'.wp-core-ui .button.button-primary:focus',
+				'.wp-core-ui .button.button-primary:hover',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'background-color:' . $accent . ';';
+			$css .= 'border-color:' . $border_on_accent . ';';
+			$css .= 'box-shadow: 0 1px 0 ' . $border_on_accent . ';';
+			$css .= '-webkit-box-shadow: 0 1px 0 ' . $border_on_accent . ';';
+			$css .= 'text-shadow: 0 -1px 1px ' . $border_on_accent . ', 1px 0 1px ' . $border_on_accent . ', 0 1px 1px ' . $border_on_accent . ', -1px 0 1px ' . $border_on_accent . ';';
+			$css .= 'color:' . $text_on_accent . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.wp-core-ui .button.button-primary-disabled',
+				'.wp-core-ui .button.button-primary.disabled',
+				'.wp-core-ui .button.button-primary:disabled',
+				'.wp-core-ui .button.button-primary[disabled]',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'background-color:' . $accent_disabled . ' !important;';
+			$css .= 'border-color: ' . $border_on_accent_disabled . ' !important;';
+			$css .= 'box-shadow: 0 1px 0 ' . $border_on_accent_disabled . ' !important;';
+			$css .= '-webkit-box-shadow: 0 1px 0 ' . $border_on_accent_disabled . ' !important;';
+			$css .= 'text-shadow: 0 -1px 1px ' . $border_on_accent_disabled . ', 1px 0 1px ' . $border_on_accent_disabled . ', 0 1px 1px ' . $border_on_accent_disabled . ', -1px 0 1px ' . $border_on_accent_disabled . ' !important;';
+			$css .= 'color:' . $text_on_accent_disabled . ' !important;';
+			$css .= '}';
+
+			$elements = array(
+				'input[type=checkbox]:checked:before',
+			);
+			if ( $accent ) {
+				$css .= implode( ',', $elements ) . '{';
+				$css .= 'color:' . $accent . ';';
+				$css .= '}';
+			}
+
+			$elements = array(
+				'.select2-container--default .select2-results__option--highlighted[aria-selected]',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'background-color:' . $accent . ';';
+			$css .= 'color:' . $text_on_accent . ';';
+			$css .= '}';
+
+			$elements = array(
+				'.customize-control-kirki-radio-buttonset .buttonset .switch-input:checked + .switch-label',
+				'.customize-control-kirki-background .background-attachment .buttonset .switch-input:checked + .switch-label',
+				'.customize-control-kirki-background .background-size .buttonset .switch-input:checked + .switch-label',
+			);
+			$css .= implode( ',', $elements ) . '{';
+			$css .= 'background-color:' . $accent . ';';
+			$css .= 'border-color:' . $border_on_accent . ';';
+			$css .= 'color:' . $text_on_accent . ';';
+			$css .= '}';
+		} // End if().
+
 		if ( isset( $config['width'] ) ) {
-			$path = wp_normalize_path( Kirki::$path . '/modules/customizer-styling/dynamic-css-width.php' );
-			$styles .= include $path;
-
-			// Replace width placeholder with actual value.
-			$styles = str_replace( 'WIDTH', $config['width'], $styles );
+			if ( false === strpos( $config['width'], 'calc' ) ) {
+				$width = esc_attr( $config['width'] );
+				$css .= '.wp-full-overlay-sidebar{width:' . $width . ';}';
+				$css .= '.expanded .wp-full-overlay-footer{width:' . $width . '}';
+				$css .= '.wp-full-overlay.expanded{margin-left:' . $width . ';}';
+				$css .= '.wp-full-overlay.collapsed .wp-full-overlay-sidebar{margin-left: -' . $width . ';}';
+			}
 		}
 
-		// Include the color modifications CSS if necessary.
-		if ( false !== $this->color_back && false !== $this->color_font ) {
-			$path = wp_normalize_path( Kirki::$path . '/modules/customizer-styling/dynamic-css-colors.php' );
-			$styles .= include $path;
-		}
-
-		// Include generic CSS for controls.
-		$path = wp_normalize_path( Kirki::$path . '/modules/customizer-styling/dynamic-css.php' );
-		$styles .= include $path;
-
-		return $styles;
-
+		echo '<style>' . $css . '</style>'; // WPCS: XSS ok.
 	}
 }

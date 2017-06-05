@@ -35,6 +35,7 @@ include_once ('customizer/customizer-posts.php');
 include_once ('customizer/customizer-text.php');
 include_once ('example-functions.php');
 include_once ('plugins/kirki/kirki.php');
+ include_once ('plugins/social-count-plus-master/social-count-plus.php');
 add_filter('widget_text', 'do_shortcode');
 
 function magazin_text_domain() {
@@ -327,42 +328,72 @@ function admin_js() {
 }
 add_action('admin_footer', 'admin_js');
 
+
+function get_access_token_mt() {
+	$mt_social = get_option( 'socialcountplus_settings');
+
+
+	$url = sprintf(
+		'https://graph.facebook.com/oauth/access_token?client_id=%s&client_secret=%s&grant_type=client_credentials',
+		sanitize_text_field( $mt_social['facebook_app_id'] ),
+		sanitize_text_field( $mt_social['facebook_app_secret'] )
+	);
+	$access_token = wp_remote_get( $url, array( 'timeout' => 60 ) );
+
+	if ( is_wp_error( $access_token ) || ( isset( $access_token['response']['code'] ) && 200 != $access_token['response']['code'] ) ) {
+		return '';
+	} else {
+		$access_token = json_decode( $access_token['body'], true );
+		return sanitize_text_field( $access_token['access_token'] );
+	}
+}
+
 function magazin_get_shares( $post_id ) {
-	$cache_key = 'magazin_share_cache' . $post_id;
-	$access_token = 'APP_ID|APP_SECRET';
-	$count = get_transient( $cache_key ); // try to get value from Wordpress cache
 
-	$facebook_token = get_option("facebook_token");
-	$share_time = get_option("share_time");
+		$cache_key = 'magazin_share_cache' . $post_id;
+		$access_token = 'APP_ID|APP_SECRET';
+		$count = get_transient( $cache_key ); // try to get value from Wordpress cache
 
-	if(!empty( $share_time )){ $share_times = $share_time; } else { $share_times = 36000;  }
+		$facebook_token = get_option("facebook_token");
+		$share_time = get_option("share_time");
 
-	if(!empty( $facebook_token )){
-		// if no value in the cache
-		if ( $count === false  ) {
-			$count = "0";
-			$response = wp_remote_get('https://graph.facebook.com/v2.7/?id=' . urlencode( get_permalink( $post_id ) ) . '&access_token=' . $facebook_token);
+		if(!empty( $share_time )){ $share_times = $share_time; } else { $share_times = 36000;  }
 
 
-			if(!is_wp_error($response)) {
-				if (!empty($response)) {
-					$body = json_decode( $response['body'], true );
+		$access_token = get_access_token_mt();
+
+
+
+
+
+			// if no value in the cache
+			if ( $count === false  ) {
+				$count = "0";
+				$response = wp_remote_get('https://graph.facebook.com/v2.7/?id=' . urlencode( get_permalink( $post_id ) ) . '&access_token=' . $facebook_token);
+
+
+				if(!is_wp_error($response)) {
+					if (!empty($response)) {
+						$body = json_decode( $response['body'], true );
+					}
+
+					if (!empty($body->share)) {
+			      $count = intval( $body->share->share_count );
+			    }
+
+					update_post_meta($post_id, 'magazin_share_count_real', $count);
+
+
+					set_transient( $cache_key, $count, $share_times ); // store value in cache for a 10 hour
 				}
 
-				if (!empty($body->share)) {
-		      $count = intval( $body->share->share_count );
-		    }
-
-				update_post_meta($post_id, 'magazin_share_count_real', $count);
-
-
-				set_transient( $cache_key, $count, $share_times ); // store value in cache for a 10 hour
 			}
 
-		}
-	}
+
 	return $count;
 }
+
+
 
 function SearchFilter($query) {
 
@@ -381,6 +412,9 @@ function SearchFilter($query) {
 
 add_filter('pre_get_posts','SearchFilter');
 
+function do_not_filter_anything( $value ) {
+	return $value;
+}
 
 add_action('pre_get_posts', 'myprefix_query_offset', 1 );
 function myprefix_query_offset(&$query) {

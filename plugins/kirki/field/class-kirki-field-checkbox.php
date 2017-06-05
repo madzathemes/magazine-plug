@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.2.7
  */
@@ -32,7 +32,9 @@ class Kirki_Field_Checkbox extends Kirki_Field {
 	 */
 	protected function set_sanitize_callback() {
 
-		$this->sanitize_callback = array( $this, 'sanitize' );
+		if ( ! $this->sanitize_callback ) {
+			$this->sanitize_callback = array( $this, 'sanitize' );
+		}
 
 	}
 

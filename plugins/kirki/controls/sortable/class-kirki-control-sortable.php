@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
@@ -50,9 +50,15 @@ class Kirki_Control_Sortable extends WP_Customize_Control {
 	 */
 	public function enqueue() {
 
-		wp_enqueue_script( 'kirki-sortable', trailingslashit( Kirki::$url ) . 'controls/sortable/sortable.js', array( 'jquery', 'customize-base', 'jquery-ui-core', 'jquery-ui-sortable' ), false, true );
-		wp_enqueue_style( 'kirki-sortable-css', trailingslashit( Kirki::$url ) . 'controls/sortable/sortable.css', null );
+		Kirki_Custom_Build::register_dependency( 'jquery' );
+		Kirki_Custom_Build::register_dependency( 'customize-base' );
+		Kirki_Custom_Build::register_dependency( 'jquery-ui-core' );
+		Kirki_Custom_Build::register_dependency( 'jquery-ui-sortable' );
 
+		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+			wp_enqueue_script( 'kirki-sortable', trailingslashit( Kirki::$url ) . 'controls/sortable/sortable.js', array( 'jquery', 'customize-base', 'jquery-ui-core', 'jquery-ui-sortable' ), false, true );
+			wp_enqueue_style( 'kirki-sortable-css', trailingslashit( Kirki::$url ) . 'controls/sortable/sortable.css', null );
+		}
 	}
 
 	/**
@@ -72,10 +78,6 @@ class Kirki_Control_Sortable extends WP_Customize_Control {
 		$this->json['choices'] = $this->choices;
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
-
-		if ( 'user_meta' === $this->option_type ) {
-			$this->json['value'] = get_user_meta( get_current_user_id(), $this->id, true );
-		}
 
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {

@@ -5,7 +5,7 @@
  * @package     Kirki
  * @category    Core
  * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  */
 
@@ -25,7 +25,7 @@ foreach ( $configs as $config_id => $args ) {
 	}
 
 	$styles = Kirki_Styles_Frontend::loop_controls( $config_id );
-	$styles = apply_filters( 'kirki/' . $config_id . '/dynamic_css', $styles );
+	$styles = apply_filters( "kirki/{$config_id}/dynamic_css", $styles );
 
 	// Some people put weird stuff in their CSS, KSES tends to be greedy.
 	$styles = str_replace( '<=', '&lt;=', $styles );

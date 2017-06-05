@@ -53,16 +53,14 @@ var RepeaterRow = function( rowIndex, container, label, control ) {
 
 		if ( 'field' === this.label.type ) {
 			rowLabelField = this.container.find( '.repeater-field [data-field="' + this.label.field + '"]' );
-			if ( 'function' === typeof rowLabelField.val ) {
+			if ( _.isFunction( rowLabelField.val ) ) {
 				rowLabel = rowLabelField.val();
 				if ( '' !== rowLabel ) {
-					if ( 'undefined' !== typeof control.params.fields[ this.label.field ] ) {
-						if ( 'undefined' !== typeof control.params.fields[ this.label.field ].type ) {
+					if ( ! _.isUndefined( control.params.fields[ this.label.field ] ) ) {
+						if ( ! _.isUndefined( control.params.fields[ this.label.field ].type ) ) {
 							if ( 'select' === control.params.fields[ this.label.field ].type ) {
-								if ( 'undefined' !== typeof control.params.fields[ this.label.field ].choices ) {
-									if ( 'undefined' !== typeof control.params.fields[ this.label.field ].choices[ rowLabelField.val() ] ) {
-										rowLabel = control.params.fields[ this.label.field ].choices[ rowLabelField.val() ];
-									}
+								if ( ! _.isUndefined( control.params.fields[ this.label.field ].choices ) && ! _.isUndefined( control.params.fields[ this.label.field ].choices[ rowLabelField.val() ] ) ) {
+									rowLabel = control.params.fields[ this.label.field ].choices[ rowLabelField.val() ];
 								}
 							} else if ( 'radio' === control.params.fields[ this.label.field ].type || 'radio-image' === control.params.fields[ this.label.field ].type ) {
 								rowLabelSelector = control.selector + ' [data-row="' + this.rowIndex + '"] .repeater-field [data-field="' + this.label.field + '"]:checked';
@@ -110,7 +108,7 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 
 		// Default limit choice
 		limit = false;
-		if ( 'undefined' !== typeof this.params.choices.limit ) {
+		if ( ! _.isUndefined( this.params.choices.limit ) ) {
 			limit = ( 0 >= this.params.choices.limit ) ? false : parseInt( this.params.choices.limit );
 		}
 
@@ -126,7 +124,7 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 			}
 		});
 
-		this.container.on( 'click', '.repeater-row-remove', function( e ) {
+		this.container.on( 'click', '.repeater-row-remove', function() {
 			control.currentIndex--;
 			if ( ! limit || control.currentIndex < limit ) {
 				jQuery( control.selector + ' .limit' ).removeClass( 'highlight' );
@@ -190,7 +188,7 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 
 		this.repeaterFieldsContainer.sortable({
 			handle: '.repeater-row-header',
-			update: function( e, ui ) {
+			update: function() {
 				control.sort();
 			}
 		});
@@ -250,16 +248,16 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 		    libMediaType   = this.getMimeType();
 
 		// Make sure we got it
-		if ( 'string' === typeof currentFieldId && '' !== currentFieldId ) {
+		if ( _.isString( currentFieldId ) && '' !== currentFieldId ) {
 
 			// Make fields is defined and only do the hack for cropped_image
-			if ( 'object' === typeof this.params.fields[ currentFieldId ] && 'cropped_image' === this.params.fields[ currentFieldId ].type ) {
+			if ( _.isObject( this.params.fields[ currentFieldId ] ) && 'cropped_image' === this.params.fields[ currentFieldId ].type ) {
 
 				//Iterate over the list of attributes
-				attrs.forEach( function( el, index ) {
+				attrs.forEach( function( el ) {
 
 					// If the attribute exists in the field
-					if ( 'undefined' !== typeof this.params.fields[ currentFieldId ][ el ] ) {
+					if ( ! _.isUndefined( this.params.fields[ currentFieldId ][ el ] ) ) {
 
 						// Set the attribute in the main object
 						this.params[ el ] = this.params.fields[ currentFieldId ][ el ];
@@ -506,17 +504,16 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 		'use strict';
 
 		// We get the field id from which this was called
-		var currentFieldId = this.$thisButton.siblings( 'input.hidden-field' ).attr( 'data-field' ),
-		    attrs          = [ 'mime_type' ]; // A list of attributes to look for
+		var currentFieldId = this.$thisButton.siblings( 'input.hidden-field' ).attr( 'data-field' );
 
 		// Make sure we got it
-		if ( 'string' === typeof currentFieldId && '' !== currentFieldId ) {
+		if ( _.isString( currentFieldId ) && '' !== currentFieldId ) {
 
 			// Make fields is defined and only do the hack for cropped_image
-			if ( 'object' === typeof this.params.fields[ currentFieldId ] && 'upload' === this.params.fields[ currentFieldId ].type ) {
+			if ( _.isObject( this.params.fields[ currentFieldId ] ) && 'upload' === this.params.fields[ currentFieldId ].type ) {
 
 				// If the attribute exists in the field
-				if ( 'undefined' !== typeof this.params.fields[ currentFieldId ].mime_type ) {
+				if ( ! _.isUndefined( this.params.fields[ currentFieldId ].mime_type ) ) {
 
 					// Set the attribute in the main object
 					return this.params.fields[ currentFieldId ].mime_type;
@@ -614,8 +611,8 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 			});
 			jQuery.each( newValue, function( index, value ) {
 				jQuery.each( filter, function( ind, field ) {
-					if ( 'undefined' !== typeof value[field] && 'undefined' !== typeof value[field].id ) {
-						filteredValue[index][field] = value[field].id;
+					if ( ! _.isUndefined( value[ field ] ) && ! _.isUndefined( value[ field ].id ) ) {
+						filteredValue[index][ field ] = value[ field ].id;
 					}
 				});
 			});
@@ -810,7 +807,7 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 
 		element = jQuery( element );
 
-		if ( 'undefined' === typeof currentSettings[ row.rowIndex ][ fieldId ] ) {
+		if ( _.isUndefined( currentSettings[ row.rowIndex ][ fieldId ] ) ) {
 			return;
 		}
 
@@ -843,7 +840,7 @@ wp.customize.controlConstructor.repeater = wp.customize.Control.extend({
 		    fieldId     = colorPicker.data( 'field' );
 
 		// We check if the color palette parameter is defined.
-		if ( 'undefined' !== typeof fieldId && 'undefined' !== typeof control.params.fields[ fieldId ] && 'undefined' !== typeof control.params.fields[ fieldId ].palettes && 'object' === typeof control.params.fields[ fieldId ].palettes ) {
+		if ( ! _.isUndefined( fieldId ) && ! _.isUndefined( control.params.fields[ fieldId ] ) && ! _.isUndefined( control.params.fields[ fieldId ].palettes ) && _.isObject( control.params.fields[ fieldId ].palettes ) ) {
 			options.palettes = control.params.fields[ fieldId ].palettes;
 		}
 

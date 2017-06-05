@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.2.7
  */
@@ -36,7 +36,7 @@ class Kirki_Field_Switch extends Kirki_Field_Checkbox {
 			$this->choices = array();
 		}
 
-		$l10n = apply_filters( 'kirki/' . $this->kirki_config . '/l10n', array(
+		$l10n = apply_filters( "kirki/{$this->kirki_config}/l10n", array(
 			'on'  => esc_attr__( 'On', 'kirki' ),
 			'off' => esc_attr__( 'Off', 'kirki' ),
 		) );

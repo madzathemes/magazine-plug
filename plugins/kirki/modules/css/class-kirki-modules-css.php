@@ -5,7 +5,7 @@
  * @package     Kirki
  * @category    Modules
  * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       3.0.0
  */
@@ -14,6 +14,16 @@
  * The Kirki_Modules_CSS object.
  */
 class Kirki_Modules_CSS {
+
+	/**
+	 * The object instance.
+	 *
+	 * @static
+	 * @access private
+	 * @since 3.0.0
+	 * @var object
+	 */
+	private static $instance;
 
 	/**
 	 * Whether we've already processed this or not.
@@ -51,9 +61,9 @@ class Kirki_Modules_CSS {
 	/**
 	 * Constructor
 	 *
-	 * @access public
+	 * @access protected
 	 */
-	public function __construct() {
+	protected function __construct() {
 
 		$class_files = array(
 			'Kirki_CSS_To_File'                         => '/class-kirki-css-to-file.php',
@@ -80,13 +90,29 @@ class Kirki_Modules_CSS {
 	}
 
 	/**
+	 * Gets an instance of this object.
+	 * Prevents duplicate instances which avoid artefacts and improves performance.
+	 *
+	 * @static
+	 * @access public
+	 * @since 3.0.0
+	 * @return object
+	 */
+	public static function get_instance() {
+		if ( ! self::$instance ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
+
+	/**
 	 * Init.
 	 *
 	 * @access public
 	 */
 	public function init() {
 
-		Kirki_Fonts_Google::get_instance();
+		Kirki_Modules_Webfonts::get_instance();
 
 		global $wp_customize;
 
@@ -97,36 +123,46 @@ class Kirki_Modules_CSS {
 		}
 
 		// Allow completely disabling Kirki CSS output.
-		if ( ( defined( 'KIRKI_NO_OUTPUT' ) && KIRKI_NO_OUTPUT ) || ( isset( $config['disable_output'] ) && true !== $config['disable_output'] ) ) {
+		if ( ( defined( 'KIRKI_NO_OUTPUT' ) && true === KIRKI_NO_OUTPUT ) || ( isset( $config['disable_output'] ) && true === $config['disable_output'] ) ) {
 			return;
 		}
 
-		$this->css_to_file = new Kirki_CSS_To_File();
-
-		// If we're in the customizer, load inline no matter what.
+		$method = apply_filters( 'kirki/dynamic_css/method', 'inline' );
 		if ( $wp_customize ) {
+			// If we're in the customizer, load inline no matter what.
 			add_action( 'wp_enqueue_scripts', array( $this, 'inline_dynamic_css' ), $priority );
+
+			// If we're using file method, on save write the new styles.
+			if ( 'file' === $method ) {
+				$this->css_to_file = new Kirki_CSS_To_File();
+				add_action( 'customize_save_after', array( $this->css_to_file, 'write_file' ) );
+			}
 			return;
 		}
 
-		// Attempt to write the CSS to file.
-		// If we succesd, load this file.
-		$failed = get_transient( 'kirki_css_write_to_file_failed' );
-		// If writing CSS to file hasn't failed, just enqueue this file.
-		if ( ! $failed ) {
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_compiled_file' ), $priority );
-			return;
+		if ( 'file' === $method ) {
+			// Attempt to write the CSS to file.
+			$this->css_to_file = new Kirki_CSS_To_File();
+			// If we succesd, load this file.
+			$failed = get_transient( 'kirki_css_write_to_file_failed' );
+			// If writing CSS to file hasn't failed, just enqueue this file.
+			if ( ! $failed ) {
+				add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_compiled_file' ), $priority );
+				return;
+			}
 		}
 
 		// If we are in the customizer, load CSS using inline-styles.
 		// If we are in the frontend AND self::$ajax is true, then load dynamic CSS using AJAX.
-		if ( ! $wp_customize && ( ( true === self::$ajax ) || ( isset( $config['inline_css'] ) && false === $config['inline_css'] ) ) ) {
+		if ( ( true === self::$ajax ) || ( isset( $config['inline_css'] ) && false === $config['inline_css'] ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'frontend_styles' ), $priority );
 			add_action( 'wp_ajax_kirki_dynamic_css', array( $this, 'ajax_dynamic_css' ) );
 			add_action( 'wp_ajax_nopriv_kirki_dynamic_css', array( $this, 'ajax_dynamic_css' ) );
-		} else {
-			add_action( 'wp_enqueue_scripts', array( $this, 'inline_dynamic_css' ), $priority );
+			return;
 		}
+
+		// If we got this far then add styles inline.
+		add_action( 'wp_enqueue_scripts', array( $this, 'inline_dynamic_css' ), $priority );
 	}
 
 	/**
@@ -153,7 +189,7 @@ class Kirki_Modules_CSS {
 					continue;
 				}
 				$styles = self::loop_controls( $config_id );
-				$styles = apply_filters( 'kirki/' . $config_id . '/dynamic_css', $styles );
+				$styles = apply_filters( "kirki/{$config_id}/dynamic_css", $styles );
 				if ( ! empty( $styles ) ) {
 					wp_enqueue_style( 'kirki-styles-' . $config_id, trailingslashit( Kirki::$url ) . 'assets/css/kirki-styles.css', null, null );
 					wp_add_inline_style( 'kirki-styles-' . $config_id, $styles );
@@ -206,7 +242,7 @@ class Kirki_Modules_CSS {
 		foreach ( $fields as $field ) {
 
 			// Only process fields that belong to $config_id.
-			if ( $config_id != $field['kirki_config'] ) {
+			if ( $config_id !== $field['kirki_config'] ) {
 				continue;
 			}
 
@@ -230,7 +266,7 @@ class Kirki_Modules_CSS {
 
 			// Only continue if $field['output'] is set.
 			if ( isset( $field['output'] ) && ! empty( $field['output'] ) ) {
-				$css  = Kirki_Helper::array_replace_recursive( $css, Kirki_Modules_CSS_Generator::css( $field ) );
+				$css = Kirki_Helper::array_replace_recursive( $css, Kirki_Modules_CSS_Generator::css( $field ) );
 
 				// Add the globals.
 				if ( isset( self::$css_array[ $config_id ] ) && ! empty( self::$css_array[ $config_id ] ) ) {
@@ -239,13 +275,10 @@ class Kirki_Modules_CSS {
 			}
 		}
 
-		$css = apply_filters( 'kirki/' . $config_id . '/styles', $css );
+		$css = apply_filters( "kirki/{$config_id}/styles", $css );
 
 		if ( is_array( $css ) ) {
 			return Kirki_Modules_CSS_Generator::styles_parse( Kirki_Modules_CSS_Generator::add_prefixes( $css ) );
 		}
-
-		return;
-
 	}
 }

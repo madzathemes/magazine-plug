@@ -6,7 +6,7 @@
  * @package     Kirki
  * @category    Core
  * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
@@ -37,7 +37,7 @@ final class Kirki_Modules_CSS_Generator {
 	 * @access public
 	 * @var null|string|array
 	 */
-	public static $settings    = null;
+	public static $settings = null;
 
 	/**
 	 * Output.
@@ -46,7 +46,7 @@ final class Kirki_Modules_CSS_Generator {
 	 * @access public
 	 * @var array
 	 */
-	public static $output      = array();
+	public static $output = array();
 
 	/**
 	 * Callback.
@@ -55,7 +55,7 @@ final class Kirki_Modules_CSS_Generator {
 	 * @access public
 	 * @var null|string|array
 	 */
-	public static $callback    = null;
+	public static $callback = null;
 
 	/**
 	 * Option Name.
@@ -73,7 +73,7 @@ final class Kirki_Modules_CSS_Generator {
 	 * @access public
 	 * @var string
 	 */
-	public static $field_type  = null;
+	public static $field_type = null;
 
 	/**
 	 * Google Fonts
@@ -130,7 +130,7 @@ final class Kirki_Modules_CSS_Generator {
 	 */
 	public static function get_instance() {
 		if ( null === self::$instance ) {
-			self::$instance = new Kirki_Modules_CSS_Generator();
+			self::$instance = new self();
 		}
 		return self::$instance;
 	}
@@ -164,11 +164,11 @@ final class Kirki_Modules_CSS_Generator {
 
 		// Find the class that will handle the outpout for this field.
 		$classname = 'Kirki_Output';
-		$field_output_classes = apply_filters( 'kirki/' . $field['kirki_config'] . '/output/control-classnames', array(
-			'kirki-background' => 'Kirki_Output_Field_Background',
-			'kirki-dimensions' => 'Kirki_Output_Field_Dimensions',
-			'kirki-typography' => 'Kirki_Output_Field_Typography',
-			'kirki-multicolor' => 'Kirki_Output_Field_Multicolor',
+		$field_output_classes = apply_filters( "kirki/{$field['kirki_config']}/output/control-classnames", array(
+			'kirki-background'  => 'Kirki_Output_Field_Background',
+			'kirki-dimensions'  => 'Kirki_Output_Field_Dimensions',
+			'kirki-typography'  => 'Kirki_Output_Field_Typography',
+			'kirki-multicolor'  => 'Kirki_Output_Field_Multicolor',
 		) );
 		if ( array_key_exists( self::$field_type, $field_output_classes ) ) {
 			$classname = $field_output_classes[ self::$field_type ];
@@ -197,16 +197,27 @@ final class Kirki_Modules_CSS_Generator {
 			return '';
 		}
 		foreach ( $css as $media_query => $styles ) {
-			$final_css .= ( 'global' != $media_query ) ? $media_query . '{' : '';
+			$final_css .= ( 'global' !== $media_query ) ? $media_query . '{' : '';
 			foreach ( $styles as $style => $style_array ) {
-				$final_css .= $style . '{';
-					foreach ( $style_array as $property => $value ) {
-						$value = ( is_string( $value ) ) ? $value : '';
-						$final_css .= $property . ':' . $value . ';';
+				$css_for_style = '';
+
+				foreach ( $style_array as $property => $value ) {
+					if ( is_string( $value ) && '' !== $value ) {
+						$css_for_style .= $property . ':' . $value . ';';
+					} elseif ( is_array( $value ) ) {
+						foreach ( $value as $subvalue ) {
+							if ( is_string( $subvalue ) && '' !== $subvalue ) {
+								$css_for_style .= $property . ':' . $subvalue . ';';
+							}
+						}
 					}
-				$final_css .= '}';
+					$value = ( is_string( $value ) ) ? $value : '';
+				}
+				if ( '' !== $css_for_style ) {
+					$final_css .= $style . '{' . $css_for_style . '}';
+				}
 			}
-			$final_css .= ( 'global' != $media_query ) ? '}' : '';
+			$final_css .= ( 'global' !== $media_query ) ? '}' : '';
 		}
 		return $final_css;
 	}
@@ -234,7 +245,7 @@ final class Kirki_Modules_CSS_Generator {
 							'background-size',
 							'transition',
 							'transition-property',
-						) ) ) {
+						), true ) ) {
 							unset( $css[ $media_query ][ $element ][ $property ] );
 							$css[ $media_query ][ $element ][ '-webkit-' . $property ] = $value;
 							$css[ $media_query ][ $element ][ '-moz-' . $property ]    = $value;
@@ -247,7 +258,7 @@ final class Kirki_Modules_CSS_Generator {
 							'background-size',
 							'transition',
 							'transition-property',
-						) ) ) {
+						), true ) ) {
 							unset( $css[ $media_query ][ $element ][ $property ] );
 							$css[ $media_query ][ $element ][ '-ms-' . $property ] = $value;
 							$css[ $media_query ][ $element ][ '-o-' . $property ]  = $value;

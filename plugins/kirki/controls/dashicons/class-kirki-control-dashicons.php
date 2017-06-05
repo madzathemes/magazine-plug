@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.2.4
  */
@@ -61,10 +61,6 @@ class Kirki_Control_Dashicons extends WP_Customize_Control {
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
 
-		if ( 'user_meta' === $this->option_type ) {
-			$this->json['value'] = get_user_meta( get_current_user_id(), $this->id, true );
-		}
-
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
 			$this->json['inputAttrs'] .= $attr . '="' . esc_attr( $value ) . '" ';
@@ -78,8 +74,14 @@ class Kirki_Control_Dashicons extends WP_Customize_Control {
 	 * @access public
 	 */
 	public function enqueue() {
-		wp_enqueue_script( 'kirki-dashicons', trailingslashit( Kirki::$url ) . 'controls/dashicons/dashicons.js', array( 'jquery', 'customize-base' ), false, true );
-		wp_enqueue_style( 'kirki-dashicons-css', trailingslashit( Kirki::$url ) . 'controls/dashicons/dashicons.css', null );
+
+		Kirki_Custom_Build::register_dependency( 'jquery' );
+		Kirki_Custom_Build::register_dependency( 'customize-base' );
+
+		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+			wp_enqueue_script( 'kirki-dashicons', trailingslashit( Kirki::$url ) . 'controls/dashicons/dashicons.js', array( 'jquery', 'customize-base' ), false, true );
+			wp_enqueue_style( 'kirki-dashicons-css', trailingslashit( Kirki::$url ) . 'controls/dashicons/dashicons.css', null );
+		}
 	}
 
 	/**
@@ -101,7 +103,7 @@ class Kirki_Control_Dashicons extends WP_Customize_Control {
 			<span class="description customize-control-description">{{{ data.description }}}</span>
 		<# } #>
 		<div class="icons-wrapper">
-			<# if ( 'undefined' !== typeof data.choices && 1 < _.size( data.choices ) ) { #>
+			<# if ( ! _.isUndefined( data.choices ) && 1 < _.size( data.choices ) ) { #>
 				<# for ( key in data.choices ) { #>
 					<input {{{ data.inputAttrs }}} class="dashicons-select" type="radio" value="{{ key }}" name="_customize-dashicons-radio-{{ data.id }}" id="{{ data.id }}{{ key }}" {{{ data.link }}}<# if ( data.value === key ) { #> checked="checked"<# } #>>
 						<label for="{{ data.id }}{{ key }}">

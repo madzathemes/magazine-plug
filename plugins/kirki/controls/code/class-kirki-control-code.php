@@ -7,7 +7,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
@@ -99,10 +99,6 @@ class Kirki_Control_Code extends WP_Customize_Control {
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
 
-		if ( 'user_meta' === $this->option_type ) {
-			$this->json['value'] = get_user_meta( get_current_user_id(), $this->id, true );
-		}
-
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
 			$this->json['inputAttrs'] .= $attr . '="' . esc_attr( $value ) . '" ';
@@ -129,7 +125,9 @@ class Kirki_Control_Code extends WP_Customize_Control {
 			<# if ( data.description ) { #>
 				<span class="description customize-control-description">{{{ data.description }}}</span>
 			<# } #>
-			<textarea {{{ data.inputAttrs }}} class="kirki-codemirror-editor">{{{ data.value }}}</textarea>
+			<div class="codemirror-kirki-wrapper">
+				<textarea {{{ data.inputAttrs }}} class="kirki-codemirror-editor">{{{ data.value }}}</textarea>
+			</div>
 		</label>
 		<?php
 	}

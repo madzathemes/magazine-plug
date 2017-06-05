@@ -19,14 +19,13 @@ wp.customize.controlConstructor['kirki-multicolor'] = wp.customize.Control.exten
 			var picker = control.container.find( '.multicolor-index-' + subSetting ),
 			    args   = {
 					target: target[0],
-					change: function( event, ui ) {
+					change: function() {
 
 						// Color controls require a small delay.
 						setTimeout( function() {
-							value[ subSetting ] = picker.val();
 
 							// Set the value.
-							control.setValue( value, false );
+							control.saveValue( subSetting, picker.val() );
 
 							// Trigger the change.
 							control.container.find( '.multicolor-index-' + subSetting ).trigger( 'change' );
@@ -34,7 +33,8 @@ wp.customize.controlConstructor['kirki-multicolor'] = wp.customize.Control.exten
 
 					}
 				};
-			if ( 'object' === typeof colors.irisArgs ) {
+
+			if ( _.isObject( colors.irisArgs ) ) {
 				_.each( colors.irisArgs, function( irisValue, irisKey ) {
 					args[ irisKey ] = irisValue;
 				});
@@ -44,9 +44,6 @@ wp.customize.controlConstructor['kirki-multicolor'] = wp.customize.Control.exten
 			picker.wpColorPicker( args );
 
 		}
-
-		// The hidden field that keeps the data saved (though we never update it)
-		this.settingField = this.container.find( '[data-customize-setting-link]' ).first();
 
 		// Colors loop
 		while ( i < Object.keys( colors ).length ) {
@@ -66,31 +63,20 @@ wp.customize.controlConstructor['kirki-multicolor'] = wp.customize.Control.exten
 	},
 
 	/**
-	 * Set a new value for the setting
-	 *
-	 * @param newValue Object
-	 * @param refresh If we want to refresh the previewer or not
+	 * Saves the value.
 	 */
-	setValue: function( value, refresh ) {
+	saveValue: function( property, value ) {
 
 		'use strict';
 
-		var control  = this,
-		    newValue = {};
+		var control   = this,
+		    input     = control.container.find( '.multicolor-hidden-value' ),
+		    valueJSON = jQuery( input ).val(),
+		    valueObj  = JSON.parse( valueJSON );
 
-		_.each( value, function( newSubValue, i ) {
-			newValue[ i ] = newSubValue;
-		});
-
-		control.setting.set( newValue );
-
-		if ( refresh ) {
-
-			// Trigger the change event on the hidden field so
-			// previewer refresh the website on Customizer
-			control.settingField.trigger( 'change' );
-
-		}
+		valueObj[ property ] = value;
+		jQuery( input ).attr( 'value', JSON.stringify( valueObj ) ).trigger( 'change' );
+		control.setting.set( valueObj );
 
 	}
 

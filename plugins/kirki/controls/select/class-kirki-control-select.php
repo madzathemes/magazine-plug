@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
@@ -58,10 +58,19 @@ class Kirki_Control_Select extends WP_Customize_Control {
 	 * @access public
 	 */
 	public function enqueue() {
-		wp_enqueue_script( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/js/select2.full.js', array( 'jquery' ), false, true );
-		wp_enqueue_style( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/css/select2.min.css', null );
-		wp_enqueue_script( 'kirki-select', trailingslashit( Kirki::$url ) . 'controls/select/select.js', array( 'jquery', 'customize-base', 'select2', 'jquery-ui-sortable' ), false, true );
-		wp_enqueue_style( 'kirki-select-css', trailingslashit( Kirki::$url ) . 'controls/select/select.css', null );
+
+		Kirki_Custom_Build::register_dependency( 'jquery' );
+		Kirki_Custom_Build::register_dependency( 'customize-base' );
+		Kirki_Custom_Build::register_dependency( 'select2' );
+		Kirki_Custom_Build::register_dependency( 'jquery-ui-sortable' );
+
+		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+			wp_enqueue_script( 'kirki-select', trailingslashit( Kirki::$url ) . 'controls/select/select.js', array( 'jquery', 'customize-base', 'select2', 'jquery-ui-sortable' ), false, true );
+			wp_enqueue_style( 'kirki-select-css', trailingslashit( Kirki::$url ) . 'controls/select/select.css', null );
+		}
+		wp_enqueue_script( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/js/select2.full.js', array( 'jquery' ), '4.0.3', true );
+		wp_enqueue_style( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/css/select2.css', array(), '4.0.3' );
+		wp_enqueue_style( 'kirki-select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/kirki.css', null );
 	}
 
 	/**
@@ -81,10 +90,6 @@ class Kirki_Control_Select extends WP_Customize_Control {
 		$this->json['choices'] = $this->choices;
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
-
-		if ( 'user_meta' === $this->option_type ) {
-			$this->json['value'] = get_user_meta( get_current_user_id(), $this->id, true );
-		}
 
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
@@ -110,7 +115,7 @@ class Kirki_Control_Select extends WP_Customize_Control {
 		<# if ( ! data.choices ) {
 			return;
 		}
-		if ( 1 < data.multiple && data.value && 'string' === typeof data.value ) {
+		if ( 1 < data.multiple && data.value && _.isString( data.value ) ) {
 			data.value = [ data.value ];
 		}
 		#>
@@ -122,19 +127,25 @@ class Kirki_Control_Select extends WP_Customize_Control {
 				<span class="description customize-control-description">{{{ data.description }}}</span>
 			<# } #>
 			<select {{{ data.inputAttrs }}} {{{ data.link }}}<# if ( 1 < data.multiple ) { #> data-multiple="{{ data.multiple }}" multiple="multiple"<# } #>>
-				<# for ( key in data.choices ) { #>
-					<#
-					selected = ( data.value === key );
-					if ( 1 < data.multiple && data.value ) {
-						_.each( data.value, function( value ) {
-							if ( key === value ) {
-								selected = true;
-							}
-						});
-					}
-					#>
-					<option value="{{ key }}"<# if ( selected ) { #> selected <# } #>>{{ data.choices[ key ] }}</option>
-				<# } #>
+				<# _.each( data.choices, function( optionLabel, optionKey ) { #>
+					<# selected = ( data.value === optionKey ); #>
+					<# if ( 1 < data.multiple && data.value ) { #>
+						<# selected = _.contains( data.value, optionKey ); #>
+					<# } #>
+					<# if ( _.isObject( optionLabel ) ) { #>
+						<optgroup label="{{ optionLabel[0] }}">
+							<# _.each( optionLabel[1], function( optgroupOptionLabel, optgroupOptionKey ) { #>
+								<# selected = ( data.value === optgroupOptionKey ); #>
+								<# if ( 1 < data.multiple && data.value ) { #>
+									<# selected = _.contains( data.value, optgroupOptionKey ); #>
+								<# } #>
+								<option value="{{ optgroupOptionKey }}"<# if ( selected ) { #> selected <# } #>>{{ optgroupOptionLabel }}</option>
+							<# }); #>
+						</optgroup>
+					<# } else { #>
+						<option value="{{ optionKey }}"<# if ( selected ) { #> selected <# } #>>{{ optionLabel }}</option>
+					<# } #>
+				<# }); #>
 			</select>
 		</label>
 		<?php

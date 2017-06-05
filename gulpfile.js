@@ -33,7 +33,7 @@ gulp.task('plugins', function () {
 
 gulp.task('zip', function () {
 
-    return gulp.src(['./**', '!package.json', '!version.json', '!gulpfile.js', '!.git/', '!.git/**', '!.gitignore', '!.DS_Store', '!node_modules/', '!gulp/**', '!gulp/', '!node_modules/**'])
+    return gulp.src(['./**', '!package.json', '!version.json', '!gulpfile.js', '!.git/', '!.git/**', '!.gitignore', '!.DS_Store', '!node_modules/', '!gulp/**', '!gulp/', '!node_modules/**'], { base:'../'})
         .pipe(zip('magazine-plug.zip'))
         .pipe(gulp.dest('../../themes/boomnews/all_plugins/'))
         .pipe(gulp.dest('../../themes/fullstory/all_plugins/'))

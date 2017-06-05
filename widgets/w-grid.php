@@ -24,6 +24,7 @@ class Grid_Widget extends WP_Widget {
 		$title = "";
 		$taxonomy = "";
 		$taxonomy_term = "";
+		$posttype = "post";
 
 		if ( ! empty( $instance['type'] ) ) { $type = $instance['type']; }
 		if ( ! empty( $instance['offset'] ) ) { $offset = $instance['offset'];	}
@@ -34,8 +35,9 @@ class Grid_Widget extends WP_Widget {
 		if ( ! empty( $instance['author'] ) ) { $author = $instance['author'];	}
 		if ( ! empty( $instance['taxonomy'] ) ) { $taxonomy = $instance['taxonomy'];	}
 		if ( ! empty( $instance['taxonomy_term'] ) ) { $taxonomy_term = $instance['taxonomy_term'];	}
+		if ( ! empty( $instance['posttype'] ) ) { $posttype = $instance['posttype'];	}
 
-		echo do_shortcode("[grid type='$type' tag='$tag' taxonomy='$taxonomy' taxonomy_term='$taxonomy_term' author='$author' title='$title' position='$position' offset='$offset' orderby='$orderby' category='$category']");
+		echo do_shortcode("[grid posttype='$posttype' type='$type' tag='$tag' taxonomy='$taxonomy' taxonomy_term='$taxonomy_term' author='$author' title='$title' position='$position' offset='$offset' orderby='$orderby' category='$category']");
 
 		echo $args['after_widget'];
 	}
@@ -50,6 +52,7 @@ class Grid_Widget extends WP_Widget {
 		$author = ! empty( $instance['author'] ) ? $instance['author'] : esc_html__( '', 'tophot' );
 		$taxonomy = ! empty( $instance['taxonomy'] ) ? $instance['taxonomy'] : esc_html__( '', 'tophot' );
 		$taxonomy_term = ! empty( $instance['taxonomy_term'] ) ? $instance['taxonomy_term'] : esc_html__( '', 'tophot' );
+		$posttype = ! empty( $instance['posttype'] ) ? $instance['posttype'] : esc_html__( '', 'tophot' );
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( esc_attr( 'Title:' ) ); ?></label>
@@ -61,10 +64,8 @@ class Grid_Widget extends WP_Widget {
 				<option value='1'<?php echo ($type=='1')?'selected':''; ?>>Style 1</option>
 				<option value='2'<?php echo ($type=='2')?'selected':''; ?>>Style 2</option>
 				<option value='3'<?php echo ($type=='3')?'selected':''; ?>>Style 3</option>
-				<?php $my_theme = wp_get_theme( 'fullstory' ); if($my_theme->exists()){  ?>
-					<option value='4'<?php echo ($type=='4')?'selected':''; ?>>Style 4</option>
-					<option value='5'<?php echo ($type=='5')?'selected':''; ?>>Style 5</option>
-				<?php } ?>
+				<option value='4'<?php echo ($type=='4')?'selected':''; ?>>Style 4</option>
+				<option value='5'<?php echo ($type=='5')?'selected':''; ?>>Style 5</option>
 			</select>
 		</p>
 		<p>
@@ -102,6 +103,10 @@ class Grid_Widget extends WP_Widget {
 				<option value='shares'<?php echo ($orderby=='shares')?'selected':''; ?>>Shares</option>
 			</select>
 		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'posttype' ) ); ?>"><?php _e( esc_attr( 'Posttype (post, page or custom post type)' ) ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'posttype' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'posttype' ) ); ?>" type="text" value="<?php echo esc_attr( $posttype ); ?>">
+		</p>
 
 		<?php
 	}
@@ -117,6 +122,7 @@ class Grid_Widget extends WP_Widget {
 		$instance['author'] = ( ! empty( $new_instance['author'] ) ) ? strip_tags( $new_instance['author'] ) : '';
 		$instance['taxonomy'] = ( ! empty( $new_instance['taxonomy'] ) ) ? strip_tags( $new_instance['taxonomy'] ) : '';
 		$instance['taxonomy_term'] = ( ! empty( $new_instance['taxonomy_term'] ) ) ? strip_tags( $new_instance['taxonomy_term'] ) : '';
+		$instance['posttype'] = ( ! empty( $new_instance['posttype'] ) ) ? strip_tags( $new_instance['posttype'] ) : '';
 		return $instance;
 	}
 

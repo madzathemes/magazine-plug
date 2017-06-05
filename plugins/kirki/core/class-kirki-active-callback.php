@@ -5,7 +5,7 @@
  * @package     Kirki
  * @category    Core
  * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  */
 
@@ -37,9 +37,9 @@ class Kirki_Active_Callback {
 		if ( isset( $field['required'] ) ) {
 
 			foreach ( $field['required'] as $requirement ) {
-				// Handles "AND" functionality.
-				$show = self::evaluate_requirement( $object, $field, $requirement );
-				// No need to process further if one requirement returns false.
+				$show = self::evaluate_requirement( $object, $field, $requirement, 'AND' );
+				// The 1st level uses "AND" so no need to process further
+				// if one requirement returns false.
 				if ( ! $show ) {
 					return false;
 				}
@@ -55,12 +55,13 @@ class Kirki_Active_Callback {
 	 * We're only parsing a single requirement here from the array of requirements.
 	 * This is a proxy function that facilitates evaluating and/or conditions.
 	 *
-	 * @param  WP_Customize_Setting $object      The current field.
-	 * @param  object               $field       The current object.
-	 * @param  array                $requirement A single requirement.
+	 * @param WP_Customize_Setting $object      The current field.
+	 * @param object               $field       The current object.
+	 * @param array                $requirement A single requirement.
+	 * @param string               $relation    Can be "AND" or "OR".
 	 * @return boolean
 	 */
-	private static function evaluate_requirement( $object, $field, $requirement ) {
+	private static function evaluate_requirement( $object, $field, $requirement, $relation ) {
 
 		// Test for callables first.
 		if ( is_callable( $requirement ) ) {
@@ -83,25 +84,30 @@ class Kirki_Active_Callback {
 			 * we'll need to perform the appropriate comparison
 			 * and figure out if the control will be shown or not.
 			 */
-			$show = self::compare( $requirement['value'], $current_setting->value(), $requirement['operator'] );
-
+			if ( method_exists( $current_setting, 'value' ) ) {
+				return self::compare( $requirement['value'], $current_setting->value(), $requirement['operator'] );
+			}
 		} else {
 			if ( ! is_array( $requirement ) ) {
 				return true;
 			}
 
-			// Handles "OR" functionality.
+			// Handles "OR/AND" functionality & switching.
 			$show = false;
+			$sub_relation = ( 'AND' === $relation ) ? 'OR' : 'AND';
 			foreach ( $requirement as $sub_requirement ) {
-				$show = self::evaluate_requirement( $object, $field, $sub_requirement );
-				// No need to go on if one sub_requirement returns true.
-				if ( $show ) {
+				$show = self::evaluate_requirement( $object, $field, $sub_requirement, $sub_relation );
+				if ( 'OR' === $sub_relation && $show ) {
 					return true;
 				}
+				if ( 'AND' === $sub_relation && ! $show ) {
+					return false;
+				}
 			}
-		}
+			return $show;
+		} // End if().
 
-		return $show;
+		return true;
 	}
 
 	/**
@@ -133,20 +139,20 @@ class Kirki_Active_Callback {
 			case '>=':
 			case 'greater or equal':
 			case 'equal or greater':
-				$show = ( $value1 >= $value2 ) ? true : false;
+				$show = ( $value2 >= $value1 ) ? true : false;
 				break;
 			case '<=':
 			case 'smaller or equal':
 			case 'equal or smaller':
-				$show = ( $value1 <= $value2 ) ? true : false;
+				$show = ( $value2 <= $value1 ) ? true : false;
 				break;
 			case '>':
 			case 'greater':
-				$show = ( $value1 > $value2 ) ? true : false;
+				$show = ( $value2 > $value1 ) ? true : false;
 				break;
 			case '<':
 			case 'smaller':
-				$show = ( $value1 < $value2 ) ? true : false;
+				$show = ( $value2 < $value1 ) ? true : false;
 				break;
 			case 'contains':
 			case 'in':
@@ -158,7 +164,7 @@ class Kirki_Active_Callback {
 					$string = $value1;
 				}
 				if ( isset( $array ) && isset( $string ) ) {
-					if ( ! in_array( $string, $array ) ) {
+					if ( ! in_array( $string, $array, true ) ) {
 						$show = false;
 					}
 				} else {

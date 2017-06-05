@@ -5,7 +5,7 @@
  * @package     Kirki
  * @category    Core
  * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
@@ -30,10 +30,11 @@ class Kirki_Init {
 	public function __construct() {
 		$this->set_url();
 		add_action( 'after_setup_theme', array( $this, 'set_url' ) );
-		add_action( 'customize_update_user_meta', array( $this, 'update_user_meta' ), 10, 2 );
 		add_action( 'wp_loaded', array( $this, 'add_to_customizer' ), 1 );
 		add_filter( 'kirki/control_types', array( $this, 'default_control_types' ) );
-		add_filter( 'acf/settings/select2_version', array( $this, 'acf_select2_version' ), 99 );
+		add_action( 'after_setup_theme', array( $this, 'acf_pro_compatibility' ) );
+
+		new Kirki_Custom_Build();
 	}
 
 	/**
@@ -42,21 +43,51 @@ class Kirki_Init {
 	 * and then does some calculations to get the proper URL for its CSS & JS assets.
 	 */
 	public function set_url() {
-		if ( Kirki::$url ) {
-			return;
+
+		Kirki::$path = wp_normalize_path( dirname( KIRKI_PLUGIN_FILE ) );
+
+		// Works in most cases.
+		// Serves as a fallback in case all other checks fail.
+		if ( defined( 'WP_CONTENT_DIR' ) ) {
+			$content_dir = wp_normalize_path( WP_CONTENT_DIR );
+			if ( false !== strpos( Kirki::$path, $content_dir ) ) {
+				$relative_path = str_replace( $content_dir, '', Kirki::$path );
+				Kirki::$url = content_url( $relative_path );
+			}
 		}
-		if ( defined( 'ABSPATH' ) ) {
-			// Replace path with URL.
-			$kirki_url  = str_replace( ABSPATH, '', Kirki::$path );
-			Kirki::$url = site_url( $kirki_url );
-			// Escape the URL.
-			Kirki::$url = esc_url_raw( Kirki::$url );
+
+		// If Kirki is installed as a plugin, use that for the URL.
+		if ( $this->is_plugin() ) {
+			Kirki::$url = plugin_dir_url( KIRKI_PLUGIN_FILE );
 		}
+
+		// Get the path to the theme.
+		$theme_path = wp_normalize_path( get_template_directory() );
+
+		// Is Kirki included in the theme?
+		if ( false !== strpos( Kirki::$path, $theme_path ) ) {
+			Kirki::$url = get_template_directory_uri() . str_replace( $theme_path, '', Kirki::$path );
+		}
+
+		// Is there a child-theme?
+		$child_theme_path = wp_normalize_path( get_stylesheet_directory_uri() );
+		if ( $child_theme_path !== $theme_path ) {
+			// Is Kirki included in a child theme?
+			if ( false !== strpos( Kirki::$path, $child_theme_path ) ) {
+				Kirki::$url = get_template_directory_uri() . str_replace( $child_theme_path, '', Kirki::$path );
+			}
+		}
+
 		// Apply the kirki/config filter.
 		$config = apply_filters( 'kirki/config', array() );
 		if ( isset( $config['url_path'] ) ) {
-			Kirki::$url = esc_url_raw( $config['url_path'] );
+			Kirki::$url = $config['url_path'];
 		}
+
+		// Escapes the URL.
+		Kirki::$url = esc_url_raw( Kirki::$url );
+		// Make sure the right protocol is used.
+		Kirki::$url = set_url_scheme( Kirki::$url );
 	}
 
 	/**
@@ -81,6 +112,9 @@ class Kirki_Init {
 			'kirki-dimension'       => 'Kirki_Control_Dimension',
 			'kirki-dimensions'      => 'Kirki_Control_Dimensions',
 			'kirki-editor'          => 'Kirki_Control_Editor',
+			'kirki-fontawesome'     => 'Kirki_Control_FontAwesome',
+			'kirki-gradient'        => 'Kirki_Control_Gradient',
+			'kirki-image'           => 'Kirki_Control_Image',
 			'kirki-multicolor'      => 'Kirki_Control_Multicolor',
 			'kirki-multicheck'      => 'Kirki_Control_MultiCheck',
 			'kirki-number'          => 'Kirki_Control_Number',
@@ -98,7 +132,7 @@ class Kirki_Init {
 			'kirki-generic'         => 'Kirki_Control_Generic',
 			'kirki-toggle'          => 'Kirki_Control_Toggle',
 			'kirki-typography'      => 'Kirki_Control_Typography',
-			'image'                 => 'WP_Customize_Image_Control',
+			'image'                 => 'Kirki_Control_Image',
 			'cropped_image'         => 'WP_Customize_Cropped_Image_Control',
 			'upload'                => 'WP_Customize_Upload_Control',
 		);
@@ -117,7 +151,7 @@ class Kirki_Init {
 		add_action( 'customize_register', array( $this, 'add_panels' ), 97 );
 		add_action( 'customize_register', array( $this, 'add_sections' ), 98 );
 		add_action( 'customize_register', array( $this, 'add_fields' ), 99 );
-		/* new Kirki_Modules_Loading(); */
+		/* Kirki_Modules_Loading::get_instance(); */
 	}
 
 	/**
@@ -139,7 +173,7 @@ class Kirki_Init {
 			'Kirki_Control_Repeater',
 		) );
 		foreach ( $this->control_types as $control_type ) {
-			if ( 0 === strpos( $control_type, 'Kirki' ) && ! in_array( $control_type, $do_not_register_control_types ) ) {
+			if ( 0 === strpos( $control_type, 'Kirki' ) && ! in_array( $control_type, $do_not_register_control_types, true ) && class_exists( $control_type ) ) {
 				$wp_customize->register_control_type( $control_type );
 			}
 		}
@@ -153,6 +187,14 @@ class Kirki_Init {
 	public function add_panels() {
 		if ( ! empty( Kirki::$panels ) ) {
 			foreach ( Kirki::$panels as $panel_args ) {
+				// Extra checks for nested panels.
+				if ( isset( $panel_args['panel'] ) ) {
+					if ( isset( Kirki::$panels[ $panel_args['panel'] ] ) ) {
+						// Set the type to nested.
+						$panel_args['type'] = 'kirki-nested';
+					}
+				}
+
 				new Kirki_Panel( $panel_args );
 			}
 		}
@@ -167,6 +209,18 @@ class Kirki_Init {
 	public function add_sections() {
 		if ( ! empty( Kirki::$sections ) ) {
 			foreach ( Kirki::$sections as $section_args ) {
+				// Extra checks for nested sections.
+				if ( isset( $section_args['section'] ) ) {
+					if ( isset( Kirki::$sections[ $section_args['section'] ] ) ) {
+						// Set the type to nested.
+						$section_args['type'] = 'kirki-nested';
+						// We need to check if the parent section is nested inside a panel.
+						$parent_section = Kirki::$sections[ $section_args['section'] ];
+						if ( isset( $parent_section['panel'] ) ) {
+							$section_args['panel'] = $parent_section['panel'];
+						}
+					}
+				}
 				new Kirki_Section( $section_args );
 			}
 		}
@@ -261,16 +315,6 @@ class Kirki_Init {
 	}
 
 	/**
-	 * Handle saving of settings with "user_meta" storage type.
-	 *
-	 * @param string $value The value being saved.
-	 * @param object $wp_customize_setting $WP_Customize_Setting The WP_Customize_Setting instance when saving is happening.
-	 */
-	public function update_user_meta( $value, $wp_customize_setting ) {
-		update_user_meta( get_current_user_id(), $wp_customize_setting->id, $value );
-	}
-
-	/**
 	 * Changes select2 version in ACF.
 	 * Fixes a plugin conflict that was causing select fields to crash
 	 * because of a version mismatch between ACF's and Kirki's select2 scripts.
@@ -279,9 +323,55 @@ class Kirki_Init {
 	 * @see https://github.com/aristath/kirki/issues/1302
 	 * @access public
 	 * @since 3.0.0
-	 * @return int
 	 */
-	public function acf_select2_version() {
-		return 4;
+	public function acf_pro_compatibility() {
+		if ( is_customize_preview() ) {
+			add_filter( 'acf/settings/enqueue_select2', '__return_false', 99 );
+		}
+	}
+
+	/**
+	 * Determine if Kirki is installed as a plugin.
+	 *
+	 * @static
+	 * @access public
+	 * @since 3.0.0
+	 * @return bool
+	 */
+	public static function is_plugin() {
+
+		$is_plugin = false;
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		// Get all plugins.
+		$plugins = get_plugins();
+		$_plugin = '';
+		foreach ( $plugins as $plugin => $args ) {
+			if ( ! $is_plugin && isset( $args['Name'] ) && ( 'Kirki' === $args['Name'] || 'Kirki Toolkit' === $args['Name'] ) ) {
+				$is_plugin = true;
+				$_plugin   = $plugin;
+			}
+		}
+
+		// No need to proceed any further if Kirki wasn't found in the list of plugins.
+		if ( ! $is_plugin ) {
+			return false;
+		}
+
+		// Extra logic in case the plugin is installed but not activated.
+		if ( is_customize_preview() ) {
+
+			// Make sure the is_plugins_loaded function is loaded.
+			if ( ! function_exists( 'is_plugin_active' ) ) {
+				include_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+
+			if ( $_plugin && ! is_plugin_active( $_plugin ) ) {
+				return false;
+			}
+		}
+		return $is_plugin;
 	}
 }

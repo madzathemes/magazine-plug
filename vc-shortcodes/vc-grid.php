@@ -12,9 +12,10 @@ add_shortcode( 'mt_grid', 'mt_grid_func' );
 						'tag' => '',
             'offset' => '',
 						'author' => '',
+						'posttype' => '',
         ), $atts));
 
-        $content_ = "[grid type='$type' author='$author' tag='$tag' title='$title' position='$position' offset='$offset' orderby='$orderby' category='$category']";
+        $content_ = "[grid posttype="$posttype" type='$type' author='$author' tag='$tag' title='$title' position='$position' offset='$offset' orderby='$orderby' category='$category']";
 
         return  do_shortcode($content_);
 
@@ -41,7 +42,7 @@ function mt_grid_fields() {
               "heading" => esc_html__("Type", "magazin"),
               "param_name" => "type",
 							"std" => "",
-              "value" => array('Style 1' => '1', 'Style 2' => '2', 'Style 3' => '3'),
+              "value" => array('Style 1' => '1', 'Style 2' => '2', 'Style 3' => '3', 'Style 4' => '4', 'Style 5' => '5'),
           ),
           array(
                "type" => "textfield",
@@ -81,6 +82,12 @@ function mt_grid_fields() {
 							"std" => "",
               "value" => array('left' => 'left', 'center' => 'center', 'right' => 'right'),
           ),
+					array(
+	             "type" => "textfield",
+	             "heading" => esc_html__("Posttype", "magazin"),
+	             "param_name" => "posttype",
+	             "value" => "",
+	         ),
 
       )
   ));

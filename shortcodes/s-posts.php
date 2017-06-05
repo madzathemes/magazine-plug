@@ -180,7 +180,7 @@ function posts( $atts, $content = null ) {
 							$shortcode .='<div class="poster-text">';
 								if ($review_star!="off") { $shortcode .= mt_review_star(); }
 								$shortcode .='<a href="'. get_permalink().'"><h4>'. get_the_title() .'</h4></a>';
-								$shortcode .='<small class="mt-pl"><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+								$shortcode .='<small class="mt-pl"><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date() ) .'</span></small>';
 							$shortcode .='</div>';
 							$shortcode .='<div class="clearfix"></div>';
 						$shortcode .='</div>';
@@ -214,7 +214,7 @@ function posts( $atts, $content = null ) {
 							$shortcode .='<div class="poster-text">';
 								if ($review_star!="off") { $shortcode .= mt_review_star(); }
 								$shortcode .='<a href="'. get_permalink().'"><h4>'. get_the_title() .'</h4></a>';
-								$shortcode .='<small class="mt-pl"><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+								$shortcode .='<small class="mt-pl"><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date() ) .'</span></small>';
 							$shortcode .='</div>';
 							$shortcode .='<div class="clearfix"></div>';
 						$shortcode .='</div>';
@@ -290,7 +290,7 @@ function posts( $atts, $content = null ) {
 								$shortcode .= mt_pl_views_shares();
 
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
-								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date() ) .'</span></small>';
 							$shortcode .='</div>';
 						$shortcode .='</div>';
 					endwhile;
@@ -348,7 +348,7 @@ function posts( $atts, $content = null ) {
 							$shortcode .='<div class="poster-content-wrap">';
 							if ($review_star!="off") { $shortcode .= mt_review_star(); }
 							$shortcode .= '<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
-							$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+							$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date() ) .'</span></small>';
 						$shortcode .='</div></div>';
 						$shortcode .='</div>';
 					endwhile;
@@ -429,7 +429,7 @@ function posts( $atts, $content = null ) {
 								$shortcode .='</span></div>';
 								$shortcode .= mt_pl_views_shares();
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
-								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date() ) .'</span></small>';
 								$shortcode .='<p>'.$excerpt_.'</p>';
 								if ( false == get_theme_mod( 't_pl_view_post', false ) ) { $t_view_post = esc_html__("View Post", "magazine-plug");  } else { $t_view_post = get_theme_mod( 't_pl_view_post' ); }
 								$shortcode .='<div class="hidden mt-readmore"><a class="mt-readmore-url" href="'. get_permalink().'">'. esc_html($t_view_post) .'</a></div>';
@@ -513,7 +513,7 @@ function posts( $atts, $content = null ) {
 								$shortcode .='</span></div>';
 								$shortcode .= mt_pl_views_shares();
 								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
-								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date() ) .'</span></small>';
 								$shortcode .='<p>'.$excerpt_.'</p>';
 							$shortcode .='</div>';
 							$shortcode .='<div class="clearfix"></div>';

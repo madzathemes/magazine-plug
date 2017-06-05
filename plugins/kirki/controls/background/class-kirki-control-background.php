@@ -7,7 +7,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
@@ -47,11 +47,16 @@ class Kirki_Control_Background extends WP_Customize_Control {
 	 * @access public
 	 */
 	public function enqueue() {
-		wp_enqueue_script( 'wp-color-picker-alpha', trailingslashit( Kirki::$url ) . 'assets/vendor/wp-color-picker-alpha/wp-color-picker-alpha.js', array( 'wp-color-picker' ), '1.2', true );
-		wp_enqueue_style( 'wp-color-picker' );
 
-		wp_enqueue_script( 'kirki-background', trailingslashit( Kirki::$url ) . 'controls/background/background.js', array( 'jquery', 'wp-color-picker-alpha' ) );
-		wp_enqueue_style( 'kirki-background', trailingslashit( Kirki::$url ) . 'controls/background/background.css', null );
+		Kirki_Custom_Build::register_dependency( 'jquery' );
+		Kirki_Custom_Build::register_dependency( 'wp-color-picker' );
+		wp_enqueue_style( 'wp-color-picker-alpha' );
+		wp_enqueue_script( 'wp-color-picker-alpha', trailingslashit( Kirki::$url ) . 'assets/vendor/wp-color-picker-alpha/wp-color-picker-alpha.js', array( 'wp-color-picker' ), '1.2', true );
+
+		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+			wp_enqueue_script( 'kirki-background', trailingslashit( Kirki::$url ) . 'controls/background/background.js', array( 'jquery', 'wp-color-picker-alpha' ) );
+			wp_enqueue_style( 'kirki-background', trailingslashit( Kirki::$url ) . 'controls/background/background.css', null );
+		}
 	}
 
 	/**
@@ -71,10 +76,6 @@ class Kirki_Control_Background extends WP_Customize_Control {
 		$this->json['choices'] = $this->choices;
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
-
-		if ( 'user_meta' === $this->option_type ) {
-			$this->json['value'] = get_user_meta( get_current_user_id(), $this->id, true );
-		}
 
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
@@ -123,7 +124,7 @@ class Kirki_Control_Background extends WP_Customize_Control {
 			<!-- background-color -->
 			<div class="background-color">
 				<h4>{{ data.l10n['background-color'] }}</h4>
-				<input type="text" data-default-color="{{ data.default['background-color'] }}" data-alpha="true" value="{{ data.value['background-color'] }}" class="kirki-color-control color-picker" {{{ data.link }}} />
+				<input type="text" data-default-color="{{ data.default['background-color'] }}" data-alpha="true" value="{{ data.value['background-color'] }}" class="kirki-color-control color-picker"/>
 			</div>
 
 			<!-- background-image -->
@@ -161,7 +162,7 @@ class Kirki_Control_Background extends WP_Customize_Control {
 						'repeat-y'
 					];
 				#>
-				<select {{{ data.inputAttrs }}} {{{ data.link }}}>
+				<select {{{ data.inputAttrs }}}>
 					<# _.each( repeats, function( repeat ) { #>
 						<option value="{{ repeat }}"<# if ( repeat === data.value['background-repeat'] ) { #> selected <# } #>>{{ data.l10n[ repeat ] }}</option>
 					<# }); #>
@@ -184,7 +185,7 @@ class Kirki_Control_Background extends WP_Customize_Control {
 						'center bottom'
 					];
 				#>
-				<select {{{ data.inputAttrs }}} {{{ data.link }}}>
+				<select {{{ data.inputAttrs }}}>
 					<# _.each( positions, function( position ) { #>
 						<option value="{{ position }}"<# if ( position === data.value['background-position'] ) { #> selected <# } #>>{{ data.l10n[ position ] }}</option>
 					<# }); #>
@@ -203,7 +204,7 @@ class Kirki_Control_Background extends WP_Customize_Control {
 				#>
 				<div class="buttonset">
 					<# _.each( sizes, function( size ) { #>
-						<input {{{ data.inputAttrs }}} class="switch-input screen-reader-text" type="radio" value="{{ size }}" name="_customize-bg-{{{ data.id }}}-size" id="{{ data.id }}{{ size }}" {{{ data.link }}}<# if ( size === data.value['background-size'] ) { #> checked="checked" <# } #>>
+						<input {{{ data.inputAttrs }}} class="switch-input screen-reader-text" type="radio" value="{{ size }}" name="_customize-bg-{{{ data.id }}}-size" id="{{ data.id }}{{ size }}" <# if ( size === data.value['background-size'] ) { #> checked="checked" <# } #>>
 							<label class="switch-label switch-label-<# if ( size === data.value['background-size'] ) { #>on <# } else { #>off<# } #>" for="{{ data.id }}{{ size }}">
 								{{ data.l10n[ size ] }}
 							</label>
@@ -219,12 +220,11 @@ class Kirki_Control_Background extends WP_Customize_Control {
 				var attachments = [
 						'scroll',
 						'fixed',
-						'local'
 					];
 				#>
 				<div class="buttonset">
 					<# _.each( attachments, function( attachment ) { #>
-						<input {{{ data.inputAttrs }}} class="switch-input screen-reader-text" type="radio" value="{{ attachment }}" name="_customize-bg-{{{ data.id }}}-attachment" id="{{ data.id }}{{ attachment }}" {{{ data.link }}}<# if ( attachment === data.value['background-attachment'] ) { #> checked="checked" <# } #>>
+						<input {{{ data.inputAttrs }}} class="switch-input screen-reader-text" type="radio" value="{{ attachment }}" name="_customize-bg-{{{ data.id }}}-attachment" id="{{ data.id }}{{ attachment }}" <# if ( attachment === data.value['background-attachment'] ) { #> checked="checked" <# } #>>
 							<label class="switch-label switch-label-<# if ( attachment === data.value['background-attachment'] ) { #>on <# } else { #>off<# } #>" for="{{ data.id }}{{ attachment }}">
 								{{ data.l10n[ attachment ] }}
 							</label>
@@ -232,6 +232,8 @@ class Kirki_Control_Background extends WP_Customize_Control {
 					<# }); #>
 				</div>
 			</div>
+			<# valueJSON = JSON.stringify( data.value ).replace( /'/g, '&#39' ); #>
+			<input class="background-hidden-value" type="hidden" value='{{{ valueJSON }}}' {{{ data.link }}}>
 		<?php
 	}
 
@@ -264,7 +266,6 @@ class Kirki_Control_Background extends WP_Customize_Control {
 
 			'fixed'                 => esc_attr__( 'Fixed', 'kirki' ),
 			'scroll'                => esc_attr__( 'Scroll', 'kirki' ),
-			'local'                 => esc_attr__( 'Local', 'kirki' ),
 
 			'left top'              => esc_attr__( 'Left Top', 'kirki' ),
 			'left center'           => esc_attr__( 'Left Center', 'kirki' ),
@@ -280,6 +281,6 @@ class Kirki_Control_Background extends WP_Customize_Control {
 			'remove'                => esc_attr__( 'Remove', 'kirki' ),
 			'select-file'           => esc_attr__( 'Select File', 'kirki' ),
 		);
-		return apply_filters( 'kirki/' . $config_id . '/l10n', $translation_strings );
+		return apply_filters( "kirki/{$config_id}/l10n", $translation_strings );
 	}
 }

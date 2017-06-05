@@ -168,7 +168,7 @@ function posts_trending( $atts, $content = null ) {
 										if ($review_star!="off") { $shortcode .= mt_review_star(); }
 										$shortcode .= mt_pl_views_shares();
 										$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
-								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date() ) .'</span></small>';
 							$shortcode .='</div>';
 						$shortcode .='</div>';
 						$i++;
@@ -245,7 +245,7 @@ function posts_trending( $atts, $content = null ) {
 											$shortcode .='</div>';
 
 									$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
-									$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date('M d, Y') ) .'</span></small>';
+									$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date() ) .'</span></small>';
 								$shortcode .='</div>';
 							$shortcode .='</div>';
 							$i++;

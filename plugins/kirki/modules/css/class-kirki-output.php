@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.2.0
  */
@@ -98,9 +98,54 @@ class Kirki_Output {
 
 		if ( isset( $output['value_pattern'] ) && ! empty( $output['value_pattern'] ) ) {
 			if ( is_string( $output['value_pattern'] ) ) {
-				return str_replace( '$', $value, $output['value_pattern'] );
-			}
-		}
+				$value = str_replace( '$', $value, $output['value_pattern'] );
+				if ( isset( $output['pattern_replace'] ) && is_array( $output['pattern_replace'] ) ) {
+					$option_type = 'theme_mod';
+					$option_name = false;
+					if ( isset( Kirki::$config[ $this->config_id ] ) ) {
+						$config = Kirki::$config[ $this->config_id ];
+						$option_type = ( isset( $config['option_type'] ) ) ? $config['option_type'] : 'theme_mod';
+						if ( 'option' === $option_type || 'site_option' === $option_type ) {
+							$option_name = ( isset( $config['option_name'] ) ) ? $config['option_name'] : false;
+						}
+					}
+					if ( $option_name ) {
+						$options = ( 'site_option' === $option_type ) ? get_site_option( $option_name ) : get_option( $option_name );
+					}
+					foreach ( $output['pattern_replace'] as $search => $replace ) {
+						$replacement = '';
+						switch ( $option_type ) {
+							case 'option':
+								if ( is_array( $options ) ) {
+									if ( $option_name ) {
+										$subkey = str_replace( array( $option_name, '[', ']' ), '', $replace );
+										$replacement = ( isset( $options[ $subkey ] ) ) ? $options[ $subkey ] : '';
+										break;
+									}
+									$replacement = ( isset( $options[ $replace ] ) ) ? $options[ $replace ] : '';
+									break;
+								}
+								$replacement = get_option( $replace );
+								break;
+							case 'site_option':
+								$replacement = ( is_array( $options ) && isset( $options[ $replace ] ) ) ? $options[ $replace ] : get_site_option( $replace );
+								break;
+							case 'user_meta':
+								$user_id = get_current_user_id();
+								if ( $user_id ) {
+									// @codingStandardsIgnoreLine
+									$replacement = get_user_meta( $user_id, $replace, true );
+								}
+								break;
+							default:
+								$replacement = get_theme_mod( $replace );
+						}
+						$replacement = ( false === $replacement ) ? '' : $replacement;
+						$value = str_replace( $search, $replacement, $value );
+					}
+				} // End if().
+			} // End if().
+		} // End if().
 
 		return $value;
 
@@ -181,6 +226,19 @@ class Kirki_Output {
 		$output['units']       = ( isset( $output['units'] ) )       ? $output['units']       : '';
 		$output['suffix']      = ( isset( $output['suffix'] ) )      ? $output['suffix']      : '';
 
+		// Properties that can accept multiple values.
+		// Useful for example for gradients where all browsers use the "background-image" property
+		// and the browser prefixes go in the value_pattern arg.
+		$accepts_multiple = array(
+			'background-image',
+		);
+		if ( in_array( $output['property'], $accepts_multiple ) ) {
+			if ( isset( $this->styles[ $output['media_query'] ][ $output['element'] ][ $output['property'] ] ) && ! is_array( $this->styles[ $output['media_query'] ][ $output['element'] ][ $output['property'] ] ) ) {
+				$this->styles[ $output['media_query'] ][ $output['element'] ][ $output['property'] ] = (array) $this->styles[ $output['media_query'] ][ $output['element'] ][ $output['property'] ];
+			}
+			$this->styles[ $output['media_query'] ][ $output['element'] ][ $output['property'] ][] = $output['prefix'] . $value . $output['units'] . $output['suffix'];
+			return;
+		}
 		$this->styles[ $output['media_query'] ][ $output['element'] ][ $output['property'] ] = $output['prefix'] . $value . $output['units'] . $output['suffix'];
 	}
 
@@ -195,7 +253,7 @@ class Kirki_Output {
 	 * @return array
 	 */
 	protected function process_property_value( $property, $value ) {
-		$properties = apply_filters( 'kirki/' . $this->config_id . '/output/property-classnames', array(
+		$properties = apply_filters( "kirki/{$this->config_id}/output/property-classnames", array(
 			'font-family'         => 'Kirki_Output_Property_Font_Family',
 			'background-image'    => 'Kirki_Output_Property_Background_Image',
 			'background-position' => 'Kirki_Output_Property_Background_Position',

@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.2
  */
@@ -49,8 +49,15 @@ class Kirki_Control_Date extends WP_Customize_Control {
 	 * @access public
 	 */
 	public function enqueue() {
-		wp_enqueue_script( 'kirki-date', trailingslashit( Kirki::$url ) . 'controls/date/date.js', array( 'jquery', 'customize-base', 'jquery-ui-datepicker' ), false, true );
-		wp_enqueue_style( 'kirki-date-css', trailingslashit( Kirki::$url ) . 'controls/date/date.css', null );
+
+		Kirki_Custom_Build::register_dependency( 'jquery' );
+		Kirki_Custom_Build::register_dependency( 'customize-base' );
+		Kirki_Custom_Build::register_dependency( 'jquery-ui-datepicker' );
+
+		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+			wp_enqueue_script( 'kirki-date', trailingslashit( Kirki::$url ) . 'controls/date/date.js', array( 'jquery', 'customize-base', 'jquery-ui-datepicker' ), false, true );
+			wp_enqueue_style( 'kirki-date-css', trailingslashit( Kirki::$url ) . 'controls/date/date.css', null );
+		}
 	}
 
 	/**
@@ -70,10 +77,6 @@ class Kirki_Control_Date extends WP_Customize_Control {
 		$this->json['choices'] = $this->choices;
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
-
-		if ( 'user_meta' === $this->option_type ) {
-			$this->json['value'] = get_user_meta( get_current_user_id(), $this->id, true );
-		}
 
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {

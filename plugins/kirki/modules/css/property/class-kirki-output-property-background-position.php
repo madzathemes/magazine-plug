@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.2.0
  */
@@ -31,7 +31,7 @@ class Kirki_Output_Property_Background_Position extends Kirki_Output_Property {
 
 		// If the value is initial or inherit, we don't need to do anything.
 		// Just exit.
-		if ( 'initial' == $this->value || 'inherit' == $this->value ) {
+		if ( 'initial' === $this->value || 'inherit' === $this->value ) {
 			return;
 		}
 
@@ -46,10 +46,10 @@ class Kirki_Output_Property_Background_Position extends Kirki_Output_Property {
 			$y = trim( $xy[1] );
 
 			// If x is not left/center/right, we need to sanitize it.
-			if ( ! in_array( $x, $x_dimensions ) ) {
+			if ( ! in_array( $x, $x_dimensions, true ) ) {
 				$x = Kirki_Sanitize_Values::css_dimension( $x );
 			}
-			if ( ! in_array( $y, $y_dimensions ) ) {
+			if ( ! in_array( $y, $y_dimensions, true ) ) {
 				$y = Kirki_Sanitize_Values::css_dimension( $y );
 			}
 			$this->value = $x . ' ' . $y;

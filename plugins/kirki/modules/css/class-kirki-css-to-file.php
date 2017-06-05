@@ -15,15 +15,6 @@
 class Kirki_CSS_To_File {
 
 	/**
-	 * The config ID.
-	 *
-	 * @access private
-	 * @since 3.0.0
-	 * @var string
-	 */
-	private $config_id = 'global';
-
-	/**
 	 * Fallback to inline CSS?
 	 *
 	 * @access protected
@@ -103,10 +94,7 @@ class Kirki_CSS_To_File {
 		$configs = Kirki::$config;
 		foreach ( $configs as $config_id => $args ) {
 			// Get the CSS we want to write.
-			$css[ $config_id ] = apply_filters(
-				"kirki/{$config_id}/dynamic_css",
-				Kirki_Modules_CSS::loop_controls( $config_id )
-			);
+			$css[ $config_id ] = apply_filters( "kirki/{$config_id}/dynamic_css", Kirki_Modules_CSS::loop_controls( $config_id ) );
 		}
 		$css = implode( $css, '' );
 

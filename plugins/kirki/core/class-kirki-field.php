@@ -5,7 +5,7 @@
  * @package     Kirki
  * @category    Core
  * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
@@ -353,7 +353,7 @@ class Kirki_Field {
 
 		// An array of whitelisted properties that don't need to be sanitized here.
 		// Format: $key => $default_value.
-		$whitelisted = apply_filters( 'kirki/' . $this->kirki_config . '/fields/properties_whitelist', array(
+		$whitelisted = apply_filters( "kirki/{$this->kirki_config}/fields/properties_whitelist", array(
 			'label'       => '', // This is sanitized later in the controls themselves.
 			'description' => '', // This is sanitized later in the controls themselves.
 			'mode'        => '', // Only used for backwards-compatibility reasons.
@@ -476,7 +476,6 @@ class Kirki_Field {
 		if ( ! is_array( $this->input_attrs ) ) {
 			$this->input_attrs = array();
 		}
-
 	}
 
 	/**
@@ -486,12 +485,14 @@ class Kirki_Field {
 	 * @access protected
 	 */
 	protected function set_capability() {
+
 		// Early exit if we're using 'edit_theme_options'.
 		if ( 'edit_theme_options' === $this->capability ) {
 			return;
 		}
 		// Escape & trim the capability.
 		$this->capability = trim( esc_attr( $this->capability ) );
+
 	}
 
 	/**
@@ -517,6 +518,7 @@ class Kirki_Field {
 	 * @access protected
 	 */
 	protected function set_partial_refresh() {
+
 		if ( ! is_array( $this->partial_refresh ) ) {
 			$this->partial_refresh = array();
 		}
@@ -574,7 +576,6 @@ class Kirki_Field {
 			$this->tooltip = wp_strip_all_tags( $this->tooltip );
 			return;
 		}
-
 	}
 
 	/**
@@ -604,7 +605,6 @@ class Kirki_Field {
 		if ( ! is_callable( $this->active_callback ) ) {
 			$this->active_callback = '__return_true';
 		}
-
 	}
 
 	/**
@@ -667,7 +667,6 @@ class Kirki_Field {
 		if ( ! is_array( $this->choices ) ) {
 			$this->choices = array();
 		}
-
 	}
 
 	/**
@@ -758,7 +757,7 @@ class Kirki_Field {
 
 			// Start going through each item in the $output array.
 			foreach ( $this->output as $output ) {
-				$output['function'] = 'css';
+				$output['function'] = ( isset( $output['function'] ) ) ? $output['function'] : 'style';
 
 				// If 'element' or 'property' are not defined, skip this.
 				if ( ! isset( $output['element'] ) || ! isset( $output['property'] ) ) {
@@ -767,12 +766,9 @@ class Kirki_Field {
 				if ( is_array( $output['element'] ) ) {
 					$output['element'] = implode( ',', $output['element'] );
 				}
-				if ( false !== strpos( $output['element'], ':' ) ) {
-					$output['function'] = 'style';
-				}
 
-				// If there's a sanitize_callback defined, skip this.
-				if ( isset( $output['sanitize_callback'] ) && ! empty( $output['sanitize_callback'] ) ) {
+				// If there's a sanitize_callback defined skip this, unless we also have a js_callback defined.
+				if ( isset( $output['sanitize_callback'] ) && ! empty( $output['sanitize_callback'] ) && ! isset( $output['js_callback'] ) ) {
 					continue;
 				}
 
@@ -789,7 +785,6 @@ class Kirki_Field {
 			$this->transport = 'postMessage';
 
 		}
-
 	}
 
 	/**
@@ -798,6 +793,7 @@ class Kirki_Field {
 	 * @access protected
 	 */
 	protected function set_variables() {
+
 		if ( ! is_array( $this->variables ) ) {
 			$variable = ( is_string( $this->variables ) && ! empty( $this->variables ) ) ? $this->variables : false;
 			$this->variables = array();
@@ -824,7 +820,6 @@ class Kirki_Field {
 			$this->help = '';
 			return;
 		}
-
 	}
 
 	/**
@@ -837,7 +832,6 @@ class Kirki_Field {
 		if ( 'postmessage' === trim( strtolower( $this->transport ) ) ) {
 			$this->transport = 'postMessage';
 		}
-
 	}
 
 	/**
@@ -850,7 +844,6 @@ class Kirki_Field {
 		if ( ! is_array( $this->required ) ) {
 			$this->required = array();
 		}
-
 	}
 
 	/**

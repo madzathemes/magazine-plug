@@ -4,7 +4,7 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
  * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.0
  */
@@ -212,10 +212,6 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
 
-		if ( 'user_meta' === $this->option_type ) {
-			$this->json['value'] = get_user_meta( get_current_user_id(), $this->id, true );
-		}
-
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
 			$this->json['inputAttrs'] .= $attr . '="' . esc_attr( $value ) . '" ';
@@ -252,8 +248,9 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 							break;
 						case 'select':
 						case 'dropdown-pages':
-							wp_enqueue_script( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/js/select2.full.js', array( 'jquery' ), false, true );
-							wp_enqueue_style( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/css/select2.min.css', null );
+							wp_enqueue_script( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/js/select2.full.js', array( 'jquery' ), '4.0.3', true );
+							wp_enqueue_style( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/css/select2.css', array(), '4.0.3' );
+							wp_enqueue_style( 'kirki-select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/kirki.css', null );
 							break;
 					}
 				}
@@ -317,10 +314,22 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 
 						<div class="repeater-field repeater-field-{{{ field.type }}}">
 
-							<# if ( 'text' === field.type || 'url' === field.type || 'link' === field.type || 'email' === field.type || 'tel' === field.type || 'date' === field.type ) { #>
-
+							<# if ( 'text' === field.type || 'url' === field.type || 'link' === field.type || 'email' === field.type || 'tel' === field.type || 'date' === field.type || 'number' === field.type ) { #>
+								<# var fieldExtras = ''; #>
 								<# if ( 'link' === field.type ) { #>
 									<# field.type = 'url' #>
+								<# } #>
+
+								<# if ( 'number' === field.type ) { #>
+									<# if ( ! _.isUndefined( field.choices ) && ! _.isUndefined( field.choices.min ) ) { #>
+										<# fieldExtras += ' min="' + field.choices.min + '"'; #>
+									<# } #>
+									<# if ( ! _.isUndefined( field.choices ) && ! _.isUndefined( field.choices.max ) ) { #>
+										<# fieldExtras += ' max="' + field.choices.max + '"'; #>
+									<# } #>
+									<# if ( ! _.isUndefined( field.choices ) && ! _.isUndefined( field.choices.step ) ) { #>
+										<# fieldExtras += ' step="' + field.choices.step + '"'; #>
+									<# } #>
 								<# } #>
 
 								<label>
@@ -330,7 +339,19 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 									<# if ( field.description ) { #>
 										<span class="description customize-control-description">{{ field.description }}</span>
 									<# } #>
-									<input type="{{field.type}}" name="" value="{{{ field.default }}}" data-field="{{{ field.id }}}">
+									<input type="{{field.type}}" name="" value="{{{ field.default }}}" data-field="{{{ field.id }}}"{{ fieldExtras }}>
+								</label>
+
+							<# } else if ( 'number' === field.type ) { #>
+
+								<label>
+									<# if ( field.label ) { #>
+										<span class="customize-control-title">{{ field.label }}</span>
+									<# } #>
+									<# if ( field.description ) { #>
+										<span class="description customize-control-description">{{ field.description }}</span>
+									<# } #>
+									<input type="{{ field.type }}" name="" value="{{{ field.default }}}" data-field="{{{ field.id }}}"{{ numberFieldExtras }}>
 								</label>
 
 							<# } else if ( 'hidden' === field.type ) { #>
@@ -355,7 +376,7 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 									<# if ( field.description ) { #>
 										<span class="description customize-control-description">{{ field.description }}</span>
 									<# } #>
-									<select data-field="{{{ field.id }}}"<# if ( 'undefined' !== typeof field.multiple && false !== field.multiple ) { #> multiple="multiple" data-multiple="{{ field.multiple }}"<# } #>>
+									<select data-field="{{{ field.id }}}"<# if ( ! _.isUndefined( field.multiple ) && false !== field.multiple ) { #> multiple="multiple" data-multiple="{{ field.multiple }}"<# } #>>
 										<# _.each( field.choices, function( choice, i ) { #>
 											<option value="{{{ i }}}" <# if ( field.default == i ) { #> selected="selected" <# } #>>{{ choice }}</option>
 										<# }); #>
@@ -572,10 +593,10 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 	 *
 	 * @access protected
 	 * @since 3.0.0
-	 * @param string|false $id The string-ID.
+	 * @param string|false $config_id The string-ID.
 	 * @return string
 	 */
-	protected function l10n( $id = false ) {
+	protected function l10n( $config_id = false ) {
 		$translation_strings = array(
 			'row'               => esc_attr__( 'row', 'kirki' ),
 			'add-new'           => esc_attr__( 'Add new', 'kirki' ),
@@ -591,10 +612,10 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 			'add-file'          => esc_attr__( 'Add File', 'kirki' ),
 			'change-file'       => esc_attr__( 'Change File', 'kirki' ),
 		);
-		$translation_strings = apply_filters( 'kirki/' . $this->kirki_config . '/l10n', $translation_strings );
-		if ( false === $id ) {
+		$translation_strings = apply_filters( "kirki/{$this->kirki_config}/l10n", $translation_strings );
+		if ( false === $config_id ) {
 			return $translation_strings;
 		}
-		return $translation_strings[ $id ];
+		return $translation_strings[ $config_id ];
 	}
 }
