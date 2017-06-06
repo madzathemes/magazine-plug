@@ -384,19 +384,19 @@ function magazin_get_shares( $post_id ) {
 
 
 			      $count = intval( $body->share->share_count );
-			    
+
 
 					update_post_meta($post_id, 'magazin_share_count_real', $count);
 
 
 					set_transient( $cache_key, $count, $share_times ); // store value in cache for a 10 hour
-				}
+
 
 			//}
 
 
 	return $count;
-}
+}fix
 
 
 
