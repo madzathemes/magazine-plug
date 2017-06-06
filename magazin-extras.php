@@ -379,7 +379,7 @@ function magazin_get_shares( $post_id ) {
 
 
 
-						$body = json_decode( $response['body'], true );
+						$body = json_decode( $response['body'] );
 
 
 
