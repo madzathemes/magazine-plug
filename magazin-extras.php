@@ -121,7 +121,7 @@ function magazin_header_hooks() {
 		$mt_social = get_option( 'socialcountplus_settings');
 		$facebook_token = $mt_social['facebook_app_id'];
 		?>
-		<meta property="fb:app_id"        content="<?php echo esc_attr($facebook_token);?>" />
+		<meta property="fb:app_id"        content="<?php echo esc_html($facebook_token);?>" />
 	  <meta property="og:url"           content="<?php the_permalink();?>" />
 		<meta property="og:type"          content="<?php wp_title();?>" />
 		<meta property="og:title"         content="<?php the_title();?>" />
