@@ -349,9 +349,8 @@ function get_access_token_mt() {
 }
 
 function magazin_get_shares( $post_id ) {
-$mt_social = get_option( 'socialcountplus_settings');
+		$mt_social = get_option( 'socialcountplus_settings');
 		$cache_key = 'magazin_share_cachezzz' . $post_id;
-
 		$facebook_token = get_option("facebook_token");
 		$facebook_token = get_access_token_mt();
 		$facebook_token = $mt_social['facebook_app_id'].'|'.$mt_social['facebook_app_secret'];
@@ -368,7 +367,7 @@ $mt_social = get_option( 'socialcountplus_settings');
 
 
 			// if no value in the cache
-			if ( $count === false  ) {
+			//if ( $count === false  ) {
 				$count = "0";
 				$response = wp_remote_get('https://graph.facebook.com/v2.7/?id=' . urlencode( get_permalink( $post_id ) ) . '&access_token=' . $facebook_token);
 
@@ -388,7 +387,7 @@ $mt_social = get_option( 'socialcountplus_settings');
 					set_transient( $cache_key, $count, $share_times ); // store value in cache for a 10 hour
 				}
 
-			}
+			//}
 
 
 	return $count;
