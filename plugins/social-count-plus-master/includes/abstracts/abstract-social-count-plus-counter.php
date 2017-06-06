@@ -104,7 +104,7 @@ abstract class Social_Count_Plus_Counter {
 		}
 		$html = "";
 			$html .= sprintf( '<a class="social-%s mt-radius" href="%s"%s%s>',$this->id , esc_url( $url ), $target_blank, $rel_nofollow );
-				$html .= sprintf( '<span class="social-count">%s</span>', apply_filters( 'social_count_plus_number_format', $count ) );
+				$html .= sprintf( '<span class="social-count">%s</span>', number_format(apply_filters( 'social_count_plus_number_format', $count ) ));
 				$html .= sprintf( '<span class="social-text %s">%s <strong>%s</strong></span>', apply_filters( 'social_count_plus_label', $label ), $t_s_follow, $name );
 		$html .= '</a>';
 
