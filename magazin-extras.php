@@ -396,7 +396,7 @@ function magazin_get_shares( $post_id ) {
 
 
 	return $count;
-}fix
+}
 
 
 
