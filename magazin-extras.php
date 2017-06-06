@@ -378,14 +378,13 @@ function magazin_get_shares( $post_id ) {
 				$response = wp_remote_get('https://graph.facebook.com/v2.7/?id=' . urlencode( get_permalink( $post_id ) ) . '&access_token=' . $facebook_token);
 
 
-				if(!is_wp_error($response)) {
-					if (!empty($response)) {
-						$body = json_decode( $response['body'], true );
-					}
 
-					if (!empty($body->share)) {
+						$body = json_decode( $response['body'], true );
+
+
+
 			      $count = intval( $body->share->share_count );
-			    }
+			    
 
 					update_post_meta($post_id, 'magazin_share_count_real', $count);
 
