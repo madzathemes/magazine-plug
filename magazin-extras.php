@@ -333,24 +333,6 @@ function admin_js() {
 add_action('admin_footer', 'admin_js');
 
 
-function get_access_token_mt() {
-	$mt_social = get_option( 'socialcountplus_settings');
-
-
-	$url = sprintf(
-		'https://graph.facebook.com/oauth/access_token?client_id=%s&client_secret=%s&grant_type=client_credentials',
-		sanitize_text_field( $mt_social['facebook_app_id'] ),
-		sanitize_text_field( $mt_social['facebook_app_secret'] )
-	);
-	$access_token = wp_remote_get( $url, array( 'timeout' => 60 ) );
-
-	if ( is_wp_error( $access_token ) || ( isset( $access_token['response']['code'] ) && 200 != $access_token['response']['code'] ) ) {
-		return '';
-	} else {
-		$access_token = json_decode( $access_token['body'], true );
-		return sanitize_text_field( $access_token['access_token'] );
-	}
-}
 
 function magazin_get_shares( $post_id ) {
 		$mt_social = get_option( 'socialcountplus_settings');
@@ -358,18 +340,11 @@ function magazin_get_shares( $post_id ) {
 
 
 		$facebook_token = $mt_social['facebook_app_id'].'|'.$mt_social['facebook_app_secret'];
-		$facebook_token = get_access_token_mt();
-		$facebook_token = get_option("facebook_token");
 		$count = get_transient( $cache_key ); // try to get value from Wordpress cache
 
 		$share_time = get_option("share_time");
 
 		if(!empty( $share_time )){ $share_times = $share_time; } else { $share_times = 36000;  }
-
-
-
-
-
 
 
 			// if no value in the cache
@@ -378,19 +353,20 @@ function magazin_get_shares( $post_id ) {
 				$response = wp_remote_get('https://graph.facebook.com/v2.7/?id=' . urlencode( get_permalink( $post_id ) ) . '&access_token=' . $facebook_token);
 
 
-
+				if(!is_wp_error($response)) {
+					if (!empty($response)) {
 						$body = json_decode( $response['body'] );
+					}
 
-
-
+					if (!empty($body->share)) {
 			      $count = intval( $body->share->share_count );
-
+			    }
 
 					update_post_meta($post_id, 'magazin_share_count_real', $count);
 
 
 					set_transient( $cache_key, $count, $share_times ); // store value in cache for a 10 hour
-
+				}
 
 			//}
 
