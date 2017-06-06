@@ -118,6 +118,7 @@ function magazin_header_hooks() {
 	    $excerpt_ = wp_trim_words( $post->post_content, $excerpt_count );
 	} ?>
 	<?php if ( true == get_theme_mod( 'mt_facebook_meta', true ) ) {
+		$mt_social = get_option( 'socialcountplus_settings');
 		$facebook_token = $mt_social['facebook_app_id'];
 		?>
 		<meta property="fb:app_id"        content="<?php echo esc_attr($facebook_token);?>" />
