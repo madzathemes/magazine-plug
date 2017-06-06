@@ -351,10 +351,11 @@ function get_access_token_mt() {
 function magazin_get_shares( $post_id ) {
 		$mt_social = get_option( 'socialcountplus_settings');
 		$cache_key = 'magazin_share_cachezzz' . $post_id;
-		$facebook_token = get_option("facebook_token");
+
 
 		$facebook_token = $mt_social['facebook_app_id'].'|'.$mt_social['facebook_app_secret'];
 		$facebook_token = get_access_token_mt();
+		$facebook_token = get_option("facebook_token");
 		$count = get_transient( $cache_key ); // try to get value from Wordpress cache
 
 		$share_time = get_option("share_time");
