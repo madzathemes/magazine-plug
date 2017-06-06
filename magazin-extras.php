@@ -336,22 +336,17 @@ add_action('admin_footer', 'admin_js');
 
 function magazin_get_shares( $post_id ) {
 		$mt_social = get_option( 'socialcountplus_settings');
-		$cache_key = 'magazin_share_cachezzz' . $post_id;
-
-
+		$cache_key = 'magazin_share_cache' . $post_id;
 		$facebook_token = $mt_social['facebook_app_id'].'|'.$mt_social['facebook_app_secret'];
 		$count = get_transient( $cache_key ); // try to get value from Wordpress cache
-
 		$share_time = get_option("share_time");
 
 		if(!empty( $share_time )){ $share_times = $share_time; } else { $share_times = 36000;  }
 
+		if ( $count === false ) {
 
-			// if no value in the cache
-			//if ( $count === false  ) {
 				$count = "0";
 				$response = wp_remote_get('https://graph.facebook.com/v2.7/?id=' . urlencode( get_permalink( $post_id ) ) . '&access_token=' . $facebook_token);
-
 
 				if(!is_wp_error($response)) {
 					if (!empty($response)) {
@@ -364,14 +359,13 @@ function magazin_get_shares( $post_id ) {
 
 					update_post_meta($post_id, 'magazin_share_count_real', $count);
 
-
 					set_transient( $cache_key, $count, $share_times ); // store value in cache for a 10 hour
 				}
 
-			//}
-
+			}
 
 	return $count;
+
 }
 
 
