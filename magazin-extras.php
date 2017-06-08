@@ -119,7 +119,8 @@ function magazin_header_hooks() {
 	} ?>
 	<?php if ( true == get_theme_mod( 'mt_facebook_meta', true ) ) {
 		$mt_social = get_option( 'socialcountplus_settings');
-		$facebook_token = $mt_social['facebook_app_id'];
+		$facebook_token = "";
+		if(isset($mt_social['facebook_app_id'])) { $facebook_token = $mt_social['facebook_app_id']; }
 		?>
 		<meta property="fb:app_id"        content="<?php echo esc_html($facebook_token);?>" />
 	  <meta property="og:url"           content="<?php the_permalink();?>" />
