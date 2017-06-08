@@ -11,20 +11,20 @@ function ad( $atts, $content = null ) {
 			$shortcode = '';
 			$shortcode .= '<div itemscope itemtype="https://schema.org/WPAdBlock" class="advertise text-'.$position.'">';
 
-				if($type=="custom-ad-1") { if(!empty($options['custom_ad_1'])){ $shortcode .= html_entity_decode($options['custom_ad_1']); }}
-				if($type=="custom-ad-2") { if(!empty($options['custom_ad_2'])){ $shortcode .= html_entity_decode($options['custom_ad_2']); }}
-				if($type=="custom-ad-3") { if(!empty($options['custom_ad_3'])){ $shortcode .= html_entity_decode($options['custom_ad_3']); }}
-				if($type=="custom-ad-4") { if(!empty($options['custom_ad_4'])){ $shortcode .= html_entity_decode($options['custom_ad_4']); }}
-				if($type=="custom-ad-5") { if(!empty($options['custom_ad_5'])){ $shortcode .= html_entity_decode($options['custom_ad_5']); }}
-				if($type=="custom-ad-6") { if(!empty($options['custom_ad_6'])){ $shortcode .= html_entity_decode($options['custom_ad_6']); }}
-				if($type=="custom-ad-7") { if(!empty($options['custom_ad_7'])){ $shortcode .= html_entity_decode($options['custom_ad_7']); }}
-				if($type=="custom-ad-8") { if(!empty($options['custom_ad_8'])){ $shortcode .= html_entity_decode($options['custom_ad_8']); }}
-				if($type=="custom-ad-9") { if(!empty($options['custom_ad_9'])){ $shortcode .= html_entity_decode($options['custom_ad_9']); }}
-				if($type=="sidebar-ad-top") { if(!empty($options['sidebar_ad_top'])){ $shortcode .= html_entity_decode($options['sidebar_ad_top']); }}
-				if($type=="sidebar-ad-middle") { if(!empty($options['sidebar_ad_middle'])){ $shortcode .= html_entity_decode($options['sidebar_ad_middle']); }}
-				if($type=="sidebar-ad-bottom") { if(!empty($options['sidebar_ad_bottom'])){ $shortcode .= html_entity_decode($options['sidebar_ad_bottom']); }}
-				if($type=="article-ad-bottom") { if(!empty($options['article_ad_bottom'])){ $shortcode .= html_entity_decode($options['article_ad_bottom']); }}
-				if($type=="footer-ad-top") { if(!empty($options['footer_ad_top'])){ $shortcode .= html_entity_decode($options['footer_ad_top']); }}
+				if($type=="custom-ad-1") { if(!empty($options['custom_ad_1'])){ $shortcode .= do_shortcode(html_entity_decode($options['custom_ad_1'])); }}
+				if($type=="custom-ad-2") { if(!empty($options['custom_ad_2'])){ $shortcode .= do_shortcode(html_entity_decode($options['custom_ad_2'])); }}
+				if($type=="custom-ad-3") { if(!empty($options['custom_ad_3'])){ $shortcode .= do_shortcode(html_entity_decode($options['custom_ad_3'])); }}
+				if($type=="custom-ad-4") { if(!empty($options['custom_ad_4'])){ $shortcode .= do_shortcode(html_entity_decode($options['custom_ad_4'])); }}
+				if($type=="custom-ad-5") { if(!empty($options['custom_ad_5'])){ $shortcode .= do_shortcode(html_entity_decode($options['custom_ad_5'])); }}
+				if($type=="custom-ad-6") { if(!empty($options['custom_ad_6'])){ $shortcode .= do_shortcode(html_entity_decode($options['custom_ad_6'])); }}
+				if($type=="custom-ad-7") { if(!empty($options['custom_ad_7'])){ $shortcode .= do_shortcode(html_entity_decode($options['custom_ad_7'])); }}
+				if($type=="custom-ad-8") { if(!empty($options['custom_ad_8'])){ $shortcode .= do_shortcode(html_entity_decode($options['custom_ad_8'])); }}
+				if($type=="custom-ad-9") { if(!empty($options['custom_ad_9'])){ $shortcode .= do_shortcode(html_entity_decode($options['custom_ad_9'])); }}
+				if($type=="sidebar-ad-top") { if(!empty($options['sidebar_ad_top'])){ $shortcode .= do_shortcode(html_entity_decode($options['sidebar_ad_top'])); }}
+				if($type=="sidebar-ad-middle") { if(!empty($options['sidebar_ad_middle'])){ $shortcode .= do_shortcode(html_entity_decode($options['sidebar_ad_middle'])); }}
+				if($type=="sidebar-ad-bottom") { if(!empty($options['sidebar_ad_bottom'])){ $shortcode .= do_shortcode(html_entity_decode($options['sidebar_ad_bottom'])); }}
+				if($type=="article-ad-bottom") { if(!empty($options['article_ad_bottom'])){ $shortcode .= do_shortcode(html_entity_decode($options['article_ad_bottom'])); }}
+				if($type=="footer-ad-top") { if(!empty($options['footer_ad_top'])){ $shortcode .= do_shortcode(html_entity_decode($options['footer_ad_top'])); }}
 
 			$shortcode .= '</div>';
 			return $shortcode;

@@ -753,43 +753,43 @@ function mt_review_title() {
 function mt_ad_footer(){
 	if ( true == get_theme_mod( 'mt_footer_ad', true ) ) {
 		$optionz = get_option("magazin_theme_options");
-		if (!empty($optionz['article_ad_bottom'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['article_ad_bottom']); ?> </div> <?php }
+		if (!empty($optionz['article_ad_bottom'])) {  ?><div class="advertise text-center"> <?php echo do_shortcode(html_entity_decode($optionz['article_ad_bottom'])); ?> </div> <?php }
 	}
 }
 
 function mt_header_ad_top(){
 		$optionz = get_option("magazin_theme_options");
-		if (!empty($optionz['header_ad_top'])) {  ?><div class="text-center"> <?php echo html_entity_decode($optionz['header_ad_top']); ?> </div>  <?php }
+		if (!empty($optionz['header_ad_top'])) {  ?><div class="text-center"> <?php echo do_shortcode(html_entity_decode($optionz['header_ad_top'])); ?> </div>  <?php }
 }
 
 function mt_header_ad_menu(){
 		$optionz = get_option("magazin_theme_options");
-		if (!empty($optionz['header_ad_menu'])) {  ?><?php echo html_entity_decode($optionz['header_ad_menu']); ?> <?php }
+		if (!empty($optionz['header_ad_menu'])) {  ?><?php echo do_shortcode(html_entity_decode($optionz['header_ad_menu'])); ?> <?php }
 }
 
 function mt_article_ad_top(){
 		$optionz = get_option("magazin_theme_options");
-		if (!empty($optionz['article_ad_top'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['article_ad_top']); ?> </div> <?php }
+		if (!empty($optionz['article_ad_top'])) {  ?><div class="advertise text-center"> <?php echo do_shortcode(html_entity_decode($optionz['article_ad_top'])); ?> </div> <?php }
 }
 
 function mt_article_ad_bottom(){
 		$optionz = get_option("magazin_theme_options");
-		if (!empty($optionz['article_ad_bottom'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['article_ad_bottom']); ?> </div> <?php }
+		if (!empty($optionz['article_ad_bottom'])) {  ?><div class="advertise text-center"> <?php echo do_shortcode(html_entity_decode($optionz['article_ad_bottom'])); ?> </div> <?php }
 }
 
 function mt_sidebar_ad_top(){
 		$optionz = get_option("magazin_theme_options");
-		if (!empty($optionz['sidebar_ad_top'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['sidebar_ad_top']); ?> </div> <?php }
+		if (!empty($optionz['sidebar_ad_top'])) {  ?><div class="advertise text-center"> <?php echo do_shortcode(html_entity_decode($optionz['sidebar_ad_top'])); ?> </div> <?php }
 }
 
 function mt_sidebar_ad_middle(){
 		$optionz = get_option("magazin_theme_options");
-		if (!empty($optionz['sidebar_ad_middle'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['sidebar_ad_middle']); ?> </div> <?php }
+		if (!empty($optionz['sidebar_ad_middle'])) {  ?><div class="advertise text-center"> <?php echo do_shortcode(html_entity_decode($optionz['sidebar_ad_middle'])); ?> </div> <?php }
 }
 
 function mt_sidebar_ad_bottom(){
 		$optionz = get_option("magazin_theme_options");
-		if (!empty($optionz['sidebar_ad_bottom'])) {  ?><div class="advertise text-center"> <?php echo html_entity_decode($optionz['sidebar_ad_bottom']); ?> </div> <?php }
+		if (!empty($optionz['sidebar_ad_bottom'])) {  ?><div class="advertise text-center"> <?php echo do_shortcode(html_entity_decode($optionz['sidebar_ad_bottom'])); ?> </div> <?php }
 }
 
 function mt_weather_funciton(){ ?>
