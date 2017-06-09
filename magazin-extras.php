@@ -35,7 +35,7 @@ include_once ('customizer/customizer-posts.php');
 include_once ('customizer/customizer-text.php');
 include_once ('example-functions.php');
 include_once ('plugins/kirki/kirki.php');
- include_once ('plugins/social-count-plus-master/social-count-plus.php');
+include_once ('plugins/social-count-plus-master/social-count-plus.php');
 add_filter('widget_text', 'do_shortcode');
 
 function magazin_text_domain() {
@@ -338,7 +338,7 @@ add_action('admin_footer', 'admin_js');
 function magazin_get_shares( $post_id ) {
 		$mt_social = get_option( 'socialcountplus_settings');
 		$cache_key = 'magazin_share_cache' . $post_id;
-		$facebook_token = $mt_social['facebook_app_id'].'|'.$mt_social['facebook_app_secret'];
+		if(isset($mt_social['facebook_app_id']) and isset($mt_social['facebook_app_secret'])) { $facebook_token = $mt_social['facebook_app_id'].'|'.$mt_social['facebook_app_secret']; } else { $facebook_token = ""; }
 		$count = get_transient( $cache_key ); // try to get value from Wordpress cache
 		$share_time = get_option("share_time");
 
