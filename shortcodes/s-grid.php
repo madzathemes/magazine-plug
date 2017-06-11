@@ -267,7 +267,7 @@ function grid( $atts, $content = null ) {
 								$shortcode .='<div class="mt-cool-slider-big-title">';
 									while ( $the_query->have_posts() ) : $the_query->the_post();
 										$shortcode .='<div class="mt-slide-1-title nr-1">';
-											$shortcode .='<div class="mt-slide-1-cat">';
+											$shortcode .='<div class="mt-slide-1-cat mt-radius">';
 												$category_name = get_the_category(get_the_ID());
 												$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
 												if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
@@ -285,7 +285,7 @@ function grid( $atts, $content = null ) {
 								$shortcode .='<div class="mt-cool-slider-small-title">';
 									while ( $the_query->have_posts() ) : $the_query->the_post();
 									$shortcode .='<div class="mt-slide-1-title nr-2">';
-										$shortcode .='<div class="mt-slide-1-cat">';
+										$shortcode .='<div class="mt-slide-1-cat mt-radius">';
 											$category_name = get_the_category(get_the_ID());
 											$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
 											if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
@@ -332,7 +332,7 @@ function grid( $atts, $content = null ) {
 									}
 
                 $shortcode .='<div class="mt-slide-1-title nr-'.$i.'">';
-									$shortcode .='<div class="mt-slide-1-cat">';
+									$shortcode .='<div class="mt-slide-1-cat mt-radius">';
 										$category_name = get_the_category(get_the_ID());
 										$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
 										if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
