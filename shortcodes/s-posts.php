@@ -246,7 +246,7 @@ function posts( $atts, $content = null ) {
 					}
 
 
-						$shortcode .='<div class="poster size-normal '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
+						$shortcode .='<div class="poster poster-normal size-normal '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -305,7 +305,7 @@ function posts( $atts, $content = null ) {
 				        $column = 'column-second';
 				    }
 						$shortcode .='<div class="col-md-6 '.$column.'">';
-						$shortcode .='<div class="poster size-normal '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
+						$shortcode .='<div class="poster poster-normal size-normal '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 							$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -380,7 +380,7 @@ function posts( $atts, $content = null ) {
 
 
 
-						$shortcode .='<div class="poster normal '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
+						$shortcode .='<div class="poster poster-right normal '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 						if ( has_post_thumbnail() ) {
 							$shortcode .='<a class="poster-image mt-radius pull-left" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
@@ -464,7 +464,7 @@ function posts( $atts, $content = null ) {
 
 
 
-						$shortcode .='<div class="poster normal normal-small '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
+						$shortcode .='<div class="poster poster-right-small normal normal-small '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
 							if ( has_post_thumbnail() ) {
 								$shortcode .='<a class="poster-image mt-radius normal-right-small pull-left" href="'. get_permalink().'">';
 								if ( has_post_format( 'video' )) {
