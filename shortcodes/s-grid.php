@@ -19,9 +19,8 @@ function grid( $atts, $content = null ) {
 			), $atts));
 
 			global $exclude_single_id, $post;
-
+			if (is_single()) { $exclude = get_the_ID(); }
       if (is_single()) {
-				$exclude = $exclude_single_id;
 				$paged = "";
 			} else {
 				$paged = "";
@@ -43,7 +42,7 @@ function grid( $atts, $content = null ) {
 				'order'=>$order,
 				'orderby'=>$orderby,
 				'include'=>$include,
-				'exclude'=>$exclude,
+				'post__not_in'=>array( $exclude ),
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
 				'author_name'=>$author,
@@ -58,7 +57,7 @@ function grid( $atts, $content = null ) {
 				'order'=>$order,
 				'orderby'=>"meta_value_num",
 				'include'=>$include,
-				'exclude'=>$exclude,
+				'post__not_in'=>array( $exclude ),
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
 				'author_name'=>$author,
@@ -75,7 +74,7 @@ function grid( $atts, $content = null ) {
 				'tax_query' => $tax_query,
 				'orderby'=>"meta_value_num",
 				'include'=>$include,
-				'exclude'=>$exclude,
+				'post__not_in'=>array( $exclude ),
 				'posts_per_page'=>$item_nr,
 				'offset'=>$offset,
 				'meta_key' => 'magazin_share_count_real',
