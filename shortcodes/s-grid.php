@@ -247,7 +247,7 @@ function grid( $atts, $content = null ) {
 							endwhile;
 						$shortcode .='</div>';
 
-						$shortcode .='<div class="mt-slide-1-img">';
+						$shortcode .='<div class="mt-slide-1-img mt-radius">';
 							$shortcode .='<div class="mt-cool-slider-carousel">';
 								while ( $the_query->have_posts() ) : $the_query->the_post();
 
