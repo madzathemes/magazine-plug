@@ -8,13 +8,8 @@ wp.customize.controlConstructor['kirki-dimension'] = wp.customize.Control.extend
 		var control = this,
 		    section = control.section.get();
 
-		jQuery( '#accordion-section-' + section ).on( 'click', function() {
-			control.initKirkiControl();
-		});
-
-		if ( jQuery( '#sub-accordion-section-' + section ).hasClass( 'open' ) ) {
-			control.initKirkiControl();
-		}
+		// Add to the queue.
+		kirkiControlLoader( control );
 	},
 
 	initKirkiControl: function() {

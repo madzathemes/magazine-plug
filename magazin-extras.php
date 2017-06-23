@@ -764,7 +764,7 @@ function mt_header_ad_top(){
 }
 
 function mt_header_ad_menu(){
-		$optionz = get_option("magazin_theme_options");
+		$optionz = get_option("global_theme_options");
 		if (!empty($optionz['header_ad_menu'])) {  ?><?php echo do_shortcode(html_entity_decode($optionz['header_ad_menu'])); ?> <?php }
 }
 

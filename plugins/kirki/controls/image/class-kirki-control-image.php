@@ -98,6 +98,9 @@ class Kirki_Control_Image extends WP_Customize_Control {
 	 */
 	protected function content_template() {
 		?>
+		<div class="kirki-controls-loading-spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>
+		<# saveAs = ( ! _.isUndefined( data.choices ) && ! _.isUndefined( data.choices.save_as ) && 'array' === data.choices.save_as ) ? 'array' : 'url'; #>
+		<# url = ( 'array' === saveAs && data.value['url'] ) ? data.value['url'] : data.value; #>
 		<label>
 			<span class="customize-control-title">
 				{{{ data.label }}}
@@ -109,7 +112,7 @@ class Kirki_Control_Image extends WP_Customize_Control {
 		<div class="image-wrapper attachment-media-view image-upload">
 			<# if ( data.value['url'] ) { #>
 				<div class="thumbnail thumbnail-image">
-					<img src="{{ data.value['url'] }}" alt="" />
+					<img src="{{ url }}" alt="" />
 				</div>
 			<# } else { #>
 				<div class="placeholder">
@@ -117,7 +120,7 @@ class Kirki_Control_Image extends WP_Customize_Control {
 				</div>
 			<# } #>
 			<div class="actions">
-				<button class="button image-upload-remove-button<# if ( ! data.value['url'] ) { #> hidden <# } #>">
+				<button class="button image-upload-remove-button<# if ( '' === url ) { #> hidden <# } #>">
 					{{ data.l10n['remove'] }}
 				</button>
 				<button type="button" class="button image-upload-button">
@@ -125,8 +128,7 @@ class Kirki_Control_Image extends WP_Customize_Control {
 				</button>
 			</div>
 		</div>
-		<# value = ( ! _.isUndefined( data.choices ) && ! _.isUndefined( data.choices.save_as ) && 'array' === data.choices.save_as ) ? JSON.stringify( data.value ) : data.value; #>
-
+		<# value = ( 'array' === saveAs ) ? JSON.stringify( data.value ) : data.value; #>
 		<input class="image-hidden-value" type="hidden" value='{{{ value }}}' {{{ data.link }}}>
 		<?php
 	}

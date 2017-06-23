@@ -1,17 +1,15 @@
 wp.customize.controlConstructor['kirki-typography'] = wp.customize.Control.extend({
 
+	// When we're finished loading continue processing
 	ready: function() {
+
+		'use strict';
 
 		var control = this,
 		    section = control.section.get();
 
-		jQuery( '#accordion-section-' + section ).on( 'click', function() {
-			control.initKirkiControl();
-		});
-
-		if ( jQuery( '#sub-accordion-section-' + section ).hasClass( 'open' ) ) {
-			control.initKirkiControl();
-		}
+		// Add to the queue.
+		kirkiControlLoader( control );
 	},
 
 	initKirkiControl: function() {

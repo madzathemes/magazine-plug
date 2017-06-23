@@ -70,7 +70,7 @@ final class Kirki_Modules_Webfonts_Async {
 	public function webfont_loader() {
 
 		// Go through our fields and populate $this->fonts.
-		$this->webfonts->loop_fields();
+		$this->webfonts->loop_fields( $this->config_id );
 
 		$this->googlefonts->fonts = apply_filters( 'kirki/enqueue_google_fonts', $this->googlefonts->fonts );
 
@@ -88,6 +88,9 @@ final class Kirki_Modules_Webfonts_Async {
 			$fonts_to_load[] = $font . ':' . join( ',', $weights );
 		}
 		wp_enqueue_script( 'webfont-loader', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js' );
+		if ( empty( $fonts_to_load ) ) {
+			return;
+		}
 		wp_add_inline_script(
 			'webfont-loader',
 			'WebFont.load({google:{families:[\'' . join( '\', \'', $fonts_to_load ) . '\']}});',
