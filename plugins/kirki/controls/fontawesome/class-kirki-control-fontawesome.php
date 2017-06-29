@@ -50,13 +50,15 @@ class Kirki_Control_FontAwesome extends WP_Customize_Control {
 	 */
 	public function enqueue() {
 
-		Kirki_Custom_Build::register_dependency( 'jquery' );
-		Kirki_Custom_Build::register_dependency( 'customize-base' );
-		Kirki_Custom_Build::register_dependency( 'select2' );
-		Kirki_Custom_Build::register_dependency( 'jquery-ui-sortable' );
+		if ( class_exists( 'Kirki_Custom_Build' ) ) {
+			Kirki_Custom_Build::register_dependency( 'jquery' );
+			Kirki_Custom_Build::register_dependency( 'customize-base' );
+			Kirki_Custom_Build::register_dependency( 'select2' );
+			Kirki_Custom_Build::register_dependency( 'jquery-ui-sortable' );
+		}
 
 		$script_to_localize = 'kirki-build';
-		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+		if ( ! class_exists( 'Kirki_Custom_Build' ) || ! Kirki_Custom_Build::is_custom_build() ) {
 			$script_to_localize = 'kirki-fontawesome';
 			wp_enqueue_script( 'kirki-fontawesome', trailingslashit( Kirki::$url ) . 'controls/fontawesome/fontawesome.js', array( 'jquery', 'customize-base', 'select2', 'jquery-ui-sortable' ), false, true );
 			wp_enqueue_style( 'kirki-fontawesome-css', trailingslashit( Kirki::$url ) . 'controls/fontawesome/fontawesome.css', null );
@@ -65,7 +67,11 @@ class Kirki_Control_FontAwesome extends WP_Customize_Control {
 		wp_enqueue_script( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/js/select2.full.js', array( 'jquery' ), '4.0.3', true );
 		wp_enqueue_style( 'select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/css/select2.css', array(), '4.0.3' );
 		wp_enqueue_style( 'kirki-select2', trailingslashit( Kirki::$url ) . 'assets/vendor/select2/kirki.css', null );
-		wp_localize_script( $script_to_localize, 'fontAwesomeJSON', file_get_contents( Kirki::$path . '/controls/fontawesome/fontawesome.json' ) );
+		ob_start();
+		$json_path = wp_normalize_path( dirname( __FILE__ ) . '/fontawesome.json' );
+		include( $json_path );
+		$font_awesome_json = ob_get_clean();
+		wp_localize_script( $script_to_localize, 'fontAwesomeJSON', $font_awesome_json );
 	}
 
 	/**
@@ -107,17 +113,12 @@ class Kirki_Control_FontAwesome extends WP_Customize_Control {
 		?>
 		<div class="kirki-controls-loading-spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>
 		<label>
-			<# if ( data.label ) { #>
-				<span class="customize-control-title">{{ data.label }}</span>
-			<# } #>
-			<# if ( data.description ) { #>
-				<span class="description customize-control-description">{{{ data.description }}}</span>
-			<# } #>
+			<# if ( data.label ) { #><span class="customize-control-title">{{ data.label }}</span><# } #>
+			<# if ( data.description ) { #><span class="description customize-control-description">{{{ data.description }}}</span><# } #>
 			<select {{{ data.inputAttrs }}} {{{ data.link }}}></select>
 		</label>
 		<?php
 	}
-
 
 	/**
 	 * Render the control's content.

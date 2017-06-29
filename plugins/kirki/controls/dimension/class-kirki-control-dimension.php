@@ -58,16 +58,20 @@ class Kirki_Control_Dimension extends WP_Customize_Control {
 	 */
 	public function enqueue() {
 
-		Kirki_Custom_Build::register_dependency( 'jquery' );
-		Kirki_Custom_Build::register_dependency( 'customize-base' );
+		if ( class_exists( 'Kirki_Custom_Build' ) ) {
+			Kirki_Custom_Build::register_dependency( 'jquery' );
+			Kirki_Custom_Build::register_dependency( 'customize-base' );
+		}
 
 		$script_to_localize = 'kirki-build';
-		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+		if ( ! class_exists( 'Kirki_Custom_Build' ) || ! Kirki_Custom_Build::is_custom_build() ) {
 			$script_to_localize = 'kirki-dimension';
 			wp_enqueue_script( 'kirki-dimension', trailingslashit( Kirki::$url ) . 'controls/dimension/dimension.js', array( 'jquery', 'customize-base' ), false, true );
 			wp_enqueue_style( 'kirki-dimension-css', trailingslashit( Kirki::$url ) . 'controls/dimension/dimension.css', null );
 		}
-		wp_localize_script( $script_to_localize, 'dimensionkirkiL10n', $this->l10n() );
+		wp_localize_script( $script_to_localize, 'dimensionkirkiL10n', array(
+			'invalid-value' => esc_attr__( 'Invalid Value', 'kirki' ),
+		) );
 	}
 
 	/**
@@ -87,7 +91,6 @@ class Kirki_Control_Dimension extends WP_Customize_Control {
 		$this->json['choices'] = $this->choices;
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
-		$this->json['l10n']    = $this->l10n();
 
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
@@ -110,30 +113,12 @@ class Kirki_Control_Dimension extends WP_Customize_Control {
 		?>
 		<div class="kirki-controls-loading-spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>
 		<label class="customizer-text">
-			<# if ( data.label ) { #>
-				<span class="customize-control-title">{{{ data.label }}}</span>
-			<# } #>
-			<# if ( data.description ) { #>
-				<span class="description customize-control-description">{{{ data.description }}}</span>
-			<# } #>
+			<# if ( data.label ) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
+			<# if ( data.description ) { #><span class="description customize-control-description">{{{ data.description }}}</span><# } #>
 			<div class="input-wrapper">
 				<input {{{ data.inputAttrs }}} type="text" value="{{ data.value }}"/>
 			</div>
 		</label>
 		<?php
-	}
-
-	/**
-	 * Returns an array of translation strings.
-	 *
-	 * @access protected
-	 * @since 3.0.0
-	 * @return string
-	 */
-	protected function l10n() {
-		$translation_strings = array(
-			'invalid-value' => esc_attr__( 'Invalid Value', 'kirki' ),
-		);
-		return apply_filters( "kirki/{$this->kirki_config}/l10n", $translation_strings );
 	}
 }

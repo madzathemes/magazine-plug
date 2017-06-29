@@ -99,11 +99,13 @@ class Kirki_Control_Dimensions extends WP_Customize_Control {
 	 */
 	public function enqueue() {
 
-		Kirki_Custom_Build::register_dependency( 'jquery' );
-		Kirki_Custom_Build::register_dependency( 'customize-base' );
+		if ( class_exists( 'Kirki_Custom_Build' ) ) {
+			Kirki_Custom_Build::register_dependency( 'jquery' );
+			Kirki_Custom_Build::register_dependency( 'customize-base' );
+		}
 
 		$script_to_localize = 'kirki-build';
-		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+		if ( ! class_exists( 'Kirki_Custom_Build' ) || ! Kirki_Custom_Build::is_custom_build() ) {
 			$script_to_localize = 'kirki-dimensions';
 			wp_enqueue_script( 'kirki-dimensions', trailingslashit( Kirki::$url ) . 'controls/dimensions/dimensions.js', array( 'jquery', 'customize-base' ), false, true );
 			wp_enqueue_style( 'kirki-dimensions-css', trailingslashit( Kirki::$url ) . 'controls/dimensions/dimensions.css', null );
@@ -125,12 +127,8 @@ class Kirki_Control_Dimensions extends WP_Customize_Control {
 		?>
 		<div class="kirki-controls-loading-spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>
 		<label>
-			<# if ( data.label ) { #>
-				<span class="customize-control-title">{{{ data.label }}}</span>
-			<# } #>
-			<# if ( data.description ) { #>
-				<span class="description customize-control-description">{{{ data.description }}}</span>
-			<# } #>
+			<# if ( data.label ) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
+			<# if ( data.description ) { #><span class="description customize-control-description">{{{ data.description }}}</span><# } #>
 			<div class="wrapper">
 				<div class="control">
 					<# for ( choiceKey in data.default ) { #>
@@ -167,11 +165,10 @@ class Kirki_Control_Dimensions extends WP_Customize_Control {
 	 *
 	 * @access protected
 	 * @since 3.0.0
-	 * @param string|false $id The string-ID.
 	 * @return string
 	 */
-	protected function l10n( $id = false ) {
-		$translation_strings = array(
+	protected function l10n() {
+		return array(
 			'left-top'              => esc_attr__( 'Left Top', 'kirki' ),
 			'left-center'           => esc_attr__( 'Left Center', 'kirki' ),
 			'left-bottom'           => esc_attr__( 'Left Bottom', 'kirki' ),
@@ -199,10 +196,5 @@ class Kirki_Control_Dimensions extends WP_Customize_Control {
 			'height'                => esc_attr__( 'Height', 'kirki' ),
 			'invalid-value'         => esc_attr__( 'Invalid Value', 'kirki' ),
 		);
-		$translation_strings = apply_filters( "kirki/{$this->kirki_config}/l10n", $translation_strings );
-		if ( false === $id ) {
-			return $translation_strings;
-		}
-		return $translation_strings[ $id ];
 	}
 }

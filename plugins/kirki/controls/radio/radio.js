@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-radio'] = wp.customize.Control.extend({
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -18,11 +21,11 @@ wp.customize.controlConstructor['kirki-radio'] = wp.customize.Control.extend({
 
 		var control = this;
 
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
+
 		// Change the value
 		this.container.on( 'change', 'input', function() {
 			control.setting.set( jQuery( this ).val() );
 		});
-
 	}
-
 });

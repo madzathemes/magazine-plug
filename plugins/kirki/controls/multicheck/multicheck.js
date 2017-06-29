@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-multicheck'] = wp.customize.Control.exten
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -17,6 +20,8 @@ wp.customize.controlConstructor['kirki-multicheck'] = wp.customize.Control.exten
 		'use strict';
 
 		var control = this;
+
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		// Save the value
 		control.container.on( 'change', 'input', function() {
@@ -35,7 +40,5 @@ wp.customize.controlConstructor['kirki-multicheck'] = wp.customize.Control.exten
 			control.setting.set( value );
 
 		});
-
 	}
-
 });

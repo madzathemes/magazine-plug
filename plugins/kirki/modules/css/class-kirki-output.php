@@ -170,13 +170,20 @@ class Kirki_Output {
 			}
 
 			// No need to proceed this if the current value is the same as in the "exclude" value.
-			if ( isset( $output['exclude'] ) && false !== $output['exclude'] && is_array( $output['exclude'] ) ) {
+			if ( isset( $output['exclude'] ) && is_array( $output['exclude'] ) ) {
 				foreach ( $output['exclude'] as $exclude ) {
-					if ( is_array( $value ) && is_array( $exclude ) ) {
-						$diff1 = array_diff( $value, $exclude );
-						$diff2 = array_diff( $exclude, $value );
+					if ( is_array( $value ) ) {
+						if ( is_array( $exclude ) ) {
+							$diff1 = array_diff( $value, $exclude );
+							$diff2 = array_diff( $exclude, $value );
 
-						if ( empty( $diff1 ) && empty( $diff2 ) ) {
+							if ( empty( $diff1 ) && empty( $diff2 ) ) {
+								$skip = true;
+							}
+						}
+						// If 'choice' is defined check for sub-values too.
+						// Fixes https://github.com/aristath/kirki/issues/1416.
+						if ( isset( $output['choice'] ) && isset( $value[ $output['choice'] ] ) && $exclude === $value[ $output['choice'] ] ) {
 							$skip = true;
 						}
 					}
@@ -232,7 +239,7 @@ class Kirki_Output {
 		$accepts_multiple = array(
 			'background-image',
 		);
-		if ( in_array( $output['property'], $accepts_multiple ) ) {
+		if ( in_array( $output['property'], $accepts_multiple, true ) ) {
 			if ( isset( $this->styles[ $output['media_query'] ][ $output['element'] ][ $output['property'] ] ) && ! is_array( $this->styles[ $output['media_query'] ][ $output['element'] ][ $output['property'] ] ) ) {
 				$this->styles[ $output['media_query'] ][ $output['element'] ][ $output['property'] ] = (array) $this->styles[ $output['media_query'] ][ $output['element'] ][ $output['property'] ];
 			}

@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-date'] = wp.customize.Control.extend({
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -22,11 +25,11 @@ wp.customize.controlConstructor['kirki-date'] = wp.customize.Control.extend({
 		// Init the datepicker
 		jQuery( selector ).datepicker();
 
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
+
 		// Save the changes
 		this.container.on( 'change keyup paste', 'input.datepicker', function() {
 			control.setting.set( jQuery( this ).val() );
 		});
-
 	}
-
 });

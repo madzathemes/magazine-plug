@@ -58,18 +58,24 @@ class Kirki_Control_Number extends WP_Customize_Control {
 	 */
 	public function enqueue() {
 
-		Kirki_Custom_Build::register_dependency( 'jquery' );
-		Kirki_Custom_Build::register_dependency( 'customize-base' );
-		Kirki_Custom_Build::register_dependency( 'jquery-ui-spinner' );
-		Kirki_Custom_Build::register_dependency( 'jquery-ui-button' );
+		if ( class_exists( 'Kirki_Custom_Build' ) ) {
+			Kirki_Custom_Build::register_dependency( 'jquery' );
+			Kirki_Custom_Build::register_dependency( 'customize-base' );
+			Kirki_Custom_Build::register_dependency( 'jquery-ui-spinner' );
+			Kirki_Custom_Build::register_dependency( 'jquery-ui-button' );
+		}
 
 		$script_to_localize = 'kirki-build';
-		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+		if ( ! class_exists( 'Kirki_Custom_Build' ) || ! Kirki_Custom_Build::is_custom_build() ) {
 			$script_to_localize = 'kirki-number';
 			wp_enqueue_script( 'kirki-number', trailingslashit( Kirki::$url ) . 'controls/number/number.js', array( 'jquery', 'customize-base', 'jquery-ui-button', 'jquery-ui-spinner' ), false, true );
 			wp_enqueue_style( 'kirki-number-css', trailingslashit( Kirki::$url ) . 'controls/number/number.css', null );
 		}
-		wp_localize_script( $script_to_localize, 'numberKirkiL10n', $this->l10n() );
+		wp_localize_script( $script_to_localize, 'numberKirkiL10n', array(
+			'min-error'  => esc_attr__( 'Value lower than allowed minimum', 'kirki' ),
+			'max-error'  => esc_attr__( 'Value higher than allowed maximum', 'kirki' ),
+			'step-error' => esc_attr__( 'Invalid Value', 'kirki' ),
+		) );
 	}
 
 	/**
@@ -89,7 +95,6 @@ class Kirki_Control_Number extends WP_Customize_Control {
 		$this->json['choices'] = $this->choices;
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
-		$this->json['l10n']    = $this->l10n();
 
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
@@ -112,32 +117,12 @@ class Kirki_Control_Number extends WP_Customize_Control {
 		?>
 		<div class="kirki-controls-loading-spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>
 		<label>
-			<# if ( data.label ) { #>
-				<span class="customize-control-title">{{{ data.label }}}</span>
-			<# } #>
-			<# if ( data.description ) { #>
-				<span class="description customize-control-description">{{{ data.description }}}</span>
-			<# } #>
+			<# if ( data.label ) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
+			<# if ( data.description ) { #><span class="description customize-control-description">{{{ data.description }}}</span><# } #>
 			<div class="customize-control-content">
 				<input {{{ data.inputAttrs }}} type="text" {{{ data.link }}} value="{{ data.value }}" />
 			</div>
 		</label>
 		<?php
-	}
-
-	/**
-	 * Returns an array of translation strings.
-	 *
-	 * @access protected
-	 * @since 3.0.0
-	 * @return string
-	 */
-	protected function l10n() {
-		$translation_strings = array(
-			'min-error'  => esc_attr__( 'Value lower than allowed minimum', 'kirki' ),
-			'max-error'  => esc_attr__( 'Value higher than allowed maximum', 'kirki' ),
-			'step-error' => esc_attr__( 'Invalid Value', 'kirki' ),
-		);
-		return apply_filters( "kirki/{$this->kirki_config}/l10n", $translation_strings );
 	}
 }

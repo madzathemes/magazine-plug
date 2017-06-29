@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-editor'] = wp.customize.Control.extend({
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -23,6 +26,7 @@ wp.customize.controlConstructor['kirki-editor'] = wp.customize.Control.extend({
 		    setChange,
 		    content;
 
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 		jQuery( window ).load( function() {
 
 			var editor  = tinyMCE.get( 'kirki-editor' );
@@ -58,18 +62,14 @@ wp.customize.controlConstructor['kirki-editor'] = wp.customize.Control.extend({
 						element.val( content ).trigger( 'change' );
 						wp.customize.instance( control.getEditorWrapperSetting() ).set( content );
 					}, 500 );
-
 				});
-
 			}
 
 			// Handle text mode.
 			wpEditorArea.on( 'change keyup paste', function() {
 				wp.customize.instance( control.getEditorWrapperSetting() ).set( jQuery( this ).val() );
 			});
-
 		});
-
 	},
 
 	/**
@@ -92,7 +92,6 @@ wp.customize.controlConstructor['kirki-editor'] = wp.customize.Control.extend({
 		} else {
 			jQuery( '.customize-control-kirki-editor .toggle-editor' ).html( editorKirkiL10n['open-editor'] );
 		}
-
 	},
 
 	/**
@@ -112,7 +111,6 @@ wp.customize.controlConstructor['kirki-editor'] = wp.customize.Control.extend({
 			editorWrapper.removeClass();
 			editorWrapper.addClass( 'hide' );
 		}
-
 	},
 
 	/**
@@ -122,11 +120,9 @@ wp.customize.controlConstructor['kirki-editor'] = wp.customize.Control.extend({
 
 		'use strict';
 
-		var control = this,
-		    editorWrapper = jQuery( '#kirki_editor_pane' );
+		var control = this;
 
 		editor.setContent( control.setting._value );
-
 	},
 
 	/**
@@ -145,7 +141,6 @@ wp.customize.controlConstructor['kirki-editor'] = wp.customize.Control.extend({
 		} else {
 			return false;
 		}
-
 	},
 
 	/**
@@ -162,5 +157,4 @@ wp.customize.controlConstructor['kirki-editor'] = wp.customize.Control.extend({
 			}
 		}
 	}
-
 });

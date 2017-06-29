@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-slider'] = wp.customize.Control.extend({
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -21,6 +24,8 @@ wp.customize.controlConstructor['kirki-slider'] = wp.customize.Control.extend({
 		    thisInput,
 		    inputDefault,
 		    changeAction;
+
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		// Update the text value
 		jQuery( 'input[type=range]' ).on( 'mousedown', function() {
@@ -40,16 +45,11 @@ wp.customize.controlConstructor['kirki-slider'] = wp.customize.Control.extend({
 			jQuery( this ).closest( 'label' ).find( '.kirki_range_value .value' ).text( inputDefault );
 		});
 
-		if ( 'postMessage' === control.setting.transport ) {
-			changeAction = 'mousemove change';
-		} else {
-			changeAction = 'change';
-		}
+		changeAction = ( 'postMessage' === control.setting.transport ) ? 'mousemove change' : 'change';
 
 		// Save changes.
 		this.container.on( changeAction, 'input', function() {
 			control.setting.set( jQuery( this ).val() );
 		});
 	}
-
 });

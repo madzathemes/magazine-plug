@@ -28,10 +28,7 @@ class Kirki_Output_Field_Typography extends Kirki_Output {
 		$output['prefix']      = ( isset( $output['prefix'] ) ) ? $output['prefix'] : '';
 		$output['suffix']      = ( isset( $output['suffix'] ) ) ? $output['suffix'] : '';
 
-		if ( ! isset( $value['variant'] ) || ! isset( $value['font-weight'] ) || ! isset( $value['font-style'] ) ) {
-			$value = Kirki_Field_Typography::sanitize( $value );
-			$this->value = $value;
-		}
+		$value = Kirki_Field_Typography::sanitize( $value );
 
 		$properties = array(
 			'font-family',
@@ -47,7 +44,7 @@ class Kirki_Output_Field_Typography extends Kirki_Output {
 		);
 
 		foreach ( $properties as $property ) {
-			if ( ! isset( $value[ $property ] ) || '' === $value[ $property ] ) {
+			if ( ! isset( $value[ $property ] ) || ! $value[ $property ] ) {
 				continue;
 			}
 			if ( isset( $output['choice'] ) && $output['choice'] !== $property ) {
@@ -62,6 +59,7 @@ class Kirki_Output_Field_Typography extends Kirki_Output {
 					$value['font-backup'],
 				) );
 			}
+			$property_value = ( is_array( $property_value ) && isset( $property_value[0] ) ) ? $property_value[0] : $property_value;
 			$this->styles[ $output['media_query'] ][ $output['element'] ][ $property ] = $output['prefix'] . $property_value . $output['suffix'];
 		}
 	}

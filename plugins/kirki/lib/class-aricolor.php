@@ -1,23 +1,4 @@
 <?php
-/**
- * Plugin Name:   ariColor
- * Plugin URI:    http://aristath.github.io/ariColor/
- * Description:   A PHP library for color manipulation in WordPress themes and plugins
- * Author:        Aristeides Stathopoulos
- * Author URI:    http://aristeides.com
- * Version:       1.1.0
- * Text Domain:   aricolor
- *
- * GitHub Plugin URI: aristath/ariColor
- * GitHub Plugin URI: https://github.com/aristath/ariColor
- *
- * @package     ariColor
- * @category    Core
- * @author      Aristeides Stathopoulos
- * @copyright   Copyright (c) 2016, Aristeides Stathopoulos
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.0
- */
 // @codingStandardsIgnoreFile
 
 // Exit if accessed directly.
@@ -49,6 +30,24 @@ if ( ! class_exists( 'ariColor' ) ) {
 		 * @var mixed
 		 */
 		public $color;
+
+		/**
+		 * A fallback color in case of failure.
+		 *
+		 * @access public
+		 * @since 1.0.0
+		 * @var mixed
+		 */
+		public $fallback = '#ffffff';
+
+		/**
+		 * Fallback object from the fallback color.
+		 *
+		 * @access public
+		 * @since 1.0.0
+		 * @var object
+		 */
+		public $fallback_obj;
 
 		/**
 		 * The mode we're using for this color.
@@ -113,7 +112,6 @@ if ( ! class_exists( 'ariColor' ) ) {
 		 * @var float
 		 */
 		public $alpha = 1;
-
 
 		/**
 		 * Hue value.
@@ -180,6 +178,11 @@ if ( ! class_exists( 'ariColor' ) ) {
 		protected function __construct( $color = '', $mode = 'auto' ) {
 			$this->color = $color;
 
+			if ( is_array( $color ) && isset( $color['fallback'] ) ) {
+				$this->fallback = $color['fallback'];
+				$this->fallback_obj = self::newColor( $this->fallback );
+			}
+
 			if ( ! method_exists( $this, 'from_' . $mode ) ) {
 				$mode = $this->get_mode( $color );
 			}
@@ -207,9 +210,10 @@ if ( ! class_exists( 'ariColor' ) ) {
 		 * @since 1.0.0
 		 * @param string|array $color The color.
 		 * @param string       $mode  Mode to be used.
-		 * @return Avada_Color (object)
+		 * @return ariColor    (object)
 		 */
 		public static function newColor( $color, $mode = 'auto' ) {
+
 			// Get an md5 for this color.
 			$color_md5 = ( is_array( $color ) ) ? md5( wp_json_encode( $color ) . $mode ) : md5( $color . $mode );
 			// Set the instance if it does not already exist.
@@ -227,7 +231,7 @@ if ( ! class_exists( 'ariColor' ) ) {
 		 * @since 1.1
 		 * @param string|array $color The color.
 		 * @param string       $mode  Mode to be used.
-		 * @return Avada_Color (object)
+		 * @return ariColor    (object)
 		 */
 		public static function new_color( $color, $mode = 'auto' ) {
 			return self::newColor( $color, $mode );
@@ -248,7 +252,7 @@ if ( ! class_exists( 'ariColor' ) ) {
 		 *                             lightness,
 		 *                             brightness.
 		 * @param int|float|string $value      The new value.
-		 * @return Avada_Color|null
+		 * @return ariColor|null
 		 */
 		public function getNew( $property = '', $value = '' ) {
 
@@ -309,7 +313,7 @@ if ( ! class_exists( 'ariColor' ) ) {
 		 *                             lightness,
 		 *                             brightness.
 		 * @param int|float|string $value      The new value.
-		 * @return Avada_Color|null
+		 * @return ariColor|null
 		 */
 		public function get_new( $property = '', $value = '' ) {
 			return $this->getNew( $property, $value );
@@ -324,6 +328,7 @@ if ( ! class_exists( 'ariColor' ) ) {
 		 * @return string
 		 */
 		public function get_mode( $color ) {
+
 			// Check if value is an array.
 			if ( is_array( $color ) ) {
 				// Does the array have an 'rgba' key?
@@ -333,6 +338,9 @@ if ( ! class_exists( 'ariColor' ) ) {
 				} elseif ( isset( $color['color'] ) ) {
 					// Does the array have a 'color' key?
 					$this->color = $color['color'];
+					if ( is_string( $color['color'] ) && false !== strpos( $color['color'], 'rgba' ) ) {
+						return 'rgba';
+					}
 					return 'hex';
 				}
 				// Is this a simple array with 4 items?
@@ -365,15 +373,23 @@ if ( ! class_exists( 'ariColor' ) ) {
 					}
 				}
 
-				// We failed, return false.
+				// We failed, use fallback.
 				if ( ! $found ) {
-					return false;
+					$this->from_fallback();
+					return $this->mode;
 				}
 
 				// We did not fail, so use rgba values recovered above.
 				$this->color = 'rgba(' . $this->red . ',' . $this->green . ',' . $this->blue . ',' . $this->alpha . ')';
 				return 'rgba';
 			}
+
+			// If a string and 3 or 6 characters long, add # since it's a hex.
+			if ( 3 === strlen( $this->color ) || 6 === strlen( $this->color ) && false === strpos( $this->color, '#' ) ) {
+				$this->color = '#' . $this->color;
+				$color = $this->color;
+			}
+
 			// If we got this far, it's not an array.
 			// Check for key identifiers in the value.
 			$finders_keepers = array(
@@ -401,6 +417,8 @@ if ( ! class_exists( 'ariColor' ) ) {
 				return 'hex';
 			}
 			// Fallback to hex.
+
+			$this->color = $this->fallback;
 			return 'hex';
 		}
 
@@ -418,12 +436,18 @@ if ( ! class_exists( 'ariColor' ) ) {
 			}
 			// Is this perhaps a word-color?
 			$word_colors = $this->get_word_colors();
-			if ( is_string( $this->color ) && array_key_exists( $this->color, $word_colors ) ) {
+			if ( array_key_exists( $this->color, $word_colors ) ) {
 				$this->color = '#' . $word_colors[ $this->color ];
 			}
 			// Sanitize color.
 			$this->hex = sanitize_hex_color( maybe_hash_hex_color( $this->color ) );
 			$hex = ltrim( $this->hex, '#' );
+
+			// Fallback if needed.
+			if ( ! $hex || 3 > strlen( $hex ) ) {
+				$this->from_fallback();
+				return;
+			}
 			// Make sure we have 6 digits for the below calculations.
 			if ( 3 === strlen( $hex ) ) {
 				$hex = ltrim( $this->hex, '#' );
@@ -893,6 +917,31 @@ if ( ! class_exists( 'ariColor' ) ) {
 				'yellowgreen'          => '9ACD32',
 			);
 
+		}
+
+		/**
+		 * Use fallback object.
+		 *
+		 * @access protected
+		 * @since 1.2.0
+		 */
+		protected function from_fallback() {
+			$this->color = $this->fallback;
+
+			if ( ! $this->fallback_obj ) {
+				$this->fallback_obj = self::newColor( $this->fallback );
+			}
+			$this->color      = $this->fallback_obj->color;
+			$this->mode       = $this->fallback_obj->mode;
+			$this->red        = $this->fallback_obj->red;
+			$this->green      = $this->fallback_obj->green;
+			$this->blue       = $this->fallback_obj->blue;
+			$this->alpha      = $this->fallback_obj->alpha;
+			$this->hue        = $this->fallback_obj->hue;
+			$this->saturation = $this->fallback_obj->saturation;
+			$this->lightness  = $this->fallback_obj->lightness;
+			$this->luminance  = $this->fallback_obj->luminance;
+			$this->hex        = $this->fallback_obj->hex;
 		}
 
 		/**

@@ -6,11 +6,14 @@ wp.customize.controlConstructor['kirki-select'] = wp.customize.Control.extend({
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -26,6 +29,8 @@ wp.customize.controlConstructor['kirki-select'] = wp.customize.Control.extend({
 					return markup;
 				}
 		    };
+
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		if ( 1 < multiple ) {
 			select2Options.maximumSelectionLength = multiple;

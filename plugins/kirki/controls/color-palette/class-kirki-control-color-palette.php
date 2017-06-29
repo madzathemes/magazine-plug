@@ -51,11 +51,13 @@ class Kirki_Control_Color_Palette extends WP_Customize_Control {
 	 */
 	public function enqueue() {
 
-		Kirki_Custom_Build::register_dependency( 'jquery' );
-		Kirki_Custom_Build::register_dependency( 'customize-base' );
-		Kirki_Custom_Build::register_dependency( 'jquery-ui-button' );
+		if ( class_exists( 'Kirki_Custom_Build' ) ) {
+			Kirki_Custom_Build::register_dependency( 'jquery' );
+			Kirki_Custom_Build::register_dependency( 'customize-base' );
+			Kirki_Custom_Build::register_dependency( 'jquery-ui-button' );
+		}
 
-		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+		if ( ! class_exists( 'Kirki_Custom_Build' ) || ! Kirki_Custom_Build::is_custom_build() ) {
 			wp_enqueue_script( 'kirki-color-palette', trailingslashit( Kirki::$url ) . 'controls/color-palette/color-palette.js', array( 'jquery', 'customize-base', 'jquery-ui-button' ), false, true );
 			wp_enqueue_style( 'kirki-color-palette-css', trailingslashit( Kirki::$url ) . 'controls/color-palette/color-palette.css', null );
 		}
@@ -125,4 +127,12 @@ class Kirki_Control_Color_Palette extends WP_Customize_Control {
 		</div>
 		<?php
 	}
+
+	/**
+	 * Render the control's content.
+	 *
+	 * @since 3.4.0
+	 */
+	protected function render_content() {}
+
 }

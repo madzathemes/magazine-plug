@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-background'] = wp.customize.Control.exten
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -17,6 +20,8 @@ wp.customize.controlConstructor['kirki-background'] = wp.customize.Control.exten
 		var control = this,
 		    value   = control.getValue(),
 		    picker  = control.container.find( '.kirki-color-control' );
+
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		// Hide unnecessary controls if the value doesn't have an image.
 		if ( _.isUndefined( value['background-image'] ) || '' === value['background-image'] ) {
@@ -169,5 +174,4 @@ wp.customize.controlConstructor['kirki-background'] = wp.customize.Control.exten
 		jQuery( input ).attr( 'value', JSON.stringify( valueObj ) ).trigger( 'change' );
 
 	}
-
 });

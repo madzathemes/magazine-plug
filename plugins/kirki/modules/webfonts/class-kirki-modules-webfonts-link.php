@@ -110,12 +110,6 @@ final class Kirki_Modules_Webfonts_Link {
 		$link_fonts = array();
 		foreach ( $this->googlefonts->fonts as $font => $variants ) {
 
-			// Are we force-loading all variants?
-			if ( true === Kirki_Fonts_Google::$force_load_all_variants ) {
-				if ( isset( $this->google_fonts[ $font ]['variants'] ) ) {
-					$variants = $this->google_fonts[ $font ]['variants'];
-				}
-			}
 			$variants = implode( ',', $variants );
 
 			$link_font = str_replace( ' ', '+', $font );
@@ -141,7 +135,7 @@ final class Kirki_Modules_Webfonts_Link {
 
 		$this->link = add_query_arg( array(
 			'family' => str_replace( '%2B', '+', urlencode( implode( '|', $link_fonts ) ) ),
-			'subset' => urlencode( implode( ',', $this->googlefonts->subsets ) ),
+			'subset' => rawurlencode( implode( ',', $this->googlefonts->subsets ) ),
 		), 'https://fonts.googleapis.com/css' );
 
 	}

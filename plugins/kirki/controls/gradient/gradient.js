@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-gradient'] = wp.customize.Control.extend(
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -27,6 +30,8 @@ wp.customize.controlConstructor['kirki-gradient'] = wp.customize.Control.extend(
 			pickerStart.wpColorPicker( control.params.choices.iris );
 			pickerEnd.wpColorPicker( control.params.choices.iris );
 		}
+
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		control.updatePreview( value );
 
@@ -76,7 +81,6 @@ wp.customize.controlConstructor['kirki-gradient'] = wp.customize.Control.extend(
 				control.setValue( value );
 			});
 		});
-
 	},
 
 	/**
@@ -133,6 +137,5 @@ wp.customize.controlConstructor['kirki-gradient'] = wp.customize.Control.extend(
 			obj.set( value );
 
 		});
-
 	}
 });

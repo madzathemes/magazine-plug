@@ -118,6 +118,11 @@ final class Kirki_Fonts_Google {
 				return;
 			}
 
+			// If not a google-font, then we can skip this.
+			if ( ! Kirki_Fonts::is_google_font( $value['font-family'] ) ) {
+				return;
+			}
+
 			// Set a default value for variants.
 			if ( ! isset( $value['variant'] ) ) {
 				$value['variant'] = 'regular';
@@ -142,6 +147,12 @@ final class Kirki_Fonts_Google {
 			if ( ! in_array( $value['variant'], $this->fonts[ $value['font-family'] ], true ) ) {
 				$this->fonts[ $value['font-family'] ][] = $value['variant'];
 			}
+			// Are we force-loading all variants?
+			if ( true === self::$force_load_all_variants ) {
+				$all_variants = Kirki_Fonts::get_all_variants();
+				$args['choices']['variant'] = array_keys( $all_variants );
+			}
+
 			if ( ! empty( $args['choices']['variant'] ) ) {
 				foreach ( $args['choices']['variant'] as $extra_variant ) {
 					$this->fonts[ $value['font-family'] ][] = $extra_variant;
@@ -161,30 +172,32 @@ final class Kirki_Fonts_Google {
 					// Get the value.
 					$value = Kirki_Values::get_sanitized_field_value( $args );
 
-					if ( 'font-family' === $output['property'] ) {
-						if ( ! array_key_exists( $value, $this->fonts ) ) {
-							$this->fonts[ $value ] = array();
-						}
-					} elseif ( 'font-weight' === $output['property'] ) {
-						foreach ( $this->fonts as $font => $variants ) {
-							if ( ! in_array( $value, $variants, true ) ) {
-								$this->fonts[ $font ][] = $value;
+					if ( is_string( $value ) ) {
+						if ( 'font-family' === $output['property'] ) {
+							if ( ! array_key_exists( $value, $this->fonts ) ) {
+								$this->fonts[ $value ] = array();
 							}
-						}
-					} elseif ( 'font-subset' === $output['property'] || 'subset' === $output['property'] || 'subsets' === $output['property'] ) {
-						if ( ! is_array( $value ) ) {
-							if ( ! in_array( $value, $this->subsets, true ) ) {
-								$this->subsets[] = $value;
+						} elseif ( 'font-weight' === $output['property'] ) {
+							foreach ( $this->fonts as $font => $variants ) {
+								if ( ! in_array( $value, $variants, true ) ) {
+									$this->fonts[ $font ][] = $value;
+								}
 							}
-						} else {
-							foreach ( $value as $subset ) {
-								if ( ! in_array( $subset, $this->subsets, true ) ) {
-									$this->subsets[] = $subset;
+						} elseif ( 'font-subset' === $output['property'] || 'subset' === $output['property'] || 'subsets' === $output['property'] ) {
+							if ( ! is_array( $value ) ) {
+								if ( ! in_array( $value, $this->subsets, true ) ) {
+									$this->subsets[] = $value;
+								}
+							} else {
+								foreach ( $value as $subset ) {
+									if ( ! in_array( $subset, $this->subsets, true ) ) {
+										$this->subsets[] = $subset;
+									}
 								}
 							}
 						}
 					}
-				}
+				} // End foreach().
 			} // End if().
 		} // End if().
 	}
@@ -221,7 +234,7 @@ final class Kirki_Fonts_Google {
 				// If this is not a valid variant for this font-family
 				// then unset it and move on to the next one.
 				if ( ! in_array( $variant, $font_variants, true ) ) {
-					$variant_key = array_search( $variant, $this->fonts[ $font ] );
+					$variant_key = array_search( $variant, $this->fonts[ $font ], true );
 					unset( $this->fonts[ $font ][ $variant_key ] );
 					continue;
 				}

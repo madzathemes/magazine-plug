@@ -59,12 +59,14 @@ class Kirki_Control_Select extends WP_Customize_Control {
 	 */
 	public function enqueue() {
 
-		Kirki_Custom_Build::register_dependency( 'jquery' );
-		Kirki_Custom_Build::register_dependency( 'customize-base' );
-		Kirki_Custom_Build::register_dependency( 'select2' );
-		Kirki_Custom_Build::register_dependency( 'jquery-ui-sortable' );
+		if ( class_exists( 'Kirki_Custom_Build' ) ) {
+			Kirki_Custom_Build::register_dependency( 'jquery' );
+			Kirki_Custom_Build::register_dependency( 'customize-base' );
+			Kirki_Custom_Build::register_dependency( 'select2' );
+			Kirki_Custom_Build::register_dependency( 'jquery-ui-sortable' );
+		}
 
-		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+		if ( ! class_exists( 'Kirki_Custom_Build' ) || ! Kirki_Custom_Build::is_custom_build() ) {
 			wp_enqueue_script( 'kirki-select', trailingslashit( Kirki::$url ) . 'controls/select/select.js', array( 'jquery', 'customize-base', 'select2', 'jquery-ui-sortable' ), false, true );
 			wp_enqueue_style( 'kirki-select-css', trailingslashit( Kirki::$url ) . 'controls/select/select.css', null );
 		}
@@ -121,12 +123,8 @@ class Kirki_Control_Select extends WP_Customize_Control {
 		}
 		#>
 		<label>
-			<# if ( data.label ) { #>
-				<span class="customize-control-title">{{ data.label }}</span>
-			<# } #>
-			<# if ( data.description ) { #>
-				<span class="description customize-control-description">{{{ data.description }}}</span>
-			<# } #>
+			<# if ( data.label ) { #><span class="customize-control-title">{{ data.label }}</span><# } #>
+			<# if ( data.description ) { #><span class="description customize-control-description">{{{ data.description }}}</span><# } #>
 			<select {{{ data.inputAttrs }}} {{{ data.link }}}<# if ( 1 < data.multiple ) { #> data-multiple="{{ data.multiple }}" multiple="multiple"<# } #>>
 				<# _.each( data.choices, function( optionLabel, optionKey ) { #>
 					<# selected = ( data.value === optionKey ); #>

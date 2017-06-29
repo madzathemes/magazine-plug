@@ -319,7 +319,7 @@ class Kirki_Field {
 		// assume that the provided argument is $args and set $config_id = 'global'.
 		if ( is_array( $config_id ) && empty( $args ) ) {
 			$args = $config_id;
-			$this->kirki_config = 'global';
+			$config_id = 'global';
 		}
 		$this->kirki_config = trim( esc_attr( $config_id ) );
 		if ( '' === $config_id ) {
@@ -407,7 +407,7 @@ class Kirki_Field {
 		}
 
 		// Get all arguments with their values.
-		$args = get_class_vars( __CLASS__ );
+		$args = get_object_vars( $this );
 		foreach ( $args as $key => $default_value ) {
 			$args[ $key ] = $this->$key;
 		}

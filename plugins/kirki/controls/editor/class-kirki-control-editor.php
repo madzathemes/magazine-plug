@@ -54,31 +54,28 @@ class Kirki_Control_Editor extends WP_Customize_Control {
 	public $kirki_config = 'global';
 
 	/**
-	 * The translation strings.
-	 *
-	 * @access protected
-	 * @since 2.3.5
-	 * @var array
-	 */
-	protected $l10n = array();
-
-	/**
 	 * Enqueue control related scripts/styles.
 	 *
 	 * @access public
 	 */
 	public function enqueue() {
 
-		Kirki_Custom_Build::register_dependency( 'jquery' );
-		Kirki_Custom_Build::register_dependency( 'customize-base' );
+		if ( class_exists( 'Kirki_Custom_Build' ) ) {
+			Kirki_Custom_Build::register_dependency( 'jquery' );
+			Kirki_Custom_Build::register_dependency( 'customize-base' );
+		}
 
 		$script_to_localize = 'kirki-build';
-		if ( ! Kirki_Custom_Build::is_custom_build() ) {
+		if ( ! class_exists( 'Kirki_Custom_Build' ) || ! Kirki_Custom_Build::is_custom_build() ) {
 			$script_to_localize = 'kirki-editor';
 			wp_enqueue_script( 'kirki-editor', trailingslashit( Kirki::$url ) . 'controls/editor/editor.js', array( 'jquery', 'customize-base' ), false, true );
 			wp_enqueue_style( 'kirki-editor-css', trailingslashit( Kirki::$url ) . 'controls/editor/editor.css', null );
 		}
-		wp_localize_script( $script_to_localize, 'editorKirkiL10n', $this->l10n() );
+		wp_localize_script( $script_to_localize, 'editorKirkiL10n', array(
+			'open-editor'   => esc_attr__( 'Open Editor', 'kirki' ),
+			'close-editor'  => esc_attr__( 'Close Editor', 'kirki' ),
+			'switch-editor' => esc_attr__( 'Switch Editor', 'kirki' ),
+		) );
 	}
 
 	/**
@@ -98,7 +95,6 @@ class Kirki_Control_Editor extends WP_Customize_Control {
 		$this->json['choices'] = $this->choices;
 		$this->json['link']    = $this->get_link();
 		$this->json['id']      = $this->id;
-		$this->json['l10n']    = $this->l10n();
 
 		$this->json['inputAttrs'] = '';
 		foreach ( $this->input_attrs as $attr => $value ) {
@@ -125,33 +121,13 @@ class Kirki_Control_Editor extends WP_Customize_Control {
 		?>
 		<div class="kirki-controls-loading-spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>
 		<label>
-			<# if ( data.label ) { #>
-				<span class="customize-control-title">{{{ data.label }}}</span>
-			<# } #>
-			<# if ( data.description ) { #>
-				<span class="description customize-control-description">{{{ data.description }}}</span>
-			<# } #>
+			<# if ( data.label ) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
+			<# if ( data.description ) { #><span class="description customize-control-description">{{{ data.description }}}</span><# } #>
 			<div class="customize-control-content">
 				<a href="#" class="button button-primary toggle-editor"></a>
 				<textarea {{{ data.inputAttrs }}} class="hidden" {{{ data.link }}}>{{ data.value }}</textarea>
 			</div>
 		</label>
 		<?php
-	}
-
-	/**
-	 * Returns an array of translation strings.
-	 *
-	 * @access protected
-	 * @since 3.0.0
-	 * @return string
-	 */
-	protected function l10n() {
-		$translation_strings = array(
-			'open-editor'   => esc_attr__( 'Open Editor', 'kirki' ),
-			'close-editor'  => esc_attr__( 'Close Editor', 'kirki' ),
-			'switch-editor' => esc_attr__( 'Switch Editor', 'kirki' ),
-		);
-		return apply_filters( "kirki/{$this->kirki_config}/l10n", $translation_strings );
 	}
 }

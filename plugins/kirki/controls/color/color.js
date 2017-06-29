@@ -5,18 +5,22 @@ wp.customize.controlConstructor['kirki-color'] = wp.customize.Control.extend({
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
 		var control = this,
-		    section = control.section.get(),
 		    picker  = this.container.find( '.kirki-color-control' ),
 		    clear;
+
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		// If we have defined any extra choices, make sure they are passed-on to Iris.
 		if ( ! _.isUndefined( control.params.choices ) ) {

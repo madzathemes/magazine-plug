@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-number'] = wp.customize.Control.extend({
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -19,6 +22,8 @@ wp.customize.controlConstructor['kirki-number'] = wp.customize.Control.extend({
 		var control = this,
 		    element = this.container.find( 'input' ),
 		    step    = 1;
+
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		// Set step value.
 		if ( ! _.isUndefined( control.params.choices ) && ! _.isUndefined( control.params.choices.step ) ) {

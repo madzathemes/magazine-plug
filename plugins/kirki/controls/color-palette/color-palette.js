@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-color-palette'] = wp.customize.Control.ex
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -18,11 +21,11 @@ wp.customize.controlConstructor['kirki-color-palette'] = wp.customize.Control.ex
 
 		var control = this;
 
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
+
 		// Save the value
 		this.container.on( 'click', 'input', function() {
 			control.setting.set( jQuery( this ).val() );
 		});
-
 	}
-
 });

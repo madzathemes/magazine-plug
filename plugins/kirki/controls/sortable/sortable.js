@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-sortable'] = wp.customize.Control.extend(
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -17,6 +20,8 @@ wp.customize.controlConstructor['kirki-sortable'] = wp.customize.Control.extend(
 		'use strict';
 
 		var control = this;
+
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		// Set the sortable container.
 		control.sortableContainer = control.container.find( 'ul.sortable' ).first();
@@ -56,7 +61,6 @@ wp.customize.controlConstructor['kirki-sortable'] = wp.customize.Control.extend(
 				newValue.push( jQuery( this ).data( 'value' ) );
 			}
 		});
-
 		control.setting.set( newValue );
 	}
 });

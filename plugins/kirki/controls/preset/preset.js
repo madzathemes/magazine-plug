@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-preset'] = wp.customize.Control.extend({
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -18,6 +21,8 @@ wp.customize.controlConstructor['kirki-preset'] = wp.customize.Control.extend({
 
 		var control = this,
 		    selectValue;
+
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		// Trigger a change
 		this.container.on( 'change', 'select', function() {
@@ -41,14 +46,9 @@ wp.customize.controlConstructor['kirki-preset'] = wp.customize.Control.extend({
 					jQuery.each( value.settings, function( presetSetting, presetSettingValue ) {
 						kirkiSetSettingValue.set( presetSetting, presetSettingValue );
 					});
-
 				}
-
 			});
-
 			wp.customize.previewer.refresh();
-
 		});
-
 	}
 });

@@ -6,11 +6,14 @@ wp.customize.controlConstructor['kirki-fontawesome'] = wp.customize.Control.exte
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -34,6 +37,8 @@ wp.customize.controlConstructor['kirki-fontawesome'] = wp.customize.Control.exte
 				}
 		    },
 		    select;
+
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		_.each( icons.icons, function( icon ) {
 			select2Options.data.push({

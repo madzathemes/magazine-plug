@@ -91,7 +91,7 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 		// Set up defaults for row labels.
 		$this->row_label = array(
 			'type' => 'text',
-			'value' => $this->l10n( 'row' ),
+			'value' => esc_attr__( 'row', 'kirki' ),
 			'field' => false,
 		);
 
@@ -99,7 +99,8 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 		$this->row_label( $args );
 
 		if ( empty( $this->button_label ) ) {
-			$this->button_label = $this->l10n( 'add-new' ) . ' ' . $this->row_label['value'];
+			/* translators: %s represents the label of the row. */
+			$this->button_label = sprintf( esc_attr__( 'Add new %s', 'kirki' ), $this->row_label['value'] );
 		}
 
 		if ( empty( $args['fields'] ) || ! is_array( $args['fields'] ) ) {
@@ -134,7 +135,7 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 							array(
 								'name'              => '',
 								'echo'              => 0,
-								'show_option_none'  => esc_attr( $this->l10n( 'select-page' ) ),
+								'show_option_none'  => esc_attr__( 'Select a Page', 'kirki' ),
 								'option_none_value' => '0',
 								'selected'          => '',
 							)
@@ -283,7 +284,8 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 		<ul class="repeater-fields"></ul>
 
 		<?php if ( isset( $this->choices['limit'] ) ) : ?>
-			<p class="limit"><?php printf( esc_html( $this->l10n( 'limit-rows' ) ), esc_html( $this->choices['limit'] ) ); ?></p>
+			<?php /* translators: %s represents the number of rows we're limiting the repeater to allow. */ ?>
+			<p class="limit"><?php printf( esc_attr__( 'Limit: %s rows', 'kirki' ), esc_html( $this->choices['limit'] ) ); ?></p>
 		<?php endif; ?>
 		<button class="button-secondary repeater-add"><?php echo esc_html( $this->button_label ); ?></button>
 
@@ -334,24 +336,16 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 								<# } #>
 
 								<label>
-									<# if ( field.label ) { #>
-										<span class="customize-control-title">{{ field.label }}</span>
-									<# } #>
-									<# if ( field.description ) { #>
-										<span class="description customize-control-description">{{ field.description }}</span>
-									<# } #>
+									<# if ( field.label ) { #><span class="customize-control-title">{{ field.label }}</span><# } #>
+									<# if ( field.description ) { #><span class="description customize-control-description">{{ field.description }}</span><# } #>
 									<input type="{{field.type}}" name="" value="{{{ field.default }}}" data-field="{{{ field.id }}}"{{ fieldExtras }}>
 								</label>
 
 							<# } else if ( 'number' === field.type ) { #>
 
 								<label>
-									<# if ( field.label ) { #>
-										<span class="customize-control-title">{{ field.label }}</span>
-									<# } #>
-									<# if ( field.description ) { #>
-										<span class="description customize-control-description">{{ field.description }}</span>
-									<# } #>
+									<# if ( field.label ) { #><span class="customize-control-title">{{ field.label }}</span><# } #>
+									<# if ( field.description ) { #><span class="description customize-control-description">{{ field.description }}</span><# } #>
 									<input type="{{ field.type }}" name="" value="{{{ field.default }}}" data-field="{{{ field.id }}}"{{ numberFieldExtras }}>
 								</label>
 
@@ -363,20 +357,14 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 
 								<label>
 									<input type="checkbox" value="true" data-field="{{{ field.id }}}" <# if ( field.default ) { #> checked="checked" <# } #> /> {{ field.label }}
-									<# if ( field.description ) { #>
-										{{ field.description }}
-									<# } #>
+									<# if ( field.description ) { #>{{ field.description }}<# } #>
 								</label>
 
 							<# } else if ( 'select' === field.type ) { #>
 
 								<label>
-									<# if ( field.label ) { #>
-										<span class="customize-control-title">{{ field.label }}</span>
-									<# } #>
-									<# if ( field.description ) { #>
-										<span class="description customize-control-description">{{ field.description }}</span>
-									<# } #>
+									<# if ( field.label ) { #><span class="customize-control-title">{{ field.label }}</span><# } #>
+									<# if ( field.description ) { #><span class="description customize-control-description">{{ field.description }}</span><# } #>
 									<select data-field="{{{ field.id }}}"<# if ( ! _.isUndefined( field.multiple ) && false !== field.multiple ) { #> multiple="multiple" data-multiple="{{ field.multiple }}"<# } #>>
 										<# _.each( field.choices, function( choice, i ) { #>
 											<option value="{{{ i }}}" <# if ( field.default == i ) { #> selected="selected" <# } #>>{{ choice }}</option>
@@ -387,47 +375,31 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 							<# } else if ( 'dropdown-pages' === field.type ) { #>
 
 								<label>
-									<# if ( field.label ) { #>
-										<span class="customize-control-title">{{{ data.label }}}</span>
-									<# } #>
-									<# if ( field.description ) { #>
-										<span class="description customize-control-description">{{{ field.description }}}</span>
-									<# } #>
+									<# if ( field.label ) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
+									<# if ( field.description ) { #><span class="description customize-control-description">{{{ field.description }}}</span><# } #>
 									<div class="customize-control-content repeater-dropdown-pages">{{{ field.dropdown }}}</div>
 								</label>
 
 							<# } else if ( 'radio' === field.type ) { #>
 
 								<label>
-									<# if ( field.label ) { #>
-										<span class="customize-control-title">{{ field.label }}</span>
-									<# } #>
-									<# if ( field.description ) { #>
-										<span class="description customize-control-description">{{ field.description }}</span>
-									<# } #>
+									<# if ( field.label ) { #><span class="customize-control-title">{{ field.label }}</span><# } #>
+									<# if ( field.description ) { #><span class="description customize-control-description">{{ field.description }}</span><# } #>
 
 									<# _.each( field.choices, function( choice, i ) { #>
-										<label>
-											<input type="radio" name="{{{ field.id }}}{{ index }}" data-field="{{{ field.id }}}" value="{{{ i }}}" <# if ( field.default == i ) { #> checked="checked" <# } #>> {{ choice }} <br/>
-										</label>
+										<label><input type="radio" name="{{{ field.id }}}{{ index }}" data-field="{{{ field.id }}}" value="{{{ i }}}" <# if ( field.default == i ) { #> checked="checked" <# } #>> {{ choice }} <br/></label>
 									<# }); #>
 								</label>
 
 							<# } else if ( 'radio-image' === field.type ) { #>
 
 								<label>
-									<# if ( field.label ) { #>
-										<span class="customize-control-title">{{ field.label }}</span>
-									<# } #>
-									<# if ( field.description ) { #>
-										<span class="description customize-control-description">{{ field.description }}</span>
-									<# } #>
+									<# if ( field.label ) { #><span class="customize-control-title">{{ field.label }}</span><# } #>
+									<# if ( field.description ) { #><span class="description customize-control-description">{{ field.description }}</span><# } #>
 
 									<# _.each( field.choices, function( choice, i ) { #>
 										<input type="radio" id="{{{ field.id }}}_{{ index }}_{{{ i }}}" name="{{{ field.id }}}{{ index }}" data-field="{{{ field.id }}}" value="{{{ i }}}" <# if ( field.default == i ) { #> checked="checked" <# } #>>
-											<label for="{{{ field.id }}}_{{ index }}_{{{ i }}}">
-												<img src="{{ choice }}">
-											</label>
+											<label for="{{{ field.id }}}_{{ index }}_{{{ i }}}"><img src="{{ choice }}"></label>
 										</input>
 									<# }); #>
 								</label>
@@ -436,61 +408,45 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 
 								<# var defaultValue = '';
 								if ( field.default ) {
-									if ( '#' !== field.default.substring( 0, 1 ) ) {
-										defaultValue = '#' + field.default;
-									} else {
-										defaultValue = field.default;
-									}
+									defaultValue = ( '#' !== field.default.substring( 0, 1 ) ) ? '#' + field.default : field.default;
 									defaultValue = ' data-default-color=' + defaultValue; // Quotes added automatically.
 								} #>
 								<label>
-									<# if ( field.label ) { #>
-										<span class="customize-control-title">{{{ field.label }}}</span>
-									<# } #>
-									<# if ( field.description ) { #>
-										<span class="description customize-control-description">{{{ field.description }}}</span>
-									<# } #>
-									<input class="color-picker-hex" type="text" maxlength="7" placeholder="<?php echo esc_attr( $this->l10n( 'hex-value' ) ); ?>"  value="{{{ field.default }}}" data-field="{{{ field.id }}}" {{ defaultValue }} />
+									<# if ( field.label ) { #><span class="customize-control-title">{{{ field.label }}}</span><# } #>
+									<# if ( field.description ) { #><span class="description customize-control-description">{{{ field.description }}}</span><# } #>
+									<input class="color-picker-hex" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value', 'kirki' ); ?>"  value="{{{ field.default }}}" data-field="{{{ field.id }}}" {{ defaultValue }} />
 
 								</label>
 
 							<# } else if ( 'textarea' === field.type ) { #>
 
-								<# if ( field.label ) { #>
-									<span class="customize-control-title">{{ field.label }}</span>
-								<# } #>
-								<# if ( field.description ) { #>
-									<span class="description customize-control-description">{{ field.description }}</span>
-								<# } #>
+								<# if ( field.label ) { #><span class="customize-control-title">{{ field.label }}</span><# } #>
+								<# if ( field.description ) { #><span class="description customize-control-description">{{ field.description }}</span><# } #>
 								<textarea rows="5" data-field="{{{ field.id }}}">{{ field.default }}</textarea>
 
 							<# } else if ( field.type === 'image' || field.type === 'cropped_image' ) { #>
 
 								<label>
-									<# if ( field.label ) { #>
-										<span class="customize-control-title">{{ field.label }}</span>
-									<# } #>
-									<# if ( field.description ) { #>
-										<span class="description customize-control-description">{{ field.description }}</span>
-									<# } #>
+									<# if ( field.label ) { #><span class="customize-control-title">{{ field.label }}</span><# } #>
+									<# if ( field.description ) { #><span class="description customize-control-description">{{ field.description }}</span><# } #>
 								</label>
 
-								<figure class="kirki-image-attachment" data-placeholder="<?php echo esc_attr( $this->l10n( 'no-image-selected' ) ); ?>" >
+								<figure class="kirki-image-attachment" data-placeholder="<?php esc_attr_e( 'No Image Selected', 'kirki' ); ?>" >
 									<# if ( field.default ) { #>
 										<# var defaultImageURL = ( field.default.url ) ? field.default.url : field.default; #>
 										<img src="{{{ defaultImageURL }}}">
 									<# } else { #>
-										<?php echo esc_attr( $this->l10n( 'no-image-selected' ) ); ?>
+										<?php esc_attr_e( 'No Image Selected', 'kirki' ); ?>
 									<# } #>
 								</figure>
 
 								<div class="actions">
-									<button type="button" class="button remove-button<# if ( ! field.default ) { #> hidden<# } #>"><?php echo esc_attr( $this->l10n( 'remove' ) ); ?></button>
-									<button type="button" class="button upload-button" data-label=" <?php echo esc_attr( $this->l10n( 'add-image' ) ); ?>" data-alt-label="<?php echo esc_attr( $this->l10n( 'change-image' ) ); ?>" >
+									<button type="button" class="button remove-button<# if ( ! field.default ) { #> hidden<# } #>"><?php esc_attr_e( 'Remove', 'kirki' ); ?></button>
+									<button type="button" class="button upload-button" data-label=" <?php esc_attr_e( 'Add Image', 'kirki' ); ?>" data-alt-label="<?php echo esc_attr_e( 'Change Image', 'kirki' ); ?>" >
 										<# if ( field.default ) { #>
-											<?php echo esc_attr( $this->l10n( 'change-image' ) ); ?>
+											<?php esc_attr_e( 'Change Image', 'kirki' ); ?>
 										<# } else { #>
-											<?php echo esc_attr( $this->l10n( 'add-image' ) ); ?>
+											<?php esc_attr_e( 'Add Image', 'kirki' ); ?>
 										<# } #>
 									</button>
 									<# if ( field.default.id ) { #>
@@ -503,30 +459,26 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 							<# } else if ( field.type === 'upload' ) { #>
 
 								<label>
-									<# if ( field.label ) { #>
-										<span class="customize-control-title">{{ field.label }}</span>
-									<# } #>
-									<# if ( field.description ) { #>
-										<span class="description customize-control-description">{{ field.description }}</span>
-									<# } #>
+									<# if ( field.label ) { #><span class="customize-control-title">{{ field.label }}</span><# } #>
+									<# if ( field.description ) { #><span class="description customize-control-description">{{ field.description }}</span><# } #>
 								</label>
 
-								<figure class="kirki-file-attachment" data-placeholder="<?php echo esc_attr( $this->l10n( 'no-file-selected' ) ); ?>" >
+								<figure class="kirki-file-attachment" data-placeholder="<?php esc_attr_e( 'No File Selected', 'kirki' ); ?>" >
 									<# if ( field.default ) { #>
 										<# var defaultFilename = ( field.default.filename ) ? field.default.filename : field.default; #>
 										<span class="file"><span class="dashicons dashicons-media-default"></span> {{ defaultFilename }}</span>
 									<# } else { #>
-										<?php echo esc_attr( $this->l10n( 'no-file-selected' ) ); ?>
+										<?php esc_attr_e( 'No File Selected', 'kirki' ); ?>
 									<# } #>
 								</figure>
 
 								<div class="actions">
 									<button type="button" class="button remove-button<# if ( ! field.default ) { #> hidden<# } #>"></button>
-									<button type="button" class="button upload-button" data-label="<?php echo esc_attr( $this->l10n( 'add-file' ) ); ?>" data-alt-label="<?php echo esc_attr( $this->l10n( 'change-file' ) ); ?>" >
+									<button type="button" class="button upload-button" data-label="<?php esc_attr_e( 'Add File', 'kirki' ); ?>" data-alt-label="<?php esc_attr_e( 'Change File', 'kirki' ); ?>">
 										<# if ( field.default ) { #>
-											<?php echo esc_attr( $this->l10n( 'change-file' ) ); ?>
+											<?php esc_attr_e( 'Change File', 'kirki' ); ?>
 										<# } else { #>
-											<?php echo esc_attr( $this->l10n( 'add-file' ) ); ?>
+											<?php esc_attr_e( 'Add File', 'kirki' ); ?>
 										<# } #>
 									</button>
 									<# if ( field.default.id ) { #>
@@ -538,19 +490,15 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 
 							<# } else if ( 'custom' === field.type ) { #>
 
-								<# if ( field.label ) { #>
-									<span class="customize-control-title">{{ field.label }}</span>
-								<# } #>
-								<# if ( field.description ) { #>
-									<span class="description customize-control-description">{{ field.description }}</span>
-								<# } #>
+								<# if ( field.label ) { #><span class="customize-control-title">{{ field.label }}</span><# } #>
+								<# if ( field.description ) { #><span class="description customize-control-description">{{ field.description }}</span><# } #>
 								<div data-field="{{{ field.id }}}">{{{ field.default }}}</div>
 
 							<# } #>
 
 						</div>
 					<# }); #>
-					<button type="button" class="button-link repeater-row-remove"><?php echo esc_attr( $this->l10n( 'remove' ) ); ?></button>
+					<button type="button" class="button-link repeater-row-remove"><?php esc_attr_e( 'Remove', 'kirki' ); ?></button>
 				</div>
 			</li>
 		</script>
@@ -587,36 +535,5 @@ class Kirki_Control_Repeater extends WP_Customize_Control {
 				$this->row_label['type'] = 'text';
 			}
 		}
-	}
-
-	/**
-	 * Returns an array of translation strings.
-	 *
-	 * @access protected
-	 * @since 3.0.0
-	 * @param string|false $config_id The string-ID.
-	 * @return string
-	 */
-	protected function l10n( $config_id = false ) {
-		$translation_strings = array(
-			'row'               => esc_attr__( 'row', 'kirki' ),
-			'add-new'           => esc_attr__( 'Add new', 'kirki' ),
-			'select-page'       => esc_attr__( 'Select a Page', 'kirki' ),
-			/* translators: %s represents the number of rows we're limiting the repeater to allow. */
-			'limit-rows'        => esc_attr__( 'Limit: %s rows', 'kirki' ),
-			'hex-value'         => esc_attr__( 'Hex Value', 'kirki' ),
-			'no-image-selected' => esc_attr__( 'No Image Selected', 'kirki' ),
-			'remove'            => esc_attr__( 'Remove', 'kirki' ),
-			'add-image'         => esc_attr__( 'Add Image', 'kirki' ),
-			'change-image'      => esc_attr__( 'Change Image', 'kirki' ),
-			'no-file-selected'  => esc_attr__( 'No File Selected', 'kirki' ),
-			'add-file'          => esc_attr__( 'Add File', 'kirki' ),
-			'change-file'       => esc_attr__( 'Change File', 'kirki' ),
-		);
-		$translation_strings = apply_filters( "kirki/{$this->kirki_config}/l10n", $translation_strings );
-		if ( false === $config_id ) {
-			return $translation_strings;
-		}
-		return $translation_strings[ $config_id ];
 	}
 }

@@ -5,8 +5,7 @@ wp.customize.controlConstructor['kirki-code'] = wp.customize.Control.extend({
 
 		'use strict';
 
-		var control = this,
-			section = control.section.get();
+		var control = this;
 
 		// Add to the queue.
 		control.kirkiLoader();
@@ -82,6 +81,8 @@ wp.customize.controlConstructor['kirki-code'] = wp.customize.Control.extend({
 		    container,
 		    height;
 
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
+
 		editor = CodeMirror.fromTextArea( element[0], {
 			value:        control.setting._value,
 			mode:         language,
@@ -110,7 +111,5 @@ wp.customize.controlConstructor['kirki-code'] = wp.customize.Control.extend({
 		element.parents( '.accordion-section' ).on( 'click', function() {
 			editor.refresh();
 		});
-
 	}
-
 });

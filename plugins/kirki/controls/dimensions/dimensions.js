@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-dimensions'] = wp.customize.Control.exten
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -22,6 +25,8 @@ wp.customize.controlConstructor['kirki-dimensions'] = wp.customize.Control.exten
 		    subsArray   = [],
 		    i;
 
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
+
 		_.each( subControls, function( v, i ) {
 			if ( true === v ) {
 				subsArray.push( i );
@@ -29,13 +34,9 @@ wp.customize.controlConstructor['kirki-dimensions'] = wp.customize.Control.exten
 		} );
 
 		for ( i = 0; i < subsArray.length; i++ ) {
-
 			value[ subsArray[ i ] ] = control.setting._value[ subsArray[ i ] ];
-
 			control.updateDimensionsValue( subsArray[ i ], value );
-
 		}
-
 	},
 
 	/**
@@ -54,7 +55,6 @@ wp.customize.controlConstructor['kirki-dimensions'] = wp.customize.Control.exten
 			// Save the value
 			control.saveValue( value );
 		});
-
 	},
 
 	/**
@@ -111,9 +111,7 @@ wp.customize.controlConstructor['kirki-dimensions'] = wp.customize.Control.exten
 				} else {
 					setting.notifications.remove( code );
 				}
-
 		    } );
-
 		} );
 	},
 	kirkiValidateCSSValue: function( value ) {
@@ -137,9 +135,6 @@ wp.customize.controlConstructor['kirki-dimensions'] = wp.customize.Control.exten
 		if ( isNaN( numericValue ) || -1 === jQuery.inArray( unit, validUnits ) ) {
 			return false;
 		}
-
 		return true;
-
 	}
-
 });

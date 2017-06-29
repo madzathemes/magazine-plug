@@ -5,11 +5,14 @@ wp.customize.controlConstructor['kirki-typography'] = wp.customize.Control.exten
 
 		'use strict';
 
-		var control = this,
-		    section = control.section.get();
+		var control = this;
 
-		// Add to the queue.
-		kirkiControlLoader( control );
+		// Init the control.
+		if ( ! _.isUndefined( window.kirkiControlLoader ) && _.isFunction( kirkiControlLoader ) ) {
+			kirkiControlLoader( control );
+		} else {
+			control.initKirkiControl();
+		}
 	},
 
 	initKirkiControl: function() {
@@ -20,6 +23,8 @@ wp.customize.controlConstructor['kirki-typography'] = wp.customize.Control.exten
 		    textTransformSelector = control.selector + ' .text-transform select',
 		    value                 = control.getValue(),
 		    picker;
+
+		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		control.renderFontSelector();
 		control.renderBackupFontSelector();
@@ -90,10 +95,9 @@ wp.customize.controlConstructor['kirki-typography'] = wp.customize.Control.exten
 		    data            = [],
 		    standardFonts   = [],
 		    googleFonts     = [],
-			value           = control.getValue(),
-			variantSelector = control.selector + ' .variant select',
-		    subsetSelector  = control.selector + ' .subsets select',
-			fonts           = control.getFonts(),
+		    value           = control.getValue(),
+		    variantSelector = control.selector + ' .variant select',
+		    fonts           = control.getFonts(),
 		    fontSelect;
 
 		// Format standard fonts as an array.
@@ -209,13 +213,13 @@ wp.customize.controlConstructor['kirki-typography'] = wp.customize.Control.exten
 
 		var control    = this,
 		    value      = control.getValue(),
-			fontFamily = value['font-family'],
-			variants   = control.getVariants( fontFamily ),
+		    fontFamily = value['font-family'],
+		    variants   = control.getVariants( fontFamily ),
 		    selector   = control.selector + ' .variant select',
 		    data       = [],
 		    isValid    = false,
-		    variantSelector,
 		    fontWeight,
+		    variantSelector,
 		    fontStyle;
 
 		if ( false !== variants ) {
@@ -266,8 +270,8 @@ wp.customize.controlConstructor['kirki-typography'] = wp.customize.Control.exten
 
 		var control    = this,
 		    value      = control.getValue(),
-			fontFamily = value['font-family'],
-			subsets    = control.getSubsets( fontFamily ),
+		    fontFamily = value['font-family'],
+		    subsets    = control.getSubsets( fontFamily ),
 		    selector   = control.selector + ' .subsets select',
 		    data       = [],
 		    validValue = value.subsets,

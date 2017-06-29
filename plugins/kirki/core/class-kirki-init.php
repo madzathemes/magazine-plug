@@ -34,9 +34,10 @@ class Kirki_Init {
 		add_filter( 'kirki/control_types', array( $this, 'default_control_types' ) );
 		add_action( 'after_setup_theme', array( $this, 'acf_pro_compatibility' ) );
 
-		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customize_controls_enqueue_scripts' ), 999 );
-
 		new Kirki_Custom_Build();
+
+		add_filter( 'http_request_args', array( $this, 'http_request' ), 10, 2 );
+		add_filter( 'option_active_plugins', array( $this, 'is_plugin_active' ) );
 	}
 
 	/**
@@ -59,7 +60,7 @@ class Kirki_Init {
 		}
 
 		// If Kirki is installed as a plugin, use that for the URL.
-		if ( $this->is_plugin() ) {
+		if ( self::is_plugin() ) {
 			Kirki::$url = plugin_dir_url( KIRKI_PLUGIN_FILE );
 		}
 
@@ -153,7 +154,6 @@ class Kirki_Init {
 		add_action( 'customize_register', array( $this, 'add_panels' ), 97 );
 		add_action( 'customize_register', array( $this, 'add_sections' ), 98 );
 		add_action( 'customize_register', array( $this, 'add_fields' ), 99 );
-		/* Kirki_Modules_Loading::get_instance(); */
 	}
 
 	/**
@@ -302,8 +302,11 @@ class Kirki_Init {
 	/**
 	 * Process fields added using the 'kirki/fields' and 'kirki/controls' filter.
 	 * These filters are no longer used, this is simply for backwards-compatibility.
+	 *
+	 * @access private
+	 * @since 2.0.0
 	 */
-	public function fields_from_filters() {
+	private function fields_from_filters() {
 
 		$fields = apply_filters( 'kirki/controls', array() );
 		$fields = apply_filters( 'kirki/fields', $fields );
@@ -313,7 +316,6 @@ class Kirki_Init {
 				Kirki::add_field( 'global', $field );
 			}
 		}
-
 	}
 
 	/**
@@ -330,16 +332,6 @@ class Kirki_Init {
 		if ( is_customize_preview() ) {
 			add_filter( 'acf/settings/enqueue_select2', '__return_false', 99 );
 		}
-	}
-
-	/**
-	 * Enqueues extra scripts on customize_controls_enqueue_scripts.
-	 *
-	 * @access public
-	 * @since 3.0.0
-	 */
-	public function customize_controls_enqueue_scripts() {
-		wp_enqueue_script( 'kirki', trailingslashit( Kirki::$url ) . 'assets/js/customizer.js', array( 'jquery', 'customize-base' ) );
 	}
 
 	/**
@@ -373,17 +365,89 @@ class Kirki_Init {
 		}
 
 		// Extra logic in case the plugin is installed but not activated.
-		if ( is_customize_preview() ) {
+		// Make sure the is_plugins_loaded function is loaded.
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
 
-			// Make sure the is_plugins_loaded function is loaded.
-			if ( ! function_exists( 'is_plugin_active' ) ) {
-				include_once ABSPATH . 'wp-admin/includes/plugin.php';
-			}
-
-			if ( $_plugin && ! is_plugin_active( $_plugin ) ) {
-				return false;
-			}
+		if ( $_plugin && ! is_plugin_active( $_plugin ) ) {
+			return false;
 		}
 		return $is_plugin;
+	}
+
+	/**
+	 * HTTP Request injection.
+	 *
+	 * @access public
+	 * @since 3.0.0
+	 * @param array  $r The request params.
+	 * @param string $url The request URL.
+	 * @return array
+	 */
+	public function http_request( $r = array(), $url = '' ) {
+		// Early exit if not a request to wordpress.org.
+		if ( false === strpos( $url, 'wordpress.org' ) ) {
+			return $r;
+		}
+		// Early exit if Kirki is installed as a plugin.
+		if ( self::is_plugin() ) {
+			return $r;
+		}
+		// Early exit if we don't have everything we need.
+		if ( ! isset( $r['body'] ) || ! isset( $r['body']['plugins'] ) || ! isset( $r['body']['translations'] ) || ! isset( $r['body']['locale'] ) || ! isset( $r['body']['all'] ) ) {
+			return $r;
+		}
+		// Inject data.
+		$plugins = json_decode( $r['body']['plugins'], true );
+		if ( isset( $plugins['plugins'] ) ) {
+			$exists = false;
+			foreach ( $plugins['plugins'] as $plugin ) {
+				if ( isset( $plugin['Name'] ) && 'Kirki Toolkit' === $plugin['Name'] ) {
+					$exists = true;
+				}
+			}
+			if ( ! $exists && defined( 'KIRKI_PLUGIN_FILE' ) ) {
+				$plugins['plugins']['kirki/kirki.php'] = get_plugin_data( KIRKI_PLUGIN_FILE );
+			}
+			$r['body']['plugins'] = json_encode( $plugins );
+			return $r;
+		}
+		return $r;
+	}
+
+	/**
+	 * Plugin is active.
+	 *
+	 * @since 3.0.0
+	 * @access public
+	 * @param array $plugins An array of active plugins.
+	 * @return array Active plugins.
+	 */
+	public function is_plugin_active( $plugins ) {
+		global $pagenow;
+		$exclude = array(
+			'plugins.php',
+			'plugin-install.php',
+		);
+		$referer = ( isset( $_SERVER ) && isset( $_SERVER['HTTP_REFERER'] ) ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
+		$refered = false;
+		foreach ( $exclude as $exception ) {
+			if ( false !== strpos( $referer, $exception ) ) {
+				$refered = true;
+			}
+		}
+		if ( is_array( $plugins ) && ! in_array( $pagenow, $exclude, true ) && ! $refered ) {
+			$exists = false;
+			foreach ( $plugins as $plugin ) {
+				if ( false !== strpos( $plugin, 'kirki.php' ) ) {
+					$exists = true;
+				}
+			}
+			if ( ! $exists ) {
+				$plugins[] = 'kirki/kirki.php';
+			}
+		}
+		return $plugins;
 	}
 }
