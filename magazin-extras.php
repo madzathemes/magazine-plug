@@ -1,5 +1,5 @@
 <?php
-include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
+#include_once ('plugins/easy-google-fonts/easy-google-fonts.php');
 include_once ('plugins/megamenu-master/df-megamenu.php');
 #include_once ('plugins/megadropdownmenu-master/megadropdown.php');
 if (class_exists('WPBakeryShortCode')) {
@@ -838,5 +838,10 @@ function custom_row_style_attributes( $attributes, $args ) {
 
 add_filter('siteorigin_panels_row_style_attributes', 'custom_row_style_attributes', 10, 2);
 
+// REMOVE WP EMOJI
+remove_action('wp_head', 'print_emoji_detection_script', 7);
+remove_action('wp_print_styles', 'print_emoji_styles');
 
+remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+remove_action( 'admin_print_styles', 'print_emoji_styles' );
 ?>

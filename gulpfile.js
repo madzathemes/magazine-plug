@@ -28,6 +28,8 @@ gulp.task('plugins', function () {
         var theme = "infowazz";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
         var theme = "Mellany";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
         var theme = "NewsPaperWars";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
+        var theme = "xnews";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
+        var theme = "zeronews";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
 
 });
 
@@ -42,7 +44,9 @@ gulp.task('zip', function () {
         .pipe(gulp.dest('../../themes/newspaper2017/all_plugins/'))
         .pipe(gulp.dest('../../themes/NewsPaperWars/all_plugins/'))
         .pipe(gulp.dest('../../themes/techpro/all_plugins/'))
-        .pipe(gulp.dest('../../themes/nextnews/all_plugins/'));
+        .pipe(gulp.dest('../../themes/nextnews/all_plugins/'))
+        .pipe(gulp.dest('../../themes/xnews/all_plugins/'))
+        .pipe(gulp.dest('../../themes/zeronews/all_plugins/'));
 });
 
 gulp.task('watch', function(){
