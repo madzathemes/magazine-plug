@@ -12,7 +12,7 @@ add_shortcode( 'mt_grid', 'mt_grid_func' );
 						'tag' => '',
             'offset' => '',
 						'author' => '',
-						'posttype' => '',
+						'posttype' => 'post',
         ), $atts));
 
         $content_ = "[grid posttype="$posttype" type='$type' author='$author' tag='$tag' title='$title' position='$position' offset='$offset' orderby='$orderby' category='$category']";
