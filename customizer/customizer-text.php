@@ -58,7 +58,7 @@ function magazin_customize_text($wp_customize){
   ));
 
 } add_action('customize_register', 'magazin_customize_text');
-
+if ( class_exists( 'Kirki' ) ) {
 Kirki::add_field( 't_review_score', array(
  'type'        => 'text',
  'settings'    => 't_review_score',
@@ -557,4 +557,5 @@ Kirki::add_field( 't_o_all', array(
   'label'       => esc_attr__( "All", 'magazin' ),
   'section'     => 'mt_translate_other',
 ));
+}
 ?>

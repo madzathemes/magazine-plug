@@ -108,7 +108,7 @@ function magazin_customize_ads($wp_customize){
 }
 
 add_action('customize_register', 'magazin_customize_ads');
-
+if ( class_exists( 'Kirki' ) ) {
 Kirki::add_field( 'magazin_theme_options[sidebar_ad_top]', array(
   'type'        => 'code',
   'settings'    => 'magazin_theme_options[sidebar_ad_top]',
@@ -364,5 +364,5 @@ Kirki::add_field( 'magazin_theme_options[header_ad_top]', array(
     'height'   => 250,
   ),
 ));
-
+}
 ?>

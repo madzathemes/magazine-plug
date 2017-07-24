@@ -31,7 +31,7 @@ function magazin_customize_posts($wp_customize){
 
 
 } add_action('customize_register', 'magazin_customize_posts');
-
+if ( class_exists( 'Kirki' ) ) {
 Kirki::add_field( 'magazin_theme_options[category_grid_style]', array(
   'type'        => 'radio-image',
   'settings'    => 'magazin_theme_options[category_grid_style]',
@@ -108,5 +108,5 @@ Kirki::add_field( 'mt_first_letter', array(
      'off' => esc_attr__( 'Off', 'fullstory' ),
    ),
  ));
- 
+ }
 ?>

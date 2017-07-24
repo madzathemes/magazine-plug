@@ -92,7 +92,7 @@ function magazin_customize_general($wp_customize){
 }
 
 add_action('customize_register', 'magazin_customize_general');
-
+if ( class_exists( 'Kirki' ) ) {
 Kirki::add_field( 'magazin_option[post_meta_excerpt]', array(
   'type'        => 'select',
   'settings'    => 'magazin_option[post_meta_excerpt]',
@@ -414,5 +414,5 @@ Kirki::add_field( 'mt_facebook_meta', array(
    'option_type'     => 'option',
    'section'     => 'performance_',
  ));
-
+}
 ?>
