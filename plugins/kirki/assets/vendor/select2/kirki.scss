@@ -42,12 +42,6 @@
 }
 
 .wp-customizer .select2-container {
-  z-index: 8 !important;
-
-  &.select2-container {
-    &--open {
-      // @See https://github.com/aristath/kirki/issues/1418
-      z-index: 999999 !important;
-    }
-  }
+  // @See https://github.com/aristath/kirki/issues/1418
+  z-index: 999999 !important;
 }

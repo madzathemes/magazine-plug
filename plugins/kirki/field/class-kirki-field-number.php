@@ -54,9 +54,14 @@ class Kirki_Field_Number extends Kirki_Field {
 			$value = filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 		}
 
-		// Minimum & maximum value limits.
-		if ( $value < $min || $value > $max ) {
-			return max( min( $value, $max ), $min );
+		// Minimum value limit.
+		if ( $value < $min ) {
+			return $min;
+		}
+
+		// Maximum value limit.
+		if ( $value > $max ) {
+			return $max;
 		}
 
 		// Only multiple of steps.
@@ -66,6 +71,9 @@ class Kirki_Field_Number extends Kirki_Field {
 				$value = $min + ( round( $steps ) * $step );
 			}
 		}
+
 		return $value;
+
 	}
+
 }

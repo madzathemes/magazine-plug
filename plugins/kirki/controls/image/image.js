@@ -17,24 +17,17 @@ wp.customize.controlConstructor['kirki-image'] = wp.customize.Control.extend({
 
 	initKirkiControl: function() {
 
-		var control       = this,
-		    value         = control.getValue(),
-		    saveAs        = ( ! _.isUndefined( control.params.choices ) && ! _.isUndefined( control.params.choices.save_as ) ) ? control.params.choices.save_as : 'url',
-		    preview       = control.container.find( '.placeholder, .thumbnail' ),
-		    previewImage  = ( 'array' === saveAs ) ? value.url : value,
-		    removeButton  = control.container.find( '.image-upload-remove-button' ),
-		    defaultButton = control.container.find( '.image-default-button' );
+		var control = this,
+		    value   = control.getValue(),
+		    saveAs  = ( ! _.isUndefined( control.params.choices ) && ! _.isUndefined( control.params.choices.save_as ) ) ? control.params.choices.save_as : 'url',
+		    preview = control.container.find( '.placeholder, .thumbnail' ),
+		    previewImage = ( 'array' === saveAs ) ? value.url : value;
 
 		control.container.find( '.kirki-controls-loading-spinner' ).hide();
 
 		// If value is not empty, hide the "default" button.
 		if ( ( 'url' === saveAs && '' !== value ) || ( 'array' === saveAs && ! _.isUndefined( value.url ) && '' !== value.url ) ) {
 			control.container.find( 'image-default-button' ).hide();
-		}
-
-		// If value is empty, hide the "remove" button.
-		if ( ( 'url' === saveAs && '' === value ) || ( 'array' === saveAs && ( _.isUndefined( value.url ) || '' === value.url ) ) ) {
-			removeButton.hide();
 		}
 
 		// If value is default, hide the default button.
@@ -51,7 +44,9 @@ wp.customize.controlConstructor['kirki-image'] = wp.customize.Control.extend({
 
 					// This will return the selected image from the Media Uploader, the result is an object.
 					var uploadedImage = image.state().get( 'selection' ).first(),
-					    previewImage  = uploadedImage.toJSON().sizes.full.url;
+					    previewImage   = uploadedImage.toJSON().sizes.full.url,
+					    removeButton,
+					    defaultButton;
 
 					if ( ! _.isUndefined( uploadedImage.toJSON().sizes.medium ) ) {
 						previewImage = uploadedImage.toJSON().sizes.medium.url;
@@ -69,6 +64,9 @@ wp.customize.controlConstructor['kirki-image'] = wp.customize.Control.extend({
 					} else {
 						control.saveValue( 'url', uploadedImage.toJSON().sizes.full.url );
 					}
+
+					removeButton  = control.container.find( '.image-upload-remove-button' );
+					defaultButton = control.container.find( '.image-default-button' );
 
 					if ( preview.length ) {
 						preview.removeClass().addClass( 'thumbnail thumbnail-image' ).html( '<img src="' + previewImage + '" alt="" />' );

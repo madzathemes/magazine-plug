@@ -104,17 +104,53 @@ class Kirki_Output {
 				if ( isset( $output['choice'] ) && isset( $value[ $output['choice'] ] ) ) {
 					$value[ $output['choice'] ] = str_replace( '$', $value[ $output['choice'] ], $output['value_pattern'] );
 				} else {
-					foreach ( array_keys( $value ) as $value_k ) {
-						if ( is_string( $value[ $value_k ] ) ) {
-							$value[ $value_k ] = str_replace( '$', $value[ $value_k ], $output['value_pattern'] );
-						}
+					foreach ( $value as $k => $v ) {
+						$value[ $k ] = str_replace( '$', $value[ $k ], $output['value_pattern'] );
 					}
 				}
 			}
 			if ( isset( $output['pattern_replace'] ) && is_array( $output['pattern_replace'] ) ) {
+				$option_type = 'theme_mod';
+				$option_name = false;
+				if ( isset( Kirki::$config[ $this->config_id ] ) ) {
+					$config = Kirki::$config[ $this->config_id ];
+					$option_type = ( isset( $config['option_type'] ) ) ? $config['option_type'] : 'theme_mod';
+					if ( 'option' === $option_type || 'site_option' === $option_type ) {
+						$option_name = ( isset( $config['option_name'] ) ) ? $config['option_name'] : false;
+					}
+				}
+				if ( $option_name ) {
+					$options = ( 'site_option' === $option_type ) ? get_site_option( $option_name ) : get_option( $option_name );
+				}
 				foreach ( $output['pattern_replace'] as $search => $replace ) {
-					$replacement = Kirki_Values::get_value( $replace );
-					$replacement = ( false === $replacement || null === $replacement ) ? '' : $replacement;
+					$replacement = '';
+					switch ( $option_type ) {
+						case 'option':
+							if ( is_array( $options ) ) {
+								if ( $option_name ) {
+									$subkey = str_replace( array( $option_name, '[', ']' ), '', $replace );
+									$replacement = ( isset( $options[ $subkey ] ) ) ? $options[ $subkey ] : '';
+									break;
+								}
+								$replacement = ( isset( $options[ $replace ] ) ) ? $options[ $replace ] : '';
+								break;
+							}
+							$replacement = get_option( $replace );
+							break;
+						case 'site_option':
+							$replacement = ( is_array( $options ) && isset( $options[ $replace ] ) ) ? $options[ $replace ] : get_site_option( $replace );
+							break;
+						case 'user_meta':
+							$user_id = get_current_user_id();
+							if ( $user_id ) {
+								// @codingStandardsIgnoreLine
+								$replacement = get_user_meta( $user_id, $replace, true );
+							}
+							break;
+						default:
+							$replacement = get_theme_mod( $replace );
+					}
+					$replacement = ( false === $replacement ) ? '' : $replacement;
 					if ( is_array( $value ) ) {
 						foreach ( $value as $k => $v ) {
 							$value[ $k ] = str_replace( $search, $replacement, $value[ $v ] );
@@ -208,9 +244,9 @@ class Kirki_Output {
 			return;
 		}
 		$output['media_query'] = ( isset( $output['media_query'] ) ) ? $output['media_query'] : 'global';
-		$output['prefix']      = ( isset( $output['prefix'] ) ) ? $output['prefix'] : '';
-		$output['units']       = ( isset( $output['units'] ) ) ? $output['units'] : '';
-		$output['suffix']      = ( isset( $output['suffix'] ) ) ? $output['suffix'] : '';
+		$output['prefix']      = ( isset( $output['prefix'] ) )      ? $output['prefix']      : '';
+		$output['units']       = ( isset( $output['units'] ) )       ? $output['units']       : '';
+		$output['suffix']      = ( isset( $output['suffix'] ) )      ? $output['suffix']      : '';
 
 		// Properties that can accept multiple values.
 		// Useful for example for gradients where all browsers use the "background-image" property

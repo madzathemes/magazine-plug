@@ -3,12 +3,11 @@
 Grunt
 npm install && grunt
 
-# Create svn directory.
-if [ -d "./svn" ]; then
-	rm -rf svn
+# Create svn directory if it doesn't exist
+if [ ! -d "./svn" ]; then
+	mkdir svn
+	svn co https://plugins.svn.wordpress.org/kirki svn
 fi
-mkdir svn
-svn co https://plugins.svn.wordpress.org/kirki svn
 
 # Copy files to SVN directory
 # We're using a dummy dir for convenience here.
@@ -54,6 +53,6 @@ cp -r svn/trunk svn/tags/$1
 cd svn
 svn rm $( svn status | sed -e '/^!/!d' -e 's/^!//' )
 svn add trunk/* --force
-svn add tags/* --force
+svn add tags/$1/* --force
 svn ci -m "Version $1"
 cd ..

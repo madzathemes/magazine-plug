@@ -62,7 +62,11 @@ class Kirki_Control_Radio_Buttonset extends WP_Customize_Control {
 	public function to_json() {
 		parent::to_json();
 
-		$this->json['default'] = ( isset( $this->default ) ) ? $this->default : $this->setting->default;
+		if ( isset( $this->default ) ) {
+			$this->json['default'] = $this->default;
+		} else {
+			$this->json['default'] = $this->setting->default;
+		}
 		$this->json['output']  = $this->output;
 		$this->json['value']   = $this->value();
 		$this->json['choices'] = $this->choices;
