@@ -39,7 +39,14 @@ include_once ('customizer/customizer-text.php');
 include_once ('plugins/social-count-plus-master/social-count-plus.php');
 add_filter('widget_text', 'do_shortcode');
 
-add_filter( 'pt-ocdi/disable_pt_branding', '__return_true' );
+// Disable Importer Branding
+add_filter( 'pt-ocdi/disable_pt_branding', '__return_true'
+
+//Speed import process, cutt xml
+function ocdi_change_time_of_single_ajax_call() {
+	return 10;
+}
+add_action( 'pt-ocdi/time_for_one_ajax_call', 'ocdi_change_time_of_single_ajax_call' );
 
 function magazin_text_domain() {
 	load_plugin_textdomain( 'magazine-plug', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
