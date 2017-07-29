@@ -40,7 +40,7 @@ include_once ('plugins/social-count-plus-master/social-count-plus.php');
 add_filter('widget_text', 'do_shortcode');
 
 // Disable Importer Branding
-add_filter( 'pt-ocdi/disable_pt_branding', '__return_true'
+add_filter( 'pt-ocdi/disable_pt_branding', '__return_true');
 
 //Speed import process, cutt xml
 function ocdi_change_time_of_single_ajax_call() {
