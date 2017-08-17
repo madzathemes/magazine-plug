@@ -20,7 +20,9 @@ gulp.task('version', function () {
 
 gulp.task('plugins', function () {
 
-  var theme = "newspaper2017";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
+        var theme = "rimi";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
+        var theme = "xnews";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
+        var theme = "newspaper2017";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
         var theme = "nextnews";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
         var theme = "techpro";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
         var theme = "boomnews";    gulp.src('../../themes/'+theme+'/inc/functions/gulp/functions-plugins.php').pipe(injectVersion({ package_file: 'version.json', prepend: '', })).pipe(gulp.dest('../../themes/'+theme+'/inc/functions/'))
@@ -47,6 +49,7 @@ gulp.task('zip', function () {
         .pipe(gulp.dest('../../themes/nextnews/all_plugins/'))
         .pipe(gulp.dest('../../themes/xnews/all_plugins/'))
         .pipe(gulp.dest('../../themes/zeronews/all_plugins/'));
+        .pipe(gulp.dest('../../themes/rimi/all_plugins/'));
 });
 
 gulp.task('watch', function(){

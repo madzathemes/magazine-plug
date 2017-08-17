@@ -849,4 +849,69 @@ function custom_row_style_attributes( $attributes, $args ) {
 add_filter('siteorigin_panels_row_style_attributes', 'custom_row_style_attributes', 10, 2);
 
 
+function mt_share_top(){
+	$option = get_option("xnews_theme_options");
+	$optionz = get_option("magazin_theme_options");
+	$url = wp_get_attachment_url( get_post_thumbnail_id(get_the_ID()));
+	$share_bottom = "";
+	$share_bottom = get_post_meta(get_the_ID(), "magazin_post_share_bottom", true);
+	if ( false == get_theme_mod( 't_p_share_on_facebook', false ) ) { $t_p_share_on_facebook = esc_html__("Share on Facebook", "xnews");  } else { $t_p_share_on_facebook = get_theme_mod( 't_p_share_on_facebook' ); }
+	if ( false == get_theme_mod( 't_p_share_on_twitter', false ) ) { $t_p_share_on_twitter = esc_html__("Tweet on Twitter", "xnews");  } else { $t_p_share_on_twitter = get_theme_mod( 't_p_share_on_twitter' ); }
+	if($share_top == "no"){} else if($share_top == "yes"){ ?>
+	  <ul class="share top">
+	    <li class="share-facebook"><a class="mt-radius" href="http://www.facebook.com/sharer.php?u=<?php the_permalink();?>" target="_blank"><span><?php echo esc_html($t_p_share_on_facebook); ?></span></a></li>
+	    <?php $input = get_the_title().' '.get_the_permalink(); $title = str_replace( ' ', '+', $input ); ?>
+	    <li class="share-twitter"><a class="mt-radius" href="http://twitter.com/home/?status=<?php echo esc_attr($title); ?>" target="_blank"><span><?php echo esc_html($t_p_share_on_twitter); ?></span></a></li>
+	    <li class="share-more">
+	      <div class="share-more-wrap"><div class="share-more-icon mt-radius">+</div></div>
+	      <a class="mt-radius" href="http://pinterest.com/pin/create/button/?url=<?php the_permalink() ?>&media=<?php echo esc_url($url); ?>" target="_blank"><div class="pinterest mt-radius-b"></div></a>
+	      <a class="mt-radius" href="https://plus.google.com/share?url=<?php the_permalink() ?>" target="_blank"><div class="google mt-radius-b"></div></a>
+	    </li>
+	  </ul>
+	<?php } else if ( true == get_theme_mod( 'mt_post_top_share', true ) ) {  ?>
+	  <ul class="share top">
+	    <li class="share-facebook"><a class="mt-radius" href="http://www.facebook.com/sharer.php?u=<?php the_permalink();?>" target="_blank"><span><?php echo esc_html($t_p_share_on_facebook); ?></span></a></li>
+	    <?php $input = get_the_title().' '.get_the_permalink(); $title = str_replace( ' ', '+', $input ); ?>
+	    <li class="share-twitter"><a class="mt-radius" href="http://twitter.com/home/?status=<?php echo esc_attr($title); ?>" target="_blank"><span><?php echo esc_html($t_p_share_on_twitter); ?></span></a></li>
+	    <li class="share-more">
+	      <div class="share-more-wrap"><div class="share-more-icon mt-radius">+</div></div>
+	      <a class="mt-radius" href="http://pinterest.com/pin/create/button/?url=<?php the_permalink() ?>&media=<?php echo esc_url($url); ?>" target="_blank"><div class="pinterest mt-radius-b"></div></a>
+	      <a class="mt-radius" href="https://plus.google.com/share?url=<?php the_permalink() ?>" target="_blank"><div class="google mt-radius-b"></div></a>
+	    </li>
+	  </ul>
+	<?php }
+}
+
+function mt_share_bottom(){
+	$option = get_option("xnews_theme_options");
+	$optionz = get_option("magazin_theme_options");
+	$url = wp_get_attachment_url( get_post_thumbnail_id(get_the_ID()));
+	$share_bottom = "";
+	$share_bottom = get_post_meta(get_the_ID(), "magazin_post_share_bottom", true);
+	if ( false == get_theme_mod( 't_p_share_on_facebook', false ) ) { $t_p_share_on_facebook = esc_html__("Share on Facebook", "xnews");  } else { $t_p_share_on_facebook = get_theme_mod( 't_p_share_on_facebook' ); }
+	if ( false == get_theme_mod( 't_p_share_on_twitter', false ) ) { $t_p_share_on_twitter = esc_html__("Tweet on Twitter", "xnews");  } else { $t_p_share_on_twitter = get_theme_mod( 't_p_share_on_twitter' ); }
+	if($share_bottom == "no"){} else if($share_bottom == "yes"){ ?>
+	<ul class="share down">
+		<li class="share-facebook"><a class="mt-radius" href="http://www.facebook.com/sharer.php?u=<?php the_permalink();?>" target="_blank"><span><?php echo esc_html($t_p_share_on_facebook); ?></span></a></li>
+		<?php $input = get_the_title().' '.get_the_permalink(); $title = str_replace( ' ', '+', $input ); ?>
+		<li class="share-twitter"><a class="mt-radius" href="http://twitter.com/home/?status=<?php echo esc_attr($title); ?>" target="_blank"><span><?php echo esc_html($t_p_share_on_twitter); ?></span></a></li>
+		<li class="share-more">
+			<a class="mt-radius" href="https://plus.google.com/share?url=<?php the_permalink() ?>" target="_blank"><div class="google mt-radius-b"></div></a>
+			<a class="mt-radius" href="http://pinterest.com/pin/create/button/?url=<?php the_permalink() ?>&media=<?php echo esc_url($url); ?>" target="_blank"><div class="pinterest mt-radius-b"></div></a>
+			<div class="share-more-wrap"><div class="share-more-icon mt-radius">+</div></div>
+		</li>
+	</ul>
+	<?php } else if ( true == get_theme_mod( 'mt_post_bottom_share', true ) ) {  ?>
+		<ul class="share down">
+			<li class="share-facebook"><a class="mt-radius" href="http://www.facebook.com/sharer.php?u=<?php the_permalink();?>" target="_blank"><span><?php echo esc_html($t_p_share_on_facebook); ?></span></a></li>
+			<?php $input = get_the_title().' '.get_the_permalink(); $title = str_replace( ' ', '+', $input ); ?>
+			<li class="share-twitter"><a class="mt-radius" href="http://twitter.com/home/?status=<?php echo esc_attr($title); ?>" target="_blank"><span><?php echo esc_html($t_p_share_on_twitter); ?></span></a></li>
+			<li class="share-more">
+				<a class="mt-radius" href="https://plus.google.com/share?url=<?php the_permalink() ?>" target="_blank"><div class="google mt-radius-b"></div></a>
+				<a class="mt-radius" href="http://pinterest.com/pin/create/button/?url=<?php the_permalink() ?>&media=<?php echo esc_url($url); ?>" target="_blank"><div class="pinterest mt-radius-b"></div></a>
+				<div class="share-more-wrap"><div class="share-more-icon mt-radius">+</div></div>
+			</li>
+		</ul>
+	<?php }
+}
 ?>
