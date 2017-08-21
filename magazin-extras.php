@@ -146,13 +146,40 @@ function magazin_header_hooks() {
 add_action('wp_head', 'magazin_header_hooks');
 
 function mt_header_script() {
+
 		$autoplay = get_option("carousel_autoplay");
 		$options = get_option("sticky_sidebar");
 		wp_enqueue_script('mt-effects', get_template_directory_uri() . '/inc/js/effects.js', array('jquery'), '1.0', true);
-		if(is_rtl()){ wp_add_inline_script( 'mt-effects', 'var $rtl = true;', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $rtl = false;', 'before' ); }
-		if(!empty($autoplay)){ if($autoplay=="1"){ wp_add_inline_script( 'mt-effects', 'var $autoplay = true;', 'before' ); } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' ); } } else { wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' ); }
-		if(!empty($options)){ if($options=="1"){ wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .sticky_row .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); } } else { wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .sticky_row .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' ); }
+
+		if(is_rtl()){
+			wp_add_inline_script( 'mt-effects', 'var $rtl = true;', 'before' );
+		} else {
+			wp_add_inline_script( 'mt-effects', 'var $rtl = false;', 'before' );
+		}
+
+		if(!empty($autoplay)){
+			if($autoplay=="1"){
+				wp_add_inline_script( 'mt-effects', 'var $autoplay = true;', 'before' );
+			}
+			else {
+				wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' );
+			}
+		} else {
+			wp_add_inline_script( 'mt-effects', 'var $autoplay = false;', 'before' );
+		}
+
+		if(!empty($options)){
+			if($options=="1"){
+				wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .sticky_row .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' );
+				wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".mt-signle-share-sidebar").theiaStickySidebar({additionalMarginTop: 99,	minWidth: 1200});});', 'after' );
+			}
+		} else {
+			wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .sticky_row .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' );
+			wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".mt-signle-share-sidebar").theiaStickySidebar({additionalMarginTop: 99,	minWidth: 1200});});', 'after' );
+		}
+
 		wp_enqueue_script( 'mt-defer', get_template_directory_uri(). '/inc/js/defer.js', array( 'jquery'),  '1.0', true );
+
 		if ( true == get_theme_mod( 'mt_header_time', false ) ) {
 			wp_add_inline_script( 'mt-defer', '
 			var today = new Date();
