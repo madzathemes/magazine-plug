@@ -171,11 +171,11 @@ function mt_header_script() {
 		if(!empty($options)){
 			if($options=="1"){
 				wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .sticky_row .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' );
-				wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".mt-signle-share-sidebar").theiaStickySidebar({additionalMarginTop: 99,	minWidth: 1200});});', 'after' );
+				wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".mt-signle-share-sidebar").theiaStickySidebar({additionalMarginTop: 70,	minWidth: 1200});});', 'after' );
 			}
 		} else {
 			wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".sidebar, .sticky_row .panel-grid-cell").theiaStickySidebar({additionalMarginTop: 29,	minWidth: 1200});});', 'after' );
-			wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".mt-signle-share-sidebar").theiaStickySidebar({additionalMarginTop: 99,	minWidth: 1200});});', 'after' );
+			wp_add_inline_script( 'mt-effects', 'jQuery(document).ready(function() {jQuery(".mt-signle-share-sidebar").theiaStickySidebar({additionalMarginTop: 70,	minWidth: 1200});});', 'after' );
 		}
 
 		wp_enqueue_script( 'mt-defer', get_template_directory_uri(). '/inc/js/defer.js', array( 'jquery'),  '1.0', true );
