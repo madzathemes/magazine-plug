@@ -850,11 +850,11 @@ add_filter('siteorigin_panels_row_style_attributes', 'custom_row_style_attribute
 
 
 function mt_share_top(){
+	$share_top = "";
+	$share_top = get_post_meta(get_the_ID(), "magazin_post_share_top", true);
 	$option = get_option("xnews_theme_options");
 	$optionz = get_option("magazin_theme_options");
 	$url = wp_get_attachment_url( get_post_thumbnail_id(get_the_ID()));
-	$share_bottom = "";
-	$share_bottom = get_post_meta(get_the_ID(), "magazin_post_share_bottom", true);
 	if ( false == get_theme_mod( 't_p_share_on_facebook', false ) ) { $t_p_share_on_facebook = esc_html__("Share on Facebook", "xnews");  } else { $t_p_share_on_facebook = get_theme_mod( 't_p_share_on_facebook' ); }
 	if ( false == get_theme_mod( 't_p_share_on_twitter', false ) ) { $t_p_share_on_twitter = esc_html__("Tweet on Twitter", "xnews");  } else { $t_p_share_on_twitter = get_theme_mod( 't_p_share_on_twitter' ); }
 	if($share_top == "no"){} else if($share_top == "yes"){ ?>
