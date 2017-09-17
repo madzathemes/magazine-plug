@@ -126,7 +126,6 @@ Kirki::add_field( 'magazin_theme_options[bg_ad_top]', array(
 'section'     => 'bg_ad_top',
 'default'     => '',
 'priority'    => 10,
-'option_type' => 'option',
 'output' => array(
 		array(
 			'element'  => 'body'
