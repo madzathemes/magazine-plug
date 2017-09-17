@@ -127,7 +127,7 @@ Kirki::add_field( 'bg_ad_tops', array(
 'priority'    => 1,
 'output'      => array(
             array(
-                'element'  => '.background-ad'
+                'element'  => 'background-ad'
             ),
         ),
 
