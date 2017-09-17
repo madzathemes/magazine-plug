@@ -124,6 +124,7 @@ Kirki::add_field( 'magazin_theme_options[bg_ad_top]', array(
 'settings'    => 'magazin_theme_options[bg_ad_top]',
 'label'       => esc_html__( 'YOUR AD CODE', 'rimi' ),
 'section'     => 'bg_ad_top',
+'transport'   => 'postMessage',
 'priority'    => 10,
 'output'      => '.background-ad',
 
