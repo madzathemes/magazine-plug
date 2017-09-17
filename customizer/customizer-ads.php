@@ -119,9 +119,9 @@ function magazin_customize_ads($wp_customize){
 add_action('customize_register', 'magazin_customize_ads');
 if ( class_exists( 'Kirki' ) ) {
 
-Kirki::add_field( 'magazin_theme_options[bg_ad_top]', array(
+Kirki::add_field( 'bg_ad_top', array(
 'type'        => 'background',
-'settings'    => 'magazin_theme_options[bg_ad_top]',
+'settings'    => 'bg_ad_top',
 'label'       => esc_html__( 'YOUR AD CODE', 'rimi' ),
 'section'     => 'bg_ad_top',
 'transport'   => 'postMessage',
