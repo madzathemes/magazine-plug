@@ -105,13 +105,15 @@ function magazin_customize_ads($wp_customize){
     'panel'  => 'magazin_ads',
   ));
 
-}
 
-$wp_customize->add_section('bg_ad_top', array(
-'title'    	=> esc_html__('Background ad', 'rimi'),
-'priority' => 5,
-'panel'  => 'magazin_ads',
-));
+  $wp_customize->add_section('bg_ad_top', array(
+  'title'    	=> esc_html__('Background ad', 'rimi'),
+  'priority' => 5,
+  'panel'  => 'magazin_ads',
+  ));
+
+
+}
 
 
 add_action('customize_register', 'magazin_customize_ads');
