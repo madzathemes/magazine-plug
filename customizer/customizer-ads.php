@@ -127,10 +127,9 @@ Kirki::add_field( 'magazin_theme_options[bg_ad_top]', array(
 'default'     => '',
 'priority'    => 10,
 'output'      => array(
-          array(
+
             'element' => '.background-ad',
-            'suffix'   => ' !important',
-          ),
+        
         ),
 ));
 
