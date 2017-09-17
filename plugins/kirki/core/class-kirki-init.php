@@ -33,6 +33,8 @@ class Kirki_Init {
 		add_action( 'after_setup_theme', array( $this, 'set_url' ) );
 		add_action( 'wp_loaded', array( $this, 'add_to_customizer' ), 1 );
 		add_filter( 'kirki/control_types', array( $this, 'default_control_types' ) );
+
+		new Kirki_Values();
 	}
 
 	/**
@@ -134,7 +136,7 @@ class Kirki_Init {
 			'cropped_image'         => 'WP_Customize_Cropped_Image_Control',
 			'upload'                => 'WP_Customize_Upload_Control',
 		);
-		return array_merge( $control_types, $this->control_types );
+		return array_merge( $this->control_types, $control_types );
 
 	}
 
@@ -163,14 +165,23 @@ class Kirki_Init {
 		foreach ( $section_types as $section_type ) {
 			$wp_customize->register_section_type( $section_type );
 		}
-		if ( empty( $this->control_types ) ) {
-			$this->control_types = $this->default_control_types();
+
+		$this->control_types = $this->default_control_types();
+		foreach ( $this->control_types as $key => $classname ) {
+			if ( ! class_exists( $classname ) ) {
+				unset( $this->control_types[ $key ] );
+			}
 		}
-		$do_not_register_control_types = apply_filters( 'kirki/control_types/exclude', array(
-			'Kirki_Control_Repeater',
-		) );
+
+		$skip_control_types = apply_filters(
+			'kirki/control_types/exclude', array(
+				'Kirki_Control_Repeater',
+				'WP_Customize_Control',
+			)
+		);
+
 		foreach ( $this->control_types as $control_type ) {
-			if ( 0 === strpos( $control_type, 'Kirki' ) && ! in_array( $control_type, $do_not_register_control_types, true ) && class_exists( $control_type ) ) {
+			if ( ! in_array( $control_type, $skip_control_types, true ) && class_exists( $control_type ) ) {
 				$wp_customize->register_control_type( $control_type );
 			}
 		}
@@ -200,8 +211,8 @@ class Kirki_Init {
 	/**
 	 * Register our sections to the WordPress Customizer.
 	 *
-	 * @var	object	The WordPress Customizer object
-	 * @return  void
+	 * @var object The WordPress Customizer object
+	 * @return void
 	 */
 	public function add_sections() {
 		if ( ! empty( Kirki::$sections ) ) {
@@ -226,8 +237,8 @@ class Kirki_Init {
 	/**
 	 * Create the settings and controls from the $fields array and register them.
 	 *
-	 * @var	object	The WordPress Customizer object
-	 * @return  void
+	 * @var object The WordPress Customizer object.
+	 * @return void
 	 */
 	public function add_fields() {
 
@@ -278,9 +289,6 @@ class Kirki_Init {
 	 * @return bool
 	 */
 	public static function is_plugin() {
-		// Log error for developers.
-		// @codingStandardsIgnoreLine
-		error_log( 'We detected you\'re using Kirki_Init::is_plugin(). Please use Kirki_Util::is_plugin() instead. This message was added in Kirki 3.0.9.' );
 		// Return result using the Kirki_Util class.
 		return Kirki_Util::is_plugin();
 	}
@@ -296,8 +304,7 @@ class Kirki_Init {
 	 */
 	public static function get_variables() {
 		// Log error for developers.
-		// @codingStandardsIgnoreLine
-		error_log( 'We detected you\'re using Kirki_Init::get_variables(). Please use Kirki_Util::get_variables() instead. This message was added in Kirki 3.0.9.' );
+		_doing_it_wrong( __METHOD__, esc_attr__( 'We detected you\'re using Kirki_Init::get_variables(). Please use Kirki_Util::get_variables() instead.', 'kirki' ), '3.0.10' );
 		// Return result using the Kirki_Util class.
 		return Kirki_Util::get_variables();
 	}
