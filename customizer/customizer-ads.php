@@ -120,17 +120,17 @@ add_action('customize_register', 'magazin_customize_ads');
 if ( class_exists( 'Kirki' ) ) {
 
 Kirki::add_field( 'magazin_theme_options[bg_ad_top]', array(
-'type'        => 'code',
+'type'        => 'background',
 'settings'    => 'magazin_theme_options[bg_ad_top]',
 'label'       => esc_html__( 'YOUR AD CODE', 'rimi' ),
 'section'     => 'bg_ad_top',
 'default'     => '',
 'priority'    => 10,
 'option_type' => 'option',
-  'choices'     => array(
-    'language' => 'css, html, javascript',
-    'theme'    => 'monokai',
-    'height'   => 250,
+'output' => array(
+		array(
+			'element'  => 'body'
+		),
   ),
 ));
 
