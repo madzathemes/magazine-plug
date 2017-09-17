@@ -136,7 +136,7 @@ Kirki::add_field( 'bg_ad_topsa', array(
         ),
 'output'      => array(
             array(
-                'element'  => 'background-ad'
+                'element'  => '.background-ad'
             ),
         ),
 
