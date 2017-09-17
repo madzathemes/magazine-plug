@@ -119,28 +119,33 @@ function magazin_customize_ads($wp_customize){
 add_action('customize_register', 'magazin_customize_ads');
 if ( class_exists( 'Kirki' ) ) {
 
-Kirki::add_field( 'bg_ad_topsa', array(
-'type'        => 'background',
-'settings'    => 'bg_ad_tops',
-'label'       => esc_html__( 'YOUR AD CODE', 'rimi' ),
-'section'     => 'bg_ad_top',
-'priority'    => 1,
-'default'     => array(
-            'color'    => 'rgba(255,0,255,0.3)',
+function mytheme_kirki_fields( $fields ) {
+
+  $fields[] =  array(
+    'type'        => 'background',
+    'settings'    => 'magazin_bg_ad',
+    'label'       => esc_attr__( 'Add Background', 'nextnews' ),
+    'section'     => 'bg_ad_top',
+    'priority'    => 1,
+    'default'     => array(
+            'color'    => 'rgba(25,170,141,0.7)',
             'image'    => '',
             'repeat'   => 'no-repeat',
             'size'     => 'cover',
             'attach'   => 'fixed',
-            'position' => 'left-top',
-            'opacity'  => 100
+            'position' => 'center-bottom',
         ),
-'output'      => array(
-            array(
-                'element'  => '.background-ad'
-            ),
+        'output'      => array(
+          array(
+            'element' => '.background-ad',
+            'suffix'   => ' !important',
+          ),
         ),
+  );
 
-));
+  return $fields;
+}
+add_filter( 'kirki/fields', 'mytheme_kirki_fields' );
 
 Kirki::add_field( 'magazin_theme_options[sidebar_ad_top]', array(
   'type'        => 'code',
