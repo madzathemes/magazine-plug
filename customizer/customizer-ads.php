@@ -124,7 +124,6 @@ Kirki::add_field( 'bg_ad_top', array(
 'settings'    => 'bg_ad_top',
 'label'       => esc_html__( 'YOUR AD CODE', 'rimi' ),
 'section'     => 'bg_ad_top',
-'transport'   => 'postMessage',
 'priority'    => 10,
 'output'      => array(
             array(
