@@ -126,15 +126,11 @@ function posts( $atts, $content = null ) {
 			if($title_type=="left" and $title != ""){ $shortcode .= '<h2 class="heading heading-left"><span>'.$title.'</span></h2>'; }
 			if($title_type=="right" and $title != ""){ $shortcode .= '<h2 class="heading heading-right"><span>'.$title.'</span></h2>'; }
 
-			global $do_not_duplicate;
-			if(empty($do_not_duplicate)) { $do_not_duplicate = ""; }
 			if($the_query->have_posts()) {
 				$shortcode .='<div>';
 				if($type=="small-bottom"){
 					$shortcode .='<div class="poster-small-bottom-wrap">';
 					while ( $the_query->have_posts() ) : $the_query->the_post();
-					if( $post->ID == $do_not_duplicate ) continue;
-					$do_not_duplicate = $post->ID;
 					$attachment_id = get_post_thumbnail_id( get_the_ID() );
 					$img_src = wp_get_attachment_image_url( $attachment_id, 'full' );
 					$img_srcset = wp_get_attachment_image_srcset( $attachment_id, 'full' );
@@ -160,7 +156,6 @@ function posts( $atts, $content = null ) {
 				}
 				if($type=="small"){
 					while ( $the_query->have_posts() ) : $the_query->the_post();
-
 
 					$attachment_id = get_post_thumbnail_id( get_the_ID() );
 					$img_src = wp_get_attachment_image_url( $attachment_id, 'full' );
