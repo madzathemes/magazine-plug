@@ -125,7 +125,7 @@ function posts( $atts, $content = null ) {
 			if($title_type=="center" and $title != ""){ $shortcode .= '<h2 class="heading"><span>'.$title.'</span></h2>'; }
 			if($title_type=="left" and $title != ""){ $shortcode .= '<h2 class="heading heading-left"><span>'.$title.'</span></h2>'; }
 			if($title_type=="right" and $title != ""){ $shortcode .= '<h2 class="heading heading-right"><span>'.$title.'</span></h2>'; }
-
+$do_not_duplicate[]  = array();
 			global $do_not_duplicate;
 			if(empty($do_not_duplicate)) { $do_not_duplicate = ""; }
 			if($the_query->have_posts()) {
