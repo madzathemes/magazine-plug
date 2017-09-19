@@ -158,12 +158,13 @@ function posts( $atts, $content = null ) {
 					endwhile;
 					$shortcode .='</div>';
 				}
-				$already_displayed_ids = array();
 				if($type=="small"){
 					while ( $the_query->have_posts() ) : $the_query->the_post();
 					global $do_not_duplicate;
-					if( $post->ID == $do_not_duplicate ) continue;
-					$do_not_duplicate = $post->ID;
+					if(in_array(get_the_ID(), $do_not_duplicate)) { continue; }
+					$do_not_duplicate[] = get_the_ID();
+
+
 					$attachment_id = get_post_thumbnail_id( get_the_ID() );
 					$img_src = wp_get_attachment_image_url( $attachment_id, 'full' );
 					$img_srcset = wp_get_attachment_image_srcset( $attachment_id, 'full' );

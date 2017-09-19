@@ -143,6 +143,7 @@ function mytheme_kirki_fields( $fields ) {
         ),
   );
 
+
   return $fields;
 }
 add_filter( 'kirki/fields', 'mytheme_kirki_fields' );
