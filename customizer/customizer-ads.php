@@ -9,6 +9,12 @@ function magazin_customize_ads($wp_customize){
     'description'    => '',
   ));
 
+  $wp_customize->add_section('bg_ad_top', array(
+  'title'    	=> esc_html__('Background ad', 'magazin'),
+  'priority' => 1,
+  'panel'  => 'magazin_ads',
+  ));
+
   $wp_customize->add_section('sidebar_ad_top', array(
     'title'    	=> esc_html__('Sidebar top ad', 'magazin'),
     'priority' => 5,
@@ -106,11 +112,6 @@ function magazin_customize_ads($wp_customize){
   ));
 
 
-  $wp_customize->add_section('bg_ad_top', array(
-  'title'    	=> esc_html__('Background ad', 'rimi'),
-  'priority' => 5,
-  'panel'  => 'magazin_ads',
-  ));
 
 
 }
@@ -119,14 +120,14 @@ function magazin_customize_ads($wp_customize){
 add_action('customize_register', 'magazin_customize_ads');
 if ( class_exists( 'Kirki' ) ) {
 
-function mytheme_kirki_fields( $fields ) {
+function mytheme_kirki_fields__( $fields ) {
 
   $fields[] =  array(
     'type'        => 'background',
     'settings'    => 'magazin_bg_ad',
-    'label'       => esc_attr__( 'Add Background', 'nextnews' ),
+    'label'       => esc_attr__( 'Add Background', 'magazin' ),
     'section'     => 'bg_ad_top',
-    'priority'    => 1,
+    'priority'    => 2,
     'default'     => array(
             'color'    => 'rgba(25,170,141,0.7)',
             'image'    => '',
@@ -143,10 +144,31 @@ function mytheme_kirki_fields( $fields ) {
         ),
   );
 
+  $fields[] =  array(
+    'type'        => 'text',
+    'settings'    => 'magazin_bg_ad_url',
+    'label'       => esc_attr__( 'URL', 'magazin' ),
+    'section'     => 'bg_ad_top',
+    'priority'    => 1,
+
+  );
+  $fields[] =  array(
+    'type'        => 'spacing',
+    'settings'    => 'magazin_bg_ad_space',
+    'label'       => esc_attr__( 'Top & Bottom Space', 'magazin' ),
+    'section'     => 'bg_ad_top',
+    'priority'    => 1,
+    'default'     => array(
+  		'top'    => '0px',
+  		'bottom' => '0px',
+  	),
+
+  );
+
 
   return $fields;
 }
-add_filter( 'kirki/fields', 'mytheme_kirki_fields' );
+add_filter( 'kirki/fields', 'mytheme_kirki_fields__' );
 
 Kirki::add_field( 'magazin_theme_options[sidebar_ad_top]', array(
   'type'        => 'code',
