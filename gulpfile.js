@@ -48,7 +48,7 @@ gulp.task('zip', function () {
         .pipe(gulp.dest('../../themes/techpro/all_plugins/'))
         .pipe(gulp.dest('../../themes/nextnews/all_plugins/'))
         .pipe(gulp.dest('../../themes/xnews/all_plugins/'))
-        .pipe(gulp.dest('../../themes/zeronews/all_plugins/'));
+        .pipe(gulp.dest('../../themes/zeronews/all_plugins/'))
         .pipe(gulp.dest('../../themes/rimi/all_plugins/'));
 });
 
