@@ -36,6 +36,7 @@ include_once ('customizer/customizer-general.php');
 include_once ('customizer/customizer-ads.php');
 include_once ('customizer/customizer-posts.php');
 include_once ('customizer/customizer-text.php');
+include_once ('customizer/customizer-fonts.php');
 include_once ('plugins/social-count-plus-master/social-count-plus.php');
 add_filter('widget_text', 'do_shortcode');
 
