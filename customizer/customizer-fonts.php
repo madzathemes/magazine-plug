@@ -38,7 +38,7 @@ if ( class_exists( 'Kirki' ) ) {
      'label'       => esc_attr__( 'Headings', 'nextnews' ),
      'section'     => 'mt_typography_section',
      'priority'    => 10,
-     'default'     => array( 'font-family'  => 'Lato', ),
+     'default'     => array( 'font-family'  => 'Lato', 'subsets' => array( 'latin-ext' ), ),
      'output' => array(
        array(
          'element' => 'h1, h2, h3, h4, h5, h6, blockquote',
@@ -59,7 +59,7 @@ if ( class_exists( 'Kirki' ) ) {
      'label'       => esc_attr__( 'Body', 'nextnews' ),
      'section'     => 'mt_typography_section',
      'priority'    => 10,
-     'default'     => array( 'font-family'  => 'Lato', ),
+     'default'     => array( 'font-family'  => 'Lato', 'subsets' => array( 'latin-ext' ) ),
      'output' => array(
        array(
          'element' => 'body',
@@ -80,7 +80,7 @@ if ( class_exists( 'Kirki' ) ) {
      'label'       => esc_attr__( 'Menu', 'nextnews' ),
      'section'     => 'mt_typography_section',
      'priority'    => 10,
-     'default'     => array( 'font-family'  => 'Lato', ),
+     'default'     => array( 'font-family'  => 'Lato', 'subsets' => array( 'latin-ext' ) ),
      'output' => array(
        array(
          'element' => '.sf-menu',
