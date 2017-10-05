@@ -956,7 +956,7 @@ add_filter( 'pt-ocdi/import_files', 'rimi_import_files' );
 
 $theme = wp_get_theme( 'rimi' );
 if($theme->exists()){
-function_magazine_theme_after_import_setup() {
+function magazine_theme_after_import_setup() {
     // Assign menus to their locations.
     $main_menu = get_term_by( 'name', 'Header', 'nav_menu' );
 		$mobile_menu = get_term_by( 'name', 'Mobile Menu', 'nav_menu' );
