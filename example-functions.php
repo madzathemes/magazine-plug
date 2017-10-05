@@ -482,7 +482,8 @@ function page_metabox() {
 }
 $my_theme = wp_get_theme( 'fullstory' );
 $xnews = wp_get_theme( 'xnews' );
-if($my_theme->exists() or $xnews->exists()){
+$gnews = wp_get_theme( 'gnews' );
+if($my_theme->exists() or $xnews->exists() or $gnews->exists()){
 	function page_metabox_full() {
 		$prefix = 'magazin_';
 
