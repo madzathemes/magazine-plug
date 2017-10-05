@@ -956,7 +956,7 @@ add_filter( 'pt-ocdi/import_files', 'rimi_import_files' );
 
 $theme = wp_get_theme( 'rimi' );
 if($theme->exists()){
-function rimi_after_import_setup() {
+function_magazine_theme_after_import_setup() {
     // Assign menus to their locations.
     $main_menu = get_term_by( 'name', 'Header', 'nav_menu' );
 		$mobile_menu = get_term_by( 'name', 'Mobile Menu', 'nav_menu' );
@@ -976,6 +976,6 @@ function rimi_after_import_setup() {
     update_option( 'page_on_front', $front_page_id->ID );
 
 }
-add_action( 'pt-ocdi/after_import', 'rimi_after_import_setup' );
+add_action( 'pt-ocdi/after_import', 'function_magazine_theme_after_import_setup' );
 }
 ?>
