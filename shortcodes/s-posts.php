@@ -294,6 +294,80 @@ function posts( $atts, $content = null ) {
 						$shortcode .='</div>';
 					endwhile;
 				}
+				if($type=="normal-text"){
+					while ( $the_query->have_posts() ) : $the_query->the_post();
+
+					$option = get_option("magazin_option");
+					$excerpt_ = magazin_custom_excerpts(27);
+					if (!empty($option['post_meta_excerpt'])) {
+						if($option['post_meta_excerpt']==2){
+							$excerpt_ = get_the_excerpt();
+						}
+						else if($option['post_meta_excerpt']==3){
+							$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+							if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+						}
+						else if($option['post_meta_excerpt']==4){
+							$excerpt = get_post_meta(get_the_ID(), "magazin_subtitle", true);
+							if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+						}
+
+					} else {
+						$excerpt = get_post_meta(get_the_ID(), "magazin_excerpt", true);
+						if (!empty($excerpt)) { $excerpt_ = $excerpt; }
+					}
+
+
+						$shortcode .='<div class="poster poster-normal size-normal '.review_type().'  size-350'; if (!has_post_thumbnail()) { $shortcode .= ' img-empty'; } if (has_post_format( 'video' )) { $shortcode .= ' video'; } if (has_post_format( 'gallery' )) { $shortcode .= ' gallery'; } $shortcode .='">';
+							if ( has_post_thumbnail() ) {
+								$shortcode .='<a class="poster-image mt-radius" href="'. get_permalink().'">';
+								if ( has_post_format( 'video' )) {
+									$shortcode .='<span class="video-icon"></span>';
+								}
+								if ( has_post_thumbnail() ) {
+								  $shortcode .='<div class="mt-post-image"><div class="mt-post-image-background" style="background-image:url('. get_the_post_thumbnail_url(get_the_ID(),'magazin_5').');"></div><img alt="'. get_the_title() .'" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'. get_the_post_thumbnail_url(get_the_ID(),'magazin_480').'" /></div>';
+								}
+								if ( !has_post_format( 'video' ) ) {
+									$shortcode .='<i class="ic-open open"></i>';
+									$shortcode .='<div class="poster-info mt-theme-background">';
+										if ( has_post_thumbnail() ) {
+											$shortcode .='<div class="poster-cat "><span class="mt-theme-text">';
+												$category_name = get_the_category(get_the_ID());
+												$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+												if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+												if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+												if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+												}
+												$shortcode .='</span></div>';
+										$shortcode .= mt_pl_views_shares();
+									$shortcode .='</div>';
+								}
+								if ( has_post_format( 'video' ) and has_post_thumbnail() ) {
+									$shortcode .='<div class="poster-info mt-theme-background">';
+									$shortcode .='<div class="poster-cat"><span class="mt-theme-text">';
+										$category_name = get_the_category(get_the_ID());
+										$cat_nr = get_theme_mod( 'mt_post_meta_cat', 1 );
+										if(!empty($category_name[0]) and $cat_nr == 1 or $cat_nr == 2 or $cat_nr == 3) { $shortcode .=''.$category_name[0]->name.''; }
+										if(!empty($category_name[1]) and $cat_nr == 2 or $cat_nr == 3) { $shortcode .=', '.$category_name[1]->name.''; }
+										if(!empty($category_name[2]) and $cat_nr == 3) { $shortcode .=', '.$category_name[2]->name.''; }
+										$shortcode .='</span></div>';
+									$shortcode .= mt_pl_views_shares();
+									$shortcode .='</div>';
+								}
+							$shortcode .='</a>';
+						}
+							$shortcode .='<div class="poster-content-wrap">';
+
+								if ($review_star!="off") { $shortcode .= mt_review_star(); }
+								$shortcode .= mt_pl_views_shares();
+
+								$shortcode .='<a href="'. get_permalink().'"><h2>'. get_the_title() .'</h2></a>';
+								$shortcode .='<small class="mt-pl"><strong class="mt-pl-a">'. get_the_author_meta( "display_name" ) .'</strong><span class="color-silver-light mt-ml"> - </span><span class="color-silver-light mt-pl-d">'. esc_attr( get_the_date() ) .'</span></small>';
+								$shortcode .='<p>'.$excerpt_.'</p>';
+							$shortcode .='</div>';
+						$shortcode .='</div>';
+					endwhile;
+				}
 				if($type=="normal-two"){
 					$shortcode .='<div class="row">';
 					$counter = 0;
