@@ -67,6 +67,7 @@ class Posts_Widget extends WP_Widget {
 				<option value='small'<?php echo ($type=='small')?'selected':''; ?>>Small posts</option>
 				<option value='small-two'<?php echo ($type=='small-two')?'selected':''; ?>>Small posts (Two Columns)</option>
 				<option value='normal'<?php echo ($type=='normal')?'selected':''; ?>>Normal posts</option>
+				<option value='normal-text'<?php echo ($type=='normal')?'selected':''; ?>>Normal (Text) posts</option>
 				<option value='normal-two'<?php echo ($type=='normal-two')?'selected':''; ?>>Normal posts (Two Columns)</option>
 				<option value='normal-right'<?php echo ($type=='normal-right')?'selected':''; ?>>Normal posts (Right Text)</option>
 				<option value='normal-right-small'<?php echo ($type=='normal-right-small')?'selected':''; ?>>Normal posts (Right Text) Small</option>
