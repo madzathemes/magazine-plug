@@ -948,6 +948,7 @@ function rimi_import_files() {
             'import_file_name'             => esc_html__( 'Full Demo ( Posts, Style, Page Samples, Images )', 'rimi' ),
             'local_import_file'            => trailingslashit( get_template_directory() ) . 'inc/import/demo1/demo.xml',
             'local_import_customizer_file' => trailingslashit( get_template_directory() ) . 'inc/import/demo1/customizer.dat',
+						'import_widget_file_url' => trailingslashit( get_template_directory() ) . 'inc/import/demo1/widget_data.json',
             'import_notice'                => esc_html__( 'Customize this theme from Appearance/Customize', 'rimi' ),
 						'import_nr'                		 => '1',
         ),
@@ -965,7 +966,7 @@ function rimi_import_files() {
         ),
 				array(
             'import_file_name'             => esc_html__( 'Page Samples & Style', 'rimi' ),
-						'local_import_file'            => trailingslashit( get_template_directory() ) . 'inc/import/demo1/pages.xml',-
+						'local_import_file'            => trailingslashit( get_template_directory() ) . 'inc/import/demo1/pages.xml',
             'local_import_customizer_file' => trailingslashit( get_template_directory() ) . 'inc/import/demo1/customizer.dat',
             'import_notice'                => esc_html__( 'Customize this theme from Appearance/Customize', 'rimi' ),
 						'import_nr'                		 => '4',
@@ -978,7 +979,7 @@ $theme = wp_get_theme( 'rimi' );
 if($theme->exists()){
 function magazine_theme_after_import_setup($selected_import) {
 
-	if ( '1' === $selected_import['import_nr'] ) {
+
     // Assign menus to their locations.
     $main_menu = get_term_by( 'name', 'Header', 'nav_menu' );
 		$mobile_menu = get_term_by( 'name', 'Mobile Menu', 'nav_menu' );
@@ -996,7 +997,7 @@ function magazine_theme_after_import_setup($selected_import) {
 
     update_option( 'show_on_front', 'page' );
     update_option( 'page_on_front', $front_page_id->ID );
-	}
+
 
 }
 add_action( 'pt-ocdi/after_import', 'function_magazine_theme_after_import_setup' );
