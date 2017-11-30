@@ -2,9 +2,9 @@
 Contributors: aristath, fovoc, igmoweb
 Tags: customizer,options framework, theme, mods, toolkit
 Donate link: https://aristath.github.io/donate
-Requires at least: 4.8
-Tested up to: 4.8
-Stable tag: 3.0.9
+Requires at least: 4.8.2
+Tested up to: 4.9
+Stable tag: 3.0.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,12 +29,101 @@ You can find detailed documentation on how to use Kirki on [https://aristath.git
 
 Simply install as a normal WordPress plugin and activate.
 
-If you want to integrate Kirki in your theme or plugin, please read the instructions on [our ducumentation site](https://kirki.org/docs/advanced/integration.html).
+If you want to integrate Kirki in your theme or plugin, please read the instructions on [our documentation site](https://kirki.org/docs/advanced/integration.html).
 
 == Changelog ==
 
+= 3.0.16 =
+
+November 19 2017, dev time: 8 hours
+
+* Fix: `typography` controls not working when they are the only fields used [#1627](https://github.com/aristath/kirki/issues/1627)
+* Fix: `slider` controls were not updating the numeric value visually in their textfield when the control was not using `postMessage` [#1633](https://github.com/aristath/kirki/issues/1627)
+* Fix: Deprecated call to non-existing `Kirki_Styles_Frontend`, props @FrankM1 [#1644](https://github.com/aristath/kirki/issues/1644)
+* Fix: Updated the customizer-styling module for compatibility with WP 4.9 [#1639](https://github.com/aristath/kirki/issues/1639)
+* Fix: `code` controls were not using the corect `priority` [#1622](https://github.com/aristath/kirki/issues/1622)
+* Fix: Multiple reports of errors in the console.
+* New: Refactored the `number` controls [#1631](https://github.com/aristath/kirki/issues/1627)
+* New: Refactored the `color` controls. [#1646](https://github.com/aristath/kirki/issues/1646)
+
+= 3.0.15 =
+
+November 12 2017, dev time: 5 minutes.
+
+* Fix: PHP Warning in the `Kirki_Modules_Webfonts_Link` class [#1626](https://github.com/aristath/kirki/issues/1626)
+
+= 3.0.14 =
+
+November 11 2017, dev time: 4 hours.
+
+* Fix: Duplicate subsets output in the Google Fonts URLs [#1618](https://github.com/aristath/kirki/issues/1618)
+* Fix: Theme Check Warnings [#1613](https://github.com/aristath/kirki/issues/1613)
+* Fix: Add Kirki version number when enqueueing scripts & styles (cache-busting) [#1623](https://github.com/aristath/kirki/issues/1623)
+* Fix: JS conflict and PHP warning in typography fields when they are not properly defined [#1621](https://github.com/aristath/kirki/issues/1621)
+
+= 3.0.13 =
+
+November 9 2017, dev time: 3 hours.
+
+* Fix: textdomain typo in a string.
+* Fix: radio-image styling.
+* Fix: JS error (underscore's `_.isUndefined` for some reason doesn't always work as expected).
+* Tweak: Added reset back to sliders.
+* Tweak: CSS improvements.
+
+= 3.0.12 =
+
+November 7 2017, dev time: 42 hours.
+
+This update significantly reduces the plugin size by removing 3rd-party libraries (particularly CodeMirror) and uses the new controls and scripts that become available in WordPress 4.9.
+It also changes the file structure and paves the way for a 3.1 rewrite which will be a significant improvement, making Kirki a mostly JS-based app fully integrated in WordPress's JS API and moving away from the PHP API.
+
+* Fix: WordPress 4.9 compatibility for colorpickers.
+* Fix: WordPress 4.9 compatibility for typography controls.
+* Fix: WordPress 4.9 compatibility for multicolor contols.
+* Fix: WordPress 4.9 compatibility for background contols.
+* Fix: Refactored `editor` controls to make them compatible with WP 4.9
+* Fix: Remove CodeMirror and use the code control from WordPress Core. Code controls will be displayed as textareas in WP older than 4.9.
+* Fix: Use new `DateTimeControl` if in WP 4.9+ for date control.
+* Fix: Text field styling.
+* Fix: Switch controls labels.
+* Fix: 'choices' arguments were not getting passed-on due to `is_customize_preview` checks in latest WP Versions.
+* Fix: Overriding Kirki translations from a theme when Kirki is embedded.
+* New: Replaced `select2` with `selectWoo`.
+* New: Added a `Kirki_Control_Base` class and abstracted controls.
+* New: Better file structure.
+* New: Compiled JS & CSS files.
+* New: Added ability to manually enter numeric values in slider controls.
+* Tweak: Improved styling of color-palette controls.
+* Tweak: Radio-Image controls now display images inline (using flexbox).
+* Tweak: Removed the reset switch from slider controls & improved their styling.
+* Tweak: Improved typography controls styling for text-align.
+* Removed: Reset module.
+
+= 3.0.11 =
+
+October 12 2017, dev time: 3 hours.
+
+* Fix: Typography controls were not properly saving some sub-values [#1521](https://github.com/aristath/kirki/issues/1521), [#1560](https://github.com/aristath/kirki/issues/1560)
+* Fix: Undefined index in the code control [#1567](https://github.com/aristath/kirki/issues/1567)
+* Fix: CSS Output for multicolor fields [#1564](https://github.com/aristath/kirki/issues/1564)
+* Fix: JS instantiation of controls in expanded sections [#1559](https://github.com/aristath/kirki/issues/1559)
+* Fix: LTR for code controls [#1558](https://github.com/aristath/kirki/issues/1558)
+* Fix: Remove Reset in default sections [#1580](https://github.com/aristath/kirki/issues/1580)
+* Fix: Uncaught TypeError: data.value[choiceKey].replace is not a function [#1578](https://github.com/aristath/kirki/issues/1578)
+* Fix: Other code cleanup.
+* Fix: Updated google-fonts.
+
 = 3.0.10 =
 
+September 21 2017, dev time: 74 hours.
+
+* Fix: Allow HTML tags in tooltips [#1536](https://github.com/aristath/kirki/issues/1536)
+* Fix: Default System Font Stack for Sans Serif Fonts in Typography Fields [#1530](https://github.com/aristath/kirki/issues/1530)
+* Fix: HTML entities in repeater text field being encoded on each save? [#1523](https://github.com/aristath/kirki/issues/1523)
+* Fix: Some resetting issues [#1474](https://github.com/aristath/kirki/issues/1474)
+* Fix: Allow saving image fields as arrays (url,id,width,height) [#1529](https://github.com/aristath/kirki/issues/1529)
+* Fix: Allow saving image fields as ID [#1498](https://github.com/aristath/kirki/issues/1498)
 * Fix: Inline docs improvements.
 * Fix: `$subsets` not defined in the `Kirki_Modules_Webfonts_Link` class.
 * Fix: Coding improvements in the `Kirki_Field` class.
@@ -62,7 +151,6 @@ If you want to integrate Kirki in your theme or plugin, please read the instruct
 * New: `editor` control now loads dynamically (performance improvement).
 * New: `fontawesome` control now loads dynamically (performance improvement).
 * New: `generic` control now loads dynamically (performance improvement).
-* New: `gradient` control now loads dynamically (performance improvement).
 * New: `multicheck` control now loads dynamically (performance improvement).
 * New: `number` control now loads dynamically (performance improvement).
 * New: `palette` control now loads dynamically (performance improvement).

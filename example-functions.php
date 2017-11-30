@@ -418,12 +418,7 @@ function post_metabox_video() {
 
 add_action( 'cmb2_admin_init', 'post_metabox_video' );
 
-function function_speed() {
-	function spedup() {
-		wp_deregister_script( 'jquery' );
-	}
-	add_action('wp_enqueue_scripts','spedup');
-}
+function function_speed() {}
 /**
  * Hook in and add a demo metabox. Can only happen on the 'cmb2_admin_init' or 'cmb2_init' hook.
  */

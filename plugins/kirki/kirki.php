@@ -5,7 +5,7 @@
  * Description:   The ultimate WordPress Customizer Toolkit
  * Author:        Aristeides Stathopoulos
  * Author URI:    http://aristeides.com
- * Version:       3.0.10-beta.1
+ * Version:       3.0.16
  * Text Domain:   kirki
  *
  * GitHub Plugin URI: aristath/kirki
@@ -37,39 +37,43 @@ if ( ! defined( 'KIRKI_PLUGIN_FILE' ) ) {
 	define( 'KIRKI_PLUGIN_FILE', __FILE__ );
 }
 
-if ( ! function_exists( 'Kirki' ) ) {
-	// @codingStandardsIgnoreStart
-	/**
-	 * Returns an instance of the Kirki object.
-	 */
-	function Kirki() {
-		$kirki = Kirki_Toolkit::get_instance();
-		return $kirki;
+// Define the KIRKI_VERSION constant.
+if ( ! defined( 'KIRKI_VERSION' ) ) {
+	if ( ! function_exists( 'get_plugin_data' ) ) {
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 	}
-	// @codingStandardsIgnoreEnd
-
+	$data = get_plugin_data( KIRKI_PLUGIN_FILE );
+	$version = ( isset( $data['Version'] ) ) ? $data['Version'] : false;
+	define( 'KIRKI_VERSION', $version );
 }
-// Start Kirki.
-global $kirki;
-$kirki = Kirki();
-// Instamtiate the modules.
-$kirki->modules = new Kirki_Modules();
 
 // Make sure the path is properly set.
 Kirki::$path = wp_normalize_path( dirname( __FILE__ ) );
+Kirki_Init::set_url();
 
-// If Kirki is installed as a plugin, use plugin_dir_url().
-$kirki_is_plugin = Kirki_Util::is_plugin();
-if ( $kirki_is_plugin ) {
-	Kirki::$url = plugin_dir_url( __FILE__ );
-} elseif ( function_exists( 'is_link' ) && is_link( dirname( __FILE__ ) ) && function_exists( 'readlink' ) ) {
-	// If the path is a symlink, get the target.
-	Kirki::$path = readlink( Kirki::$path );
+if ( ! function_exists( 'Kirki' ) ) {
+	/**
+	 * Returns an instance of the Kirki object.
+	 */
+	function kirki() {
+		$kirki = Kirki_Toolkit::get_instance();
+		return $kirki;
+	}
 }
 
-// Instantiate 2ndary classes.
-new Kirki_L10n();
+// Start Kirki.
+global $kirki;
+$kirki = kirki();
+
+// Instantiate the modules.
+$kirki->modules = new Kirki_Modules();
+
+Kirki::$url = plugins_url( '', __FILE__ );
+
+// Instantiate classes.
 new Kirki();
+new Kirki_L10n();
+
 // Include deprecated functions & methods.
 include_once wp_normalize_path( dirname( __FILE__ ) . '/core/deprecated.php' );
 
@@ -88,5 +92,5 @@ if ( file_exists( $custom_config_path ) ) {
 // Add upgrade notifications.
 include_once wp_normalize_path( dirname( __FILE__ ) . '/upgrade-notifications.php' );
 
-// Handle localization when kirki is included in a theme.
-include_once wp_normalize_path( dirname( __FILE__ ) . '/l10n.php' );
+// Uncomment this line to see the demo controls in the customizer.
+/* include_once dirname( __FILE__ ) . '/example.php'; */
