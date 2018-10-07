@@ -1,13 +1,13 @@
 /* global dimensionskirkiL10n */
-wp.customize.controlConstructor['kirki-dimensions'] = wp.customize.kirkiDynamicControl.extend({
+wp.customize.controlConstructor['kirki-dimensions'] = wp.customize.kirkiDynamicControl.extend( {
 
 	initKirkiControl: function() {
 
 		var control     = this,
-		    subControls = control.params.choices.controls,
-		    value       = {},
-		    subsArray   = [],
-		    i;
+			subControls = control.params.choices.controls,
+			value       = {},
+			subsArray   = [],
+			i;
 
 		_.each( subControls, function( v, i ) {
 			if ( true === v ) {
@@ -36,7 +36,7 @@ wp.customize.controlConstructor['kirki-dimensions'] = wp.customize.kirkiDynamicC
 
 			// Save the value
 			control.saveValue( value );
-		});
+		} );
 	},
 
 	/**
@@ -45,11 +45,11 @@ wp.customize.controlConstructor['kirki-dimensions'] = wp.customize.kirkiDynamicC
 	saveValue: function( value ) {
 
 		var control  = this,
-		    newValue = {};
+			newValue = {};
 
 		_.each( value, function( newSubValue, i ) {
 			newValue[ i ] = newSubValue;
-		});
+		} );
 
 		control.setting.set( newValue );
 	},
@@ -64,34 +64,29 @@ wp.customize.controlConstructor['kirki-dimensions'] = wp.customize.kirkiDynamicC
 		wp.customize( control.id, function( setting ) {
 			setting.bind( function( value ) {
 				var code = 'long_title',
-				    subs = {},
-				    message;
+					subs = {},
+					message;
 
 				setting.notifications.remove( code );
 
-				_.each( ['top', 'bottom', 'left', 'right'], function( direction ) {
-					if ( ! _.isUndefined( value[ direction ] ) ) {
-						if ( false === control.kirkiValidateCSSValue( value[ direction ] ) ) {
-							subs[ direction ] = dimensionskirkiL10n[ direction ];
-						} else {
-							delete subs[ direction ];
-						}
+				_.each( value, function( val, direction ) {
+					if ( false === kirki.util.validate.cssValue( val ) ) {
+						subs[ direction ] = val;
+					} else {
+						delete subs[ direction ];
 					}
-				});
+				} );
 
 				if ( ! _.isEmpty( subs ) ) {
 					message = dimensionskirkiL10n['invalid-value'] + ' (' + _.values( subs ).toString() + ') ';
-					setting.notifications.add( code, new wp.customize.Notification(
-						code,
-						{
-							type: 'warning',
-							message: message
-						}
-					) );
-				} else {
-					setting.notifications.remove( code );
+					setting.notifications.add( code, new wp.customize.Notification( code, {
+						type: 'warning',
+						message: message
+					} ) );
+					return;
 				}
+				setting.notifications.remove( code );
 			} );
 		} );
 	}
-});
+} );

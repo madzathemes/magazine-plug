@@ -79,7 +79,7 @@ class My_Theme_Kirki {
 
 		// Make sure the config is defined.
 		if ( isset( self::$config[ $config_id ] ) ) {
-			if ( 'option' == self::$config[ $config_id ]['option_type'] ) {
+			if ( 'option' === self::$config[ $config_id ]['option_type'] ) {
 
 				// check if we're using serialized options.
 				if ( isset( self::$config[ $config_id ]['option_name'] ) && ! empty( self::$config[ $config_id ]['option_name'] ) ) {
@@ -148,7 +148,7 @@ class My_Theme_Kirki {
 		}
 
 		// Kirki does not exist, set the config arguments.
-		$config[ $config_id ] = $args;
+		self::$config[ $config_id ] = $args;
 
 		// Make sure an option_type is defined.
 		if ( ! isset( self::$config[ $config_id ]['option_type'] ) ) {
@@ -161,7 +161,7 @@ class My_Theme_Kirki {
 	 *
 	 * @param string $config_id The configuration ID.
 	 * @param array  $args      The field's arguments.
-	 * @return void
+	 * @return null
 	 */
 	public static function add_field( $config_id, $args ) {
 
@@ -188,7 +188,7 @@ class My_Theme_Kirki {
 	 * Enqueues the stylesheet.
 	 *
 	 * @access public
-	 * @return void
+	 * @return null
 	 */
 	public function enqueue_styles() {
 
@@ -205,7 +205,7 @@ class My_Theme_Kirki {
 
 			// Enqueue the theme's style.css file.
 			$current_theme = ( wp_get_theme() );
-			wp_enqueue_style( $current_theme->stylesheet . '_no-kirki', get_stylesheet_uri(), null, null );
+			wp_enqueue_style( $current_theme->stylesheet . '_no-kirki', get_stylesheet_uri(), array(), '1.0' );
 			wp_add_inline_style( $current_theme->stylesheet . '_no-kirki', $styles );
 		}
 	}
@@ -244,16 +244,18 @@ class My_Theme_Kirki {
 
 			// Start parsing the output arguments of the field.
 			foreach ( $field['output'] as $output ) {
-				$output = wp_parse_args( $output, array(
-					'element'       => '',
-					'property'      => '',
-					'media_query'   => 'global',
-					'prefix'        => '',
-					'units'         => '',
-					'suffix'        => '',
-					'value_pattern' => '$',
-					'choice'        => '',
-				) );
+				$output = wp_parse_args(
+					$output, array(
+						'element'       => '',
+						'property'      => '',
+						'media_query'   => 'global',
+						'prefix'        => '',
+						'units'         => '',
+						'suffix'        => '',
+						'value_pattern' => '$',
+						'choice'        => '',
+					)
+				);
 
 				// If element is an array, convert it to a string.
 				if ( is_array( $output['element'] ) ) {
@@ -271,20 +273,15 @@ class My_Theme_Kirki {
 
 						foreach ( $value as $key => $subvalue ) {
 
-							// Exclude subsets as a property.
-							if ( 'subsets' === $key ) {
-								continue;
-							}
-
 							// Add double quotes if needed to font-families.
-							if ( 'font-family' == $key && false !== strpos( $subvalue, ' ' ) && false === strpos( $subvalue, '"' ) ) {
+							if ( 'font-family' === $key && false !== strpos( $subvalue, ' ' ) && false === strpos( $subvalue, '"' ) ) {
 								$css[ $output['media_query'] ][ $output['element'] ]['font-family'] = '"' . $subvalue . '"';
 							}
 
 							// Variants contain both font-weight & italics.
 							if ( 'variant' === $key ) {
 								$font_weight = str_replace( 'italic', '', $subvalue );
-								$font_weight = ( in_array( $font_weight, array( '', 'regular' ) ) ) ? '400' : $font_weight;
+								$font_weight = ( in_array( $font_weight, array( '', 'regular' ), true ) ) ? '400' : $font_weight;
 								$css[ $output['media_query'] ][ $output['element'] ]['font-weight'] = $font_weight;
 
 								// Is this italic?
@@ -295,7 +292,7 @@ class My_Theme_Kirki {
 								$css[ $output['media_query'] ][ $output['element'] ][ $key ] = $subvalue;
 							}
 						}
-					} elseif ( 'multicolor' == $field['type'] ) {
+					} elseif ( 'multicolor' === $field['type'] ) {
 
 						if ( ! empty( $output['element'] ) && ! empty( $output['property'] ) && ! empty( $output['choice'] ) ) {
 							$css[ $output['media_query'] ][ $output['element'] ][ $output['property'] ] = $output['prefix'] . $value[ $output['choice'] ] . $output['units'] . $output['suffix'];
@@ -310,7 +307,7 @@ class My_Theme_Kirki {
 								$output['property'] = $output['property'] . '-' . $key;
 							}
 							if ( 'background-image' === $output['property'] && false === strpos( $subvalue, 'url(' ) ) {
-								$subvalue = 'url("' . $subvalue . '")';
+								$subvalue = 'url("' . set_url_scheme( $subvalue ) . '")';
 							}
 							if ( $subvalue ) {
 								$css[ $output['media_query'] ][ $output['element'] ][ $property ] = $subvalue;
@@ -331,7 +328,7 @@ class My_Theme_Kirki {
 		foreach ( $css as $media_query => $styles ) {
 
 			// Handle the media queries.
-			$final_css .= ( 'global' != $media_query ) ? $media_query . '{' : '';
+			$final_css .= ( 'global' !== $media_query ) ? $media_query . '{' : '';
 			foreach ( $styles as $style => $style_array ) {
 
 				$final_css .= $style . '{';
@@ -342,6 +339,7 @@ class My_Theme_Kirki {
 					// Make sure background-images are properly formatted.
 					if ( 'background-image' === $property ) {
 						if ( false === strrpos( $value, 'url(' ) ) {
+							$value = set_url_scheme( $value );
 							$value = 'url("' . esc_url_raw( $value ) . '")';
 						}
 					} else {
@@ -351,7 +349,7 @@ class My_Theme_Kirki {
 				}
 				$final_css .= '}';
 			}
-			$final_css .= ( 'global' != $media_query ) ? '}' : '';
+			$final_css .= ( 'global' !== $media_query ) ? '}' : '';
 		}
 		return $final_css;
 	}
@@ -360,7 +358,7 @@ class My_Theme_Kirki {
 	 * Enqueue google fonts.
 	 *
 	 * @access public
-	 * @return void
+	 * @return null
 	 */
 	public function enqueue_fonts() {
 
@@ -372,7 +370,7 @@ class My_Theme_Kirki {
 		foreach ( self::$fields as $field ) {
 
 			// Process typography fields.
-			if ( isset( $field['type'] ) && 'typography' == $field['type'] ) {
+			if ( isset( $field['type'] ) && 'typography' === $field['type'] ) {
 
 				// Check if we've got everything we need.
 				if ( ! isset( $field['kirki_config'] ) || ! isset( $field['settings'] ) ) {
@@ -380,16 +378,11 @@ class My_Theme_Kirki {
 				}
 				$value = self::get_option( $field['kirki_config'], $field['settings'] );
 				if ( isset( $value['font-family'] ) ) {
-					$url = '//fonts.googleapis.com/css?family=' . str_replace( ' ', '+', $value['font-family'] );
+					$url              = '//fonts.googleapis.com/css?family=' . str_replace( ' ', '+', $value['font-family'] );
 					$value['variant'] = ( isset( $value['variant'] ) ) ? $value['variant'] : '';
-					$url .= ( empty( $value['variant'] ) ) ? '' : ':' . $value['variant'];
-					$value['subset'] = ( isset( $value['subset'] ) ) ? $value['subset'] : '';
+					$url             .= ( empty( $value['variant'] ) ) ? '' : ':' . $value['variant'];
 
-					if ( ! empty( $value['subset'] ) ) {
-						$value['subset'] = ( is_array( $value['subset'] ) ) ? implode( ',', $value['subsets'] ) : $value['subset'];
-						$url .= '&subset=' . $value['subset'];
-					}
-					$key = md5( $value['font-family'] . $value['variant'] . $value['subset'] );
+					$key = md5( $value['font-family'] . $value['variant'] );
 
 					// Check that the URL is valid. we're going to use transients to make this faster.
 					$url_is_valid = get_transient( $key );
@@ -407,7 +400,7 @@ class My_Theme_Kirki {
 
 						// Check the response headers.
 						if ( isset( $response['response'] ) && isset( $response['response']['code'] ) ) {
-							if ( 200 == $response['response']['code'] ) {
+							if ( 200 === $response['response']['code'] ) {
 
 								// URL was ok. Set transient to true and cache for a week.
 								set_transient( $key, true, 7 * 24 * HOUR_IN_SECONDS );
@@ -418,7 +411,7 @@ class My_Theme_Kirki {
 
 					// If the font-link is valid, enqueue it.
 					if ( $url_is_valid ) {
-						wp_enqueue_style( $key, $url, null, null );
+						wp_enqueue_style( $key, $url, array(), '1.0' );
 					}
 				}
 			}

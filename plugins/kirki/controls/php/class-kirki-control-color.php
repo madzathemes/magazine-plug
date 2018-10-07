@@ -5,7 +5,7 @@
  * @package     Kirki
  * @subpackage  Controls
  * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
- * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
+ * @license    https://opensource.org/licenses/MIT
  * @since       1.0
  */
 
@@ -53,8 +53,8 @@ class Kirki_Control_Color extends Kirki_Control_Base {
 	public function to_json() {
 		parent::to_json();
 
-		$this->json['palette'] = $this->palette;
+		$this->json['palette']          = $this->palette;
 		$this->json['choices']['alpha'] = ( isset( $this->choices['alpha'] ) && $this->choices['alpha'] ) ? 'true' : 'false';
-		$this->json['mode'] = $this->mode;
+		$this->json['mode']             = $this->mode;
 	}
 }

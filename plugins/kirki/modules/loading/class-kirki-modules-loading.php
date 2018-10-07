@@ -5,7 +5,7 @@
  * @package     Kirki
  * @subpackage  Modules
  * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
- * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
+ * @license    https://opensource.org/licenses/MIT
  * @since       3.0.0
  */
 
@@ -61,8 +61,8 @@ class Kirki_Modules_Loading {
 		if ( ! $wp_customize ) {
 			return;
 		}
-		// Allow disabling the custom loader using the kirki/config filter.
-		$config = apply_filters( 'kirki/config', array() );
+		// Allow disabling the custom loader using the kirki_config filter.
+		$config = apply_filters( 'kirki_config', array() );
 		if ( isset( $config['disable_loader'] ) && true === $config['disable_loader'] ) {
 			return;
 		}

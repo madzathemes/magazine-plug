@@ -5,7 +5,7 @@
  * @package     Kirki
  * @subpackage  Controls
  * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
- * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
+ * @license    https://opensource.org/licenses/MIT
  * @since       2.2.7
  */
 
@@ -122,7 +122,7 @@ class Kirki_Field_Repeater extends Kirki_Field {
 							break;
 						case 'color':
 							// Instantiate the object.
-							$color_obj = ariColor::newColor( $subfield_value );
+							$color_obj       = ariColor::newColor( $subfield_value );
 							$$subfield_value = $color_obj->toCSS( $color_obj->mode );
 							break;
 						case 'text':
@@ -139,7 +139,7 @@ class Kirki_Field_Repeater extends Kirki_Field {
 							$subfield_value = esc_attr( $subfield_value );
 							break;
 						case 'checkbox':
-							$subfield_value = (string) intval( $subfield_value );
+							$subfield_value = (bool) $subfield_value;
 							break;
 						case 'select':
 							if ( isset( $this->fields[ $subfield_id ]['multiple'] ) ) {
@@ -164,11 +164,11 @@ class Kirki_Field_Repeater extends Kirki_Field {
 						case 'textarea':
 							$subfield_value = html_entity_decode( wp_kses_post( $subfield_value ) );
 
-					} // End switch().
-				} // End if().
+					}
+				}
 				$value[ $row_id ][ $subfield_id ] = $subfield_value;
-			} // End foreach().
-		} // End foreach().
+			}
+		}
 
 		return $value;
 	}
