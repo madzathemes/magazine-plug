@@ -864,7 +864,7 @@ function custom_row_style_fields($fields) {
   return $fields;
 }
 
-#add_filter( 'siteorigin_panels_row_style_fields', 'custom_row_style_fields' );
+add_filter( 'siteorigin_panels_row_style_fields', 'custom_row_style_fields' );
 
 function custom_row_style_attributes( $attributes, $args ) {
     if( !empty( $args['sticky_row'] ) ) {
@@ -874,7 +874,7 @@ function custom_row_style_attributes( $attributes, $args ) {
     return $attributes;
 }
 
-#add_filter('siteorigin_panels_row_style_attributes', 'custom_row_style_attributes', 10, 2);
+add_filter('siteorigin_panels_row_style_attributes', 'custom_row_style_attributes', 10, 2);
 
 
 function mt_share_top(){
