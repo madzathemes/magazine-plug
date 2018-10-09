@@ -99,7 +99,7 @@ if ( class_exists( 'Kirki' ) ) {
     Kirki::add_field( 'mt_fonts', array(
      'type'        => 'typography',
      'settings'    => 'mt_typography_single_text',
-     'label'       => esc_attr__( 'Menu', 'nextnews' ),
+     'label'       => esc_attr__( 'Post Text', 'nextnews' ),
      'section'     => 'mt_typography_section',
      'priority'    => 10,
      'default'     => array( 'font-family'  => 'Lato', 'subsets' => array( 'latin-ext' ) ),
