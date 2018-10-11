@@ -105,7 +105,7 @@ if ( class_exists( 'Kirki' ) ) {
      'default'     => array( 'font-family'  => 'Lato', 'subsets' => array( 'latin-ext' ) ),
      'output' => array(
        array(
-         'element' => '.single-content p, .single-content ul, .single-content ol, .single-content li',
+         'element' => '.single-content p, .single-content ul, .single-content ol, .single-content li, h2.single-subtitle',
        ),
      ),
      'active_callback'    => array(
