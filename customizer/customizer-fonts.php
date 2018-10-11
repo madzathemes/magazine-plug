@@ -95,7 +95,6 @@ if ( class_exists( 'Kirki' ) ) {
      ),
     ) );
 
-
     Kirki::add_field( 'mt_fonts', array(
      'type'        => 'typography',
      'settings'    => 'mt_typography_single_text',
